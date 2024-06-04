@@ -229,7 +229,7 @@ a couple of times, to make sure you are very familiar with the steps.**
 Load the packages we will need (MASS, tree):
 
 
-``` r
+```r
 library(MASS) # for the Boston Housing data set
 library(tree) # To make models using trees
 library(Metrics) # To calculate error rate (root mean squared error)
@@ -251,7 +251,7 @@ Load the Boston Housing data set, and split it into train (60%) and test
 (40%) sections.
 
 
-``` r
+```r
 df <- MASS::Boston
 train <- df[1:400, ]
 test <- df[401:505, ]
@@ -272,9 +272,6 @@ head(train)
 #> 4    18.7 394.63  2.94 33.4
 #> 5    18.7 396.90  5.33 36.2
 #> 6    18.7 394.12  5.21 28.7
-```
-
-``` r
 head(test)
 #>         crim zn indus chas   nox    rm   age    dis rad tax
 #> 401 25.04610  0  18.1    0 0.693 5.987 100.0 1.5888  24 666
@@ -297,7 +294,7 @@ and make predictions on the Boston Housing test data. Measure the
 accuracy of the predictions against the actual values.
 
 
-``` r
+```r
 Boston_lm <- lm(medv ~ ., data = train) # Fit the model to the training data
 Boston_lm_predictions <- predict(object = Boston_lm, newdata = test)
 
@@ -310,7 +307,7 @@ head(Boston_lm_predictions)
 Calculate the error for the model
 
 
-``` r
+```r
 Boston_linear_RMSE <- Metrics::rmse(actual = test$medv, predicted = Boston_lm_predictions)
 Boston_linear_RMSE
 #> [1] 6.108005
@@ -324,7 +321,7 @@ data, and making predictions on the Boston Housing test data. Measure
 the accuracy of the predictions against the actual values.
 
 
-``` r
+```r
 Boston_tree <- tree(medv ~ ., data = train) # Fit the model to the training data
 Boston_tree_predictions <- predict(object = Boston_tree, newdata = test)
 
@@ -337,7 +334,7 @@ head(Boston_tree_predictions)
 Calculate the error rate for the tree model:
 
 
-``` r
+```r
 Boston_tree_RMSE <- Metrics::rmse(actual = test$medv, predicted = Boston_tree_predictions)
 Boston_tree_RMSE
 #> [1] 5.478017
@@ -357,7 +354,7 @@ Make a new column for the true values—these are the true values in the
 Boston Housing test data set
 
 
-``` r
+```r
 ensemble <- data.frame(
   'linear' = Boston_lm_predictions,
   'tree' = Boston_tree_predictions,
@@ -373,9 +370,6 @@ head(ensemble)
 #> 404 13.014507 13.30769  8.3
 #> 405  6.946392 13.30769  8.5
 #> 406  5.123039 13.30769  5.0
-```
-
-``` r
 dim(ensemble)
 #> [1] 105   3
 ```
@@ -388,7 +382,7 @@ There is nothing special about the 60/40 split here, you may use any
 numbers you wish.
 
 
-``` r
+```r
 ensemble_train <- ensemble[1:60, ]
 ensemble_test <- ensemble[61:105, ]
 
@@ -400,9 +394,6 @@ head(ensemble_train)
 #> 404 13.014507 13.30769  8.3
 #> 405  6.946392 13.30769  8.5
 #> 406  5.123039 13.30769  5.0
-```
-
-``` r
 head(ensemble_test)
 #>       linear     tree    y
 #> 461 23.88984 13.30769 16.4
@@ -418,7 +409,7 @@ the testing data, and measure the accuracy of the predictions against
 the test data. Notice how similar this is to our linear and tree models.
 
 
-``` r
+```r
 # Fit the model to the training data
 ensemble_lm <- lm(y ~ ., data = ensemble_train)
 
@@ -436,7 +427,7 @@ ensemble_lm_rmse
 Summarize the results.
 
 
-``` r
+```r
 results <- data.frame(
   'Model' = c('Linear', 'Tree', 'Ensemble'),
   'Error' = c(Boston_linear_RMSE, Boston_tree_RMSE, ensemble_lm_rmse)
@@ -456,7 +447,7 @@ lowest error rate of all the models.
 ### Try it yourself: Make an ensemble where the ensemble is made using trees instead of linear models.
 
 
-``` r
+```r
 # Fit the model to the training data
 ensemble_tree <- tree(y ~ ., data = ensemble_train)
 
@@ -467,9 +458,6 @@ ensemble_tree_predict <- predict(object = ensemble_tree, newdata = ensemble_test
 head(ensemble_tree_predict)
 #>      461      462      463      464      465      466 
 #> 14.80000 14.80000 18.94286 18.94286 18.94286 18.94286
-```
-
-``` r
 
 # Calculate the error rate
 ensemble_tree_rmse <- Metrics::rmse(actual = ensemble_test$y, predicted = ensemble_tree_predict)
@@ -482,7 +470,7 @@ How does this compare to our three other results? Let's update the
 results table
 
 
-``` r
+```r
 results <- data.frame(
   'Model' = c('Linear', 'Tree', 'Ensemble_Linear', 'Ensemble_Tree'),
   'Error' = c(Boston_linear_RMSE, Boston_tree_RMSE, ensemble_lm_rmse, ensemble_tree_rmse)
@@ -517,7 +505,7 @@ achieving the best possible result.
 ## Principle: Randomizing the data before the analysis will make the results more general (and is very easy to do!)
 
 
-``` r
+```r
 df <- df[sample(nrow(df)),] # Randomize the rows before the analysis
 ```
 
@@ -535,7 +523,7 @@ first.
 • Make predictions and calculate error from the model on the test set
 
 
-``` r
+```r
 df <- df[sample(nrow(df)),] # Randomize the rows before the analysis
 
 train <- df[1:400, ]
@@ -550,12 +538,12 @@ Boston_lm_predictions <- predict(object = Boston_lm, newdata = test)
 # Let's have a quick look at the linear model predictions:
 
 head(Boston_lm_predictions)
-#>       389        24        13       490       298       497 
-#>  7.209131 13.299431 20.369236  8.253998 18.854953 14.074187
+#>      240      332      137      454      334      270 
+#> 28.61158 19.88467 15.96199 22.47862 22.24022 24.87986
 ```
 
 
-``` r
+```r
 Boston_linear_rmse <- Metrics::rmse(actual = test$medv, predicted = Boston_lm_predictions)
 
 Boston_tree <- tree(medv ~ ., data = train)
@@ -565,12 +553,12 @@ Boston_tree_rmse <- Metrics::rmse(actual = test$medv, predicted = Boston_tree_pr
 # Let's have a quick look at the tree model predictions:
 
 head(Boston_tree_predictions)
-#>      389       24       13      490      298      497 
-#> 12.00606 16.90755 16.90755 16.90755 16.90755 16.90755
+#>      240      332      137      454      334      270 
+#> 27.91087 21.99000 16.96486 22.52000 21.99000 21.99000
 ```
 
 
-``` r
+```r
 ensemble <- data.frame( 'linear' = Boston_lm_predictions, 'tree' = Boston_tree_predictions, 'y_ensemble' = test$medv )
 
 ensemble <- ensemble[sample(nrow(ensemble)), ] # Randomizes the rows of the ensemble
@@ -580,7 +568,7 @@ ensemble_test <- ensemble[61:105, ]
 ```
 
 
-``` r
+```r
 ensemble_lm <- lm(y_ensemble ~ ., data = ensemble_train)
 
 # Predictions for the ensemble linear model
@@ -601,16 +589,16 @@ results <- list( 'Linear' = Boston_linear_rmse, 'Trees' = Boston_tree_rmse, 'Ens
 
 results
 #> $Linear
-#> [1] 4.536668
+#> [1] 5.773528
 #> 
 #> $Trees
-#> [1] 4.012755
+#> [1] 5.217239
 #> 
 #> $Ensembles_Linear
-#> [1] 3.714215
+#> [1] 3.496981
 #> 
 #> $Ensemble_Tree
-#> [1] 5.286599
+#> [1] 5.648841
 ```
 
 The fact that our results are a bit different from our first ensemble is
@@ -623,7 +611,7 @@ Just watch: Repeat the results 100 times, return the mean of the results
 (hint: It's two small changes)
 
 
-``` r
+```r
 for (i in 1:100) {
 
 # First the linear model with randomized data
@@ -701,10 +689,7 @@ results <- data.frame(
 
 results
 #>     Linear    Trees Ensembles_Linear Ensemble_Tree
-#> 1 4.798849 4.627021         4.078829      5.040039
-```
-
-``` r
+#> 1 4.882039 4.644311         4.165575      5.139567
 warnings() # No warnings!
 ```
 
@@ -737,7 +722,7 @@ saves the four trained models (linear, tree, ensemble_linear and
 ensemble_tree), as follows:
 
 
-``` r
+```r
 library(MASS)
 library(Metrics)
 library(tree)
@@ -818,24 +803,21 @@ results <- list( 'Linear' = Boston_linear_rmse_mean, 'Trees' = Boston_tree_rmse_
 
 results
 #> $Linear
-#> [1] 4.830464
+#> [1] 4.921173
 #> 
 #> $Trees
-#> [1] 4.712343
+#> [1] 4.755993
 #> 
 #> $Ensembles_Linear
-#> [1] 4.151828
+#> [1] 4.284075
 #> 
 #> $Ensemble_Tree
-#> [1] 5.236029
-```
-
-``` r
+#> [1] 5.211208
 warnings()
 ```
 
 
-``` r
+```r
 
 Boston_lm <- Boston_lm
 Boston_tree <- Boston_tree

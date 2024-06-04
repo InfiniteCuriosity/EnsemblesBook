@@ -13,9 +13,9 @@ In logistic modeling those values are converted to 1 or 0 (if they are not conve
 Download the data set, and open it in your system. For example,
 
 
-``` r
+```r
 
-diabetes <- read.csv('/Users/russellconte/diabetes.csv')
+diabetes <- read.csv('/Users/russconte/diabetes.csv')
 head(diabetes)
 #>   Pregnancies Glucose BloodPressure SkinThickness Insulin
 #> 1           6     148            72            35       0
@@ -58,7 +58,7 @@ By far the most common way to do this is using Generalized Linear Models, and we
 For this set of examples we are also going to add the results of the ROC curve, so the ROC curve is printed automatically.
 
 
-``` r
+```r
 
 # Load the library
 library(tidyverse)
@@ -72,9 +72,6 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 library(pROC)
 #> Type 'citation("pROC")' for a citation.
 #> 
@@ -83,9 +80,6 @@ library(pROC)
 #> The following objects are masked from 'package:stats':
 #> 
 #>     cov, smooth, var
-```
-
-``` r
 
 # Set initial values to 0
 
@@ -160,10 +154,7 @@ glm_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_a
 <img src="06-Individual_Logistic_Models_files/figure-html/Our first logistic model-1.png" width="672" />
 
 ```
-#> [1] 0.7575758
-```
-
-``` r
+#> [1] 0.7979798
 
 # Check for any errors
 warnings()
@@ -182,7 +173,7 @@ The authors of the excellent book, Introduction to Statistical Learning, describ
 ### Adaboost
 
 
-``` r
+```r
 
 # Load the library
 library(MachineShop)
@@ -197,9 +188,6 @@ library(MachineShop)
 #> The following object is masked from 'package:stats':
 #> 
 #>     ppr
-```
-
-``` r
 library(tidyverse)
 library(pROC)
 
@@ -264,6 +252,10 @@ return(adaboost_test_accuracy_mean)
 
 # Test the function
 adaboost_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
+#> Warning in rgl.init(initValue, onlyNULL): RGL: unable to
+#> open X11 display
+#> Warning: 'rgl.init' failed, running with 'rgl.useNULL =
+#> TRUE'.
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -273,10 +265,7 @@ adaboost_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, t
 <img src="06-Individual_Logistic_Models_files/figure-html/ADABoost for logistic data-1.png" width="672" />
 
 ```
-#> [1] 0.734375
-```
-
-``` r
+#> [1] 0.715655
 
 # Check for any errors
 warnings()
@@ -285,7 +274,7 @@ warnings()
 ### BayesGLM
 
 
-``` r
+```r
 
 # Load the library
 library(arm)
@@ -304,10 +293,7 @@ library(arm)
 #> Loading required package: lme4
 #> 
 #> arm (Version 1.14-4, built: 2024-4-1)
-#> Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
-```
-
-``` r
+#> Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
 library(tidyverse)
 library(pROC)
 
@@ -382,10 +368,7 @@ bayesglm_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, t
 <img src="06-Individual_Logistic_Models_files/figure-html/BayesGLM model for logistic data-1.png" width="672" />
 
 ```
-#> [1] 0.7272727
-```
-
-``` r
+#> [1] 0.7639344
 
 # Check for any errors
 warnings()
@@ -394,7 +377,7 @@ warnings()
 ### C50
 
 
-``` r
+```r
 
 # Load the library
 library(C50)
@@ -472,9 +455,6 @@ C50_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_a
 
 ```
 #> [1] 1
-```
-
-``` r
 
 # Check for any errors
 warnings()
@@ -483,14 +463,11 @@ warnings()
 ### Cubist
 
 
-``` r
+```r
 
 # Load the library
 library(Cubist)
 #> Loading required package: lattice
-```
-
-``` r
 library(tidyverse)
 library(pROC)
 
@@ -564,9 +541,6 @@ cubist_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, tes
 
 ```
 #> [1] 1
-```
-
-``` r
 
 # Check for any errors
 warnings()
@@ -575,15 +549,12 @@ warnings()
 ### Gradient Boosted
 
 
-``` r
+```r
 
 # Load the library
 library(gbm)
 #> Loaded gbm 2.1.9
 #> This version of gbm is no longer under development. Consider transitioning to gbm3, https://github.com/gbm-developers/gbm3
-```
-
-``` r
 library(tidyverse)
 library(pROC)
 
@@ -659,10 +630,7 @@ gb_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_am
 <img src="06-Individual_Logistic_Models_files/figure-html/Gradient Boosted model for logistic data-1.png" width="672" />
 
 ```
-#> [1] 0.759375
-```
-
-``` r
+#> [1] 0.7227414
 
 # Check for any errors
 warnings()
@@ -671,7 +639,7 @@ warnings()
 ### Random Forest
 
 
-``` r
+```r
 
 # Load the library
 library(randomForest)
@@ -685,9 +653,6 @@ library(randomForest)
 #> The following object is masked from 'package:ggplot2':
 #> 
 #>     margin
-```
-
-``` r
 library(tidyverse)
 library(pROC)
 
@@ -762,9 +727,6 @@ rf_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_am
 
 ```
 #> [1] 1
-```
-
-``` r
 
 # Check for any errors
 warnings()
@@ -773,7 +735,7 @@ warnings()
 ### Support Vector Machines
 
 
-``` r
+```r
 
 # Load the library
 library(e1071)
@@ -848,10 +810,7 @@ svm_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_a
 <img src="06-Individual_Logistic_Models_files/figure-html/Support Vector Machines for logistic data-1.png" width="672" />
 
 ```
-#> [1] 0.7378049
-```
-
-``` r
+#> [1] 0.754902
 
 # Check for any errors
 warnings()
@@ -860,7 +819,7 @@ warnings()
 ### XGBoost
 
 
-``` r
+```r
 
 # Load the library
 library(xgboost)
@@ -869,9 +828,6 @@ library(xgboost)
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     slice
-```
-
-``` r
 library(tidyverse)
 library(pROC)
 
@@ -953,76 +909,76 @@ return(xgb_test_accuracy_mean)
 
 # Test the function
 xgb_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
-#> [1]	train-rmse:0.440691	test-rmse:0.468826 
-#> [2]	train-rmse:0.401963	test-rmse:0.444282 
-#> [3]	train-rmse:0.377513	test-rmse:0.431343 
-#> [4]	train-rmse:0.360344	test-rmse:0.422402 
-#> [5]	train-rmse:0.347503	test-rmse:0.419174 
-#> [6]	train-rmse:0.337063	test-rmse:0.417823 
-#> [7]	train-rmse:0.331359	test-rmse:0.416086 
-#> [8]	train-rmse:0.324571	test-rmse:0.416389 
-#> [9]	train-rmse:0.319701	test-rmse:0.415202 
-#> [10]	train-rmse:0.317618	test-rmse:0.416348 
-#> [11]	train-rmse:0.314221	test-rmse:0.415195 
-#> [12]	train-rmse:0.308243	test-rmse:0.415841 
-#> [13]	train-rmse:0.305834	test-rmse:0.414648 
-#> [14]	train-rmse:0.299743	test-rmse:0.412698 
-#> [15]	train-rmse:0.297681	test-rmse:0.411570 
-#> [16]	train-rmse:0.295436	test-rmse:0.412985 
-#> [17]	train-rmse:0.293643	test-rmse:0.411905 
-#> [18]	train-rmse:0.291810	test-rmse:0.410634 
-#> [19]	train-rmse:0.289988	test-rmse:0.410275 
-#> [20]	train-rmse:0.287036	test-rmse:0.409675 
-#> [21]	train-rmse:0.282526	test-rmse:0.408400 
-#> [22]	train-rmse:0.280909	test-rmse:0.407913 
-#> [23]	train-rmse:0.279729	test-rmse:0.407869 
-#> [24]	train-rmse:0.277645	test-rmse:0.408945 
-#> [25]	train-rmse:0.276890	test-rmse:0.409450 
-#> [26]	train-rmse:0.273924	test-rmse:0.410037 
-#> [27]	train-rmse:0.272506	test-rmse:0.409242 
-#> [28]	train-rmse:0.270840	test-rmse:0.408662 
-#> [29]	train-rmse:0.265381	test-rmse:0.409974 
-#> [30]	train-rmse:0.260491	test-rmse:0.410605 
-#> [31]	train-rmse:0.259413	test-rmse:0.411127 
-#> [32]	train-rmse:0.258426	test-rmse:0.410396 
-#> [33]	train-rmse:0.255586	test-rmse:0.412012 
-#> [34]	train-rmse:0.251211	test-rmse:0.413926 
-#> [35]	train-rmse:0.248288	test-rmse:0.414990 
-#> [36]	train-rmse:0.244570	test-rmse:0.414701 
-#> [37]	train-rmse:0.241985	test-rmse:0.414301 
-#> [38]	train-rmse:0.241430	test-rmse:0.414539 
-#> [39]	train-rmse:0.240695	test-rmse:0.414005 
-#> [40]	train-rmse:0.240025	test-rmse:0.414341 
-#> [41]	train-rmse:0.237113	test-rmse:0.415980 
-#> [42]	train-rmse:0.234688	test-rmse:0.416899 
-#> [43]	train-rmse:0.233183	test-rmse:0.416014 
-#> [44]	train-rmse:0.230134	test-rmse:0.415525 
-#> [45]	train-rmse:0.228345	test-rmse:0.417350 
-#> [46]	train-rmse:0.226003	test-rmse:0.418268 
-#> [47]	train-rmse:0.225099	test-rmse:0.418754 
-#> [48]	train-rmse:0.223356	test-rmse:0.420382 
-#> [49]	train-rmse:0.220902	test-rmse:0.420596 
-#> [50]	train-rmse:0.220133	test-rmse:0.420513 
-#> [51]	train-rmse:0.219022	test-rmse:0.419994 
-#> [52]	train-rmse:0.218599	test-rmse:0.420128 
-#> [53]	train-rmse:0.216922	test-rmse:0.420728 
-#> [54]	train-rmse:0.216015	test-rmse:0.421179 
-#> [55]	train-rmse:0.213153	test-rmse:0.421983 
-#> [56]	train-rmse:0.210912	test-rmse:0.421714 
-#> [57]	train-rmse:0.208177	test-rmse:0.422777 
-#> [58]	train-rmse:0.206390	test-rmse:0.421708 
-#> [59]	train-rmse:0.206141	test-rmse:0.422034 
-#> [60]	train-rmse:0.204628	test-rmse:0.422521 
-#> [61]	train-rmse:0.201648	test-rmse:0.423330 
-#> [62]	train-rmse:0.199137	test-rmse:0.423374 
-#> [63]	train-rmse:0.196867	test-rmse:0.424406 
-#> [64]	train-rmse:0.193889	test-rmse:0.424663 
-#> [65]	train-rmse:0.191601	test-rmse:0.425438 
-#> [66]	train-rmse:0.189102	test-rmse:0.426845 
-#> [67]	train-rmse:0.186894	test-rmse:0.427738 
-#> [68]	train-rmse:0.184002	test-rmse:0.428882 
-#> [69]	train-rmse:0.182116	test-rmse:0.428273 
-#> [70]	train-rmse:0.180305	test-rmse:0.428459
+#> [1]	train-rmse:0.445408	test-rmse:0.451609 
+#> [2]	train-rmse:0.414125	test-rmse:0.424981 
+#> [3]	train-rmse:0.392889	test-rmse:0.412808 
+#> [4]	train-rmse:0.374376	test-rmse:0.400258 
+#> [5]	train-rmse:0.363075	test-rmse:0.397032 
+#> [6]	train-rmse:0.353474	test-rmse:0.393990 
+#> [7]	train-rmse:0.345974	test-rmse:0.392875 
+#> [8]	train-rmse:0.340500	test-rmse:0.390903 
+#> [9]	train-rmse:0.337987	test-rmse:0.389748 
+#> [10]	train-rmse:0.334592	test-rmse:0.388716 
+#> [11]	train-rmse:0.329688	test-rmse:0.389387 
+#> [12]	train-rmse:0.326464	test-rmse:0.388277 
+#> [13]	train-rmse:0.324965	test-rmse:0.388538 
+#> [14]	train-rmse:0.322499	test-rmse:0.387743 
+#> [15]	train-rmse:0.319469	test-rmse:0.387050 
+#> [16]	train-rmse:0.313831	test-rmse:0.388981 
+#> [17]	train-rmse:0.310254	test-rmse:0.390239 
+#> [18]	train-rmse:0.306899	test-rmse:0.392204 
+#> [19]	train-rmse:0.301659	test-rmse:0.393161 
+#> [20]	train-rmse:0.299553	test-rmse:0.394776 
+#> [21]	train-rmse:0.298237	test-rmse:0.394929 
+#> [22]	train-rmse:0.296551	test-rmse:0.394339 
+#> [23]	train-rmse:0.291534	test-rmse:0.395549 
+#> [24]	train-rmse:0.289980	test-rmse:0.395576 
+#> [25]	train-rmse:0.285314	test-rmse:0.397041 
+#> [26]	train-rmse:0.279349	test-rmse:0.395518 
+#> [27]	train-rmse:0.278130	test-rmse:0.394680 
+#> [28]	train-rmse:0.272842	test-rmse:0.394815 
+#> [29]	train-rmse:0.270642	test-rmse:0.395134 
+#> [30]	train-rmse:0.267811	test-rmse:0.395081 
+#> [31]	train-rmse:0.265555	test-rmse:0.395846 
+#> [32]	train-rmse:0.261733	test-rmse:0.395215 
+#> [33]	train-rmse:0.258715	test-rmse:0.396640 
+#> [34]	train-rmse:0.255219	test-rmse:0.395239 
+#> [35]	train-rmse:0.253350	test-rmse:0.395672 
+#> [36]	train-rmse:0.252564	test-rmse:0.396012 
+#> [37]	train-rmse:0.251803	test-rmse:0.396499 
+#> [38]	train-rmse:0.248205	test-rmse:0.397349 
+#> [39]	train-rmse:0.246352	test-rmse:0.396809 
+#> [40]	train-rmse:0.244044	test-rmse:0.397549 
+#> [41]	train-rmse:0.242269	test-rmse:0.396941 
+#> [42]	train-rmse:0.240035	test-rmse:0.397491 
+#> [43]	train-rmse:0.235618	test-rmse:0.398848 
+#> [44]	train-rmse:0.233333	test-rmse:0.400615 
+#> [45]	train-rmse:0.231688	test-rmse:0.401996 
+#> [46]	train-rmse:0.229347	test-rmse:0.402715 
+#> [47]	train-rmse:0.228402	test-rmse:0.402862 
+#> [48]	train-rmse:0.227969	test-rmse:0.403321 
+#> [49]	train-rmse:0.226776	test-rmse:0.403049 
+#> [50]	train-rmse:0.223379	test-rmse:0.403438 
+#> [51]	train-rmse:0.220481	test-rmse:0.402767 
+#> [52]	train-rmse:0.217631	test-rmse:0.402707 
+#> [53]	train-rmse:0.216376	test-rmse:0.403022 
+#> [54]	train-rmse:0.212842	test-rmse:0.404942 
+#> [55]	train-rmse:0.210298	test-rmse:0.405176 
+#> [56]	train-rmse:0.208235	test-rmse:0.406070 
+#> [57]	train-rmse:0.205781	test-rmse:0.405437 
+#> [58]	train-rmse:0.203231	test-rmse:0.405864 
+#> [59]	train-rmse:0.201519	test-rmse:0.407112 
+#> [60]	train-rmse:0.200186	test-rmse:0.406963 
+#> [61]	train-rmse:0.196523	test-rmse:0.408566 
+#> [62]	train-rmse:0.195268	test-rmse:0.409664 
+#> [63]	train-rmse:0.193201	test-rmse:0.410803 
+#> [64]	train-rmse:0.191854	test-rmse:0.412022 
+#> [65]	train-rmse:0.189905	test-rmse:0.412147 
+#> [66]	train-rmse:0.187798	test-rmse:0.413002 
+#> [67]	train-rmse:0.187329	test-rmse:0.412837 
+#> [68]	train-rmse:0.186555	test-rmse:0.413153 
+#> [69]	train-rmse:0.185096	test-rmse:0.413731 
+#> [70]	train-rmse:0.182819	test-rmse:0.414756
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1032,10 +988,7 @@ xgb_1(data = diabetes, colnum = 9, numresamples = 5, train_amount = 0.60, test_a
 <img src="06-Individual_Logistic_Models_files/figure-html/XGBoost model for logistic data-1.png" width="672" />
 
 ```
-#> [1] 0.7475728
-```
-
-``` r
+#> [1] 0.7804878
 
 # Check for any errors
 warnings()

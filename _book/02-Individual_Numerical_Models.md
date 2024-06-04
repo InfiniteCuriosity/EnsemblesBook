@@ -110,15 +110,12 @@ Here are the steps we will follow:
 ### 1. Bagged Random Forest
 
 
-``` r
+```r
 library(e1071) # will allow us to use a tuned random forest model
 library(Metrics) # Will allow us to calculate the root mean squared error
 library(randomForest) # To use the random forest function
 #> randomForest 4.7-1.1
 #> Type rfNews() to see new features/changes/bug fixes.
-```
-
-``` r
 library(tidyverse) # Amazing set of tools for data science
 #> ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──
 #> ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -135,7 +132,7 @@ library(tidyverse) # Amazing set of tools for data science
 ```
 
 
-``` r
+```r
 # Set initial values to 0. The function will return an error if any of these are left out.
 
 bag_rf_holdout_RMSE <- 0
@@ -146,7 +143,7 @@ bag_rf_validation_RMSE <- 0
 ```
 
 
-``` r
+```r
 
 # Define the function
 
@@ -194,10 +191,7 @@ bag_rf_test_predict_value <- as.numeric(predict(object = bag_rf_train_fit$best.m
 # Here is our first numerical function in actual use. We will use 25 resamples
 
 numerical_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 0.3032176
-```
-
-``` r
+#> [1] 0.3023503
 warnings() # no warnings, the best possible result
 ```
 
@@ -227,7 +221,7 @@ sets of tools we will need to make our ensemble, starting with bagging:
 ### 2. Bagging (bootstrap aggregating)
 
 
-``` r
+```r
 library(ipred) #for the bagging function
 
 # Set initial values to 0
@@ -276,17 +270,14 @@ y_hat_bagging <- c(bagging_test_predict_value)
 
 # Test the function:
 bagging_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.20, numresamples = 25)
-#> [1] 3.951048
-```
-
-``` r
+#> [1] 4.378991
 warnings() # no warnings
 ```
 
 ### 3. BayesGLM
 
 
-``` r
+```r
 library(arm) # to use bayesglm function
 #> Loading required package: MASS
 #> 
@@ -303,10 +294,7 @@ library(arm) # to use bayesglm function
 #> Loading required package: lme4
 #> 
 #> arm (Version 1.14-4, built: 2024-4-1)
-#> Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
-```
-
-``` r
+#> Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
 
 # Set initial values to 0
 bayesglm_train_RMSE <- 0
@@ -347,23 +335,17 @@ y_hat_bayesglm <- c(bayesglm_test_predict_value)
 } # closing braces for the function
 
 bayesglm_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.20, numresamples = 25)
-#> [1] 4.826467
-```
-
-``` r
+#> [1] 4.843296
 warnings() # no warnings
 ```
 
 ### 4. BayesRNN
 
 
-``` r
+```r
 library(brnn) # so we can use the BayesRNN function
 #> Loading required package: Formula
 #> Loading required package: truncnorm
-```
-
-``` r
 
 #Set initial values to 0
 
@@ -411,108 +393,105 @@ y_hat_bayesrnn <- c(bayesrnn_test_predict_value)
 bayesrnn_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015979 
-#> gamma= 30.9135 	 alpha= 4.8006 	 beta= 20224.62 
+#> Scaling factor= 0.701572 
+#> gamma= 31.2244 	 alpha= 3.0586 	 beta= 38683.82 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015323 
-#> gamma= 31.1033 	 alpha= 5.5126 	 beta= 15023.08 
+#> Scaling factor= 0.7015275 
+#> gamma= 29.2045 	 alpha= 2.067 	 beta= 15308.9 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7014854 
-#> gamma= 31.076 	 alpha= 3.9929 	 beta= 23622.04 
+#> Scaling factor= 0.7016356 
+#> gamma= 30.3801 	 alpha= 2.9574 	 beta= 50623.19 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015874 
-#> gamma= 31.6271 	 alpha= 5.7396 	 beta= 13894.38 
+#> Scaling factor= 0.7016411 
+#> gamma= 29.6522 	 alpha= 2.1858 	 beta= 13789.78 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7016138 
-#> gamma= 31.398 	 alpha= 4.8438 	 beta= 17147.03 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015669 
-#> gamma= 30.6412 	 alpha= 2.7592 	 beta= 18760.23 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016868 
-#> gamma= 31.0864 	 alpha= 4.0625 	 beta= 27297.18 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016809 
-#> gamma= 31.1076 	 alpha= 4.011 	 beta= 16655.02 
+#> Scaling factor= 0.7016411 
+#> gamma= 30.9251 	 alpha= 3.9807 	 beta= 13284.05 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7015619 
-#> gamma= 30.6972 	 alpha= 3.5254 	 beta= 60325.72 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015227 
-#> gamma= 30.1146 	 alpha= 2.9039 	 beta= 17425.96 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7014854 
-#> gamma= 31.4493 	 alpha= 5.3886 	 beta= 15882.44 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015179 
-#> gamma= 30.9071 	 alpha= 2.7797 	 beta= 15990.24 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7017045 
-#> gamma= 31.2656 	 alpha= 4.6721 	 beta= 14287.39 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015469 
-#> gamma= 31.4396 	 alpha= 3.8918 	 beta= 32878.72 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016138 
-#> gamma= 31.6352 	 alpha= 4.1275 	 beta= 13990.78 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.701542 
-#> gamma= 31.5509 	 alpha= 5.3686 	 beta= 17132.37 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015823 
-#> gamma= 30.621 	 alpha= 4.5094 	 beta= 38520.84 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015519 
-#> gamma= 31.125 	 alpha= 4.393 	 beta= 14133.96 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016636 
-#> gamma= 30.6163 	 alpha= 5.3253 	 beta= 13300.03 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015979 
-#> gamma= 30.5402 	 alpha= 5.0743 	 beta= 20441.23 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015569 
-#> gamma= 30.5387 	 alpha= 5.1334 	 beta= 16952.94 
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016192 
-#> gamma= 31.4644 	 alpha= 5.4873 	 beta= 15997.12 
+#> gamma= 30.4682 	 alpha= 5.0886 	 beta= 16331.64 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7016085 
-#> gamma= 31.4464 	 alpha= 5.1745 	 beta= 15916.15 
+#> gamma= 31.192 	 alpha= 5.1146 	 beta= 19552.41 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015669 
+#> gamma= 30.1789 	 alpha= 4.3 	 beta= 35285.68 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015669 
+#> gamma= 31.3872 	 alpha= 3.8202 	 beta= 15992.69 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7017538 
+#> gamma= 31.2203 	 alpha= 5.3491 	 beta= 13244.21 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015771 
+#> gamma= 31.0916 	 alpha= 4.1637 	 beta= 15897.53 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016085 
+#> gamma= 31.5276 	 alpha= 4.968 	 beta= 17564.28 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016636 
+#> gamma= 31.0946 	 alpha= 5.251 	 beta= 15223.9 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015771 
+#> gamma= 31.4853 	 alpha= 4.6814 	 beta= 15895.73 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7015619 
-#> gamma= 31.1062 	 alpha= 5.1507 	 beta= 16418.65 
+#> gamma= 31.5488 	 alpha= 4.4819 	 beta= 14880.51 
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015085 
-#> gamma= 30.9124 	 alpha= 3.9584 	 beta= 48498.02
-#> [1] 0.1362577
-```
-
-``` r
+#> Scaling factor= 0.701542 
+#> gamma= 31.2898 	 alpha= 3.9508 	 beta= 15560.15 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016926 
+#> gamma= 31.6292 	 alpha= 4.1742 	 beta= 13535.13 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015275 
+#> gamma= 29.9586 	 alpha= 3.9612 	 beta= 38416.76 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015227 
+#> gamma= 31.4039 	 alpha= 5.6172 	 beta= 15691.66 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016246 
+#> gamma= 31.3544 	 alpha= 5.3271 	 beta= 15780.51 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016138 
+#> gamma= 31.3198 	 alpha= 5.7416 	 beta= 15094.68 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016246 
+#> gamma= 31.0694 	 alpha= 5.2206 	 beta= 21175.37 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.701735 
+#> gamma= 31.4069 	 alpha= 5.6578 	 beta= 14047.93 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016579 
+#> gamma= 31.289 	 alpha= 5.201 	 beta= 13275.09 
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016411 
+#> gamma= 30.9163 	 alpha= 4.1354 	 beta= 25590.17
+#> [1] 0.1331119
 
 warnings() # no warnings for BayesRNN function
 ```
@@ -520,7 +499,7 @@ warnings() # no warnings for BayesRNN function
 ### 5. Boosted Random Forest
 
 
-``` r
+```r
 library(e1071)
 library(randomForest)
 library(tidyverse)
@@ -568,22 +547,16 @@ boost_rf_test_RMSE_mean <- mean(boost_rf_test_RMSE)
 } # closing brace for the function
 
 boost_rf_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 0.3119975
-```
-
-``` r
+#> [1] 0.3040725
 warnings() # no warnings for Boosted Random Forest function
 ```
 
 ### 6. Cubist
 
 
-``` r
+```r
 library(Cubist)
 #> Loading required package: lattice
-```
-
-``` r
 library(tidyverse)
 
 # Set initial values to 0
@@ -627,23 +600,17 @@ cubist_test_RMSE_mean <- mean(cubist_test_RMSE)
 } # closing braces for the function
 
 cubist_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.40312
-```
-
-``` r
+#> [1] 4.383964
 warnings() # no warnings for individual cubist function
 ```
 
 ### 7. Elastic
 
 
-``` r
+```r
 
 library(glmnet) # So we can run the elastic model
 #> Loaded glmnet 4.1-8
-```
-
-``` r
 library(tidyverse)
 
 # Set initial values to 0
@@ -703,17 +670,14 @@ elastic_holdout_RMSE_mean <- mean(elastic_holdout_RMSE_df$elastic_holdout_RMSE[2
 } # closing brace for the elastic function
 
 elastic_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.97869
-```
-
-``` r
+#> [1] 4.926706
 warnings() # no warnings for individual elastic function
 ```
 
 ### 8. Generalized Additive Models with smoothing splines
 
 
-``` r
+```r
 library(gam) # for fitting generalized additive models
 #> Loading required package: splines
 #> Loading required package: foreach
@@ -723,9 +687,6 @@ library(gam) # for fitting generalized additive models
 #> 
 #>     accumulate, when
 #> Loaded gam 1.22-3
-```
-
-``` r
 
 # Set initial values to 0
 
@@ -786,23 +747,17 @@ gam_holdout_RMSE_mean <- mean(gam_holdout_RMSE)
 } # closing braces for gam function
 
 gam1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.755033
-```
-
-``` r
+#> [1] 4.880676
 warnings() # no warnings for individual gam function
 ```
 
 ### 9. Gradient Boosted
 
 
-``` r
+```r
 library(gbm) # to allow use of gradient boosted models
 #> Loaded gbm 2.1.9
 #> This version of gbm is no longer under development. Consider transitioning to gbm3, https://github.com/gbm-developers/gbm3
-```
-
-``` r
 
 # Set initial values to 0
 gb_train_RMSE <- 0
@@ -939,17 +894,14 @@ gb1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, n
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
-#> [1] 3.370866
-```
-
-``` r
+#> [1] 3.527798
 warnings() # no warnings for individual gradient boosted function
 ```
 
 ### 10. K-Nearest Neighbors (tuned)
 
 
-``` r
+```r
 
 library(e1071)
 
@@ -996,17 +948,14 @@ knn_holdout_RMSE_mean <- mean(knn_holdout_RMSE)
 } # closing brace for knn1 function
 
 knn1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 6.898357
-```
-
-``` r
+#> [1] 6.64997
 warnings() # no warnings for individual knn function
 ```
 
 ### 11. Lasso
 
 
-``` r
+```r
 library(glmnet) # So we can run the lasso model
 
 # Set initial values to 0
@@ -1066,17 +1015,14 @@ lasso_holdout_RMSE_mean <- mean(lasso_holdout_RMSE_df$lasso_holdout_RMSE[2:nrow(
 } # closing brace for the lasso_1 function
 
 lasso_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 5.001568
-```
-
-``` r
+#> [1] 4.843122
 warnings() # no warnings for individual lasso function
 ```
 
 ### 12. Linear (tuned)
 
 
-``` r
+```r
 
 library(e1071) # for tuned linear models
 
@@ -1116,17 +1062,14 @@ linear_holdout_RMSE_mean <- mean(linear_test_RMSE)
 } # closing brace for linear1 function
 
 linear1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.607703
-```
-
-``` r
+#> [1] 4.798766
 warnings() # no warnings for individual lasso function
 ```
 
 ### 13. LQS
 
 
-``` r
+```r
 
 library(MASS) # to allow us to run LQS models
 
@@ -1170,26 +1113,20 @@ y_hat_lqs <- c(lqs_test_predict_value, lqs_validation_predict_value)
 } # Closing brace for lqs1 function
 
 lqs1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 6.838138
-```
-
-``` r
+#> [1] 7.011302
 warnings() # no warnings for individual lqs function
 ```
 
 ### 14. Neuralnet
 
 
-``` r
+```r
 library(neuralnet)
 #> 
 #> Attaching package: 'neuralnet'
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     compute
-```
-
-``` r
 
 #Set initial values to 0
 
@@ -1245,17 +1182,14 @@ neuralnet_holdout_RMSE_mean <- mean(neuralnet_holdout_RMSE)
 } # closing brace for neuralnet1 function
 
 neuralnet1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 3.943471
-```
-
-``` r
+#> [1] 4.140954
 warnings() # no warnings for individual neuralnet function
 ```
 
 ### 15. Partial Least Squares
 
 
-``` r
+```r
 
 library(pls)
 #> 
@@ -1266,9 +1200,6 @@ library(pls)
 #> The following object is masked from 'package:stats':
 #> 
 #>     loadings
-```
-
-``` r
 
 # Set initial values to 0
 pls_train_RMSE <- 0
@@ -1309,17 +1240,14 @@ pls_test_RMSE_mean <- mean(pls_test_RMSE)
 } # Closing brace for pls1 function
 
 pls1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 6.068721
-```
-
-``` r
+#> [1] 6.106539
 warnings() # no warnings for individual pls function
 ```
 
 ### 16. Principal Components Regression
 
 
-``` r
+```r
 
 library(pls) # To run pcr models
 
@@ -1361,17 +1289,14 @@ pcr_test_RMSE_mean <- mean(pcr_test_RMSE)
 } # Closing brace for PCR function
 
 pcr1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 6.527915
-```
-
-``` r
+#> [1] 6.715986
 warnings() # no warnings for individual pls function
 ```
 
 ### 17. Random Forest
 
 
-``` r
+```r
 library(randomForest)
 
 # Set initial values to 0
@@ -1412,17 +1337,14 @@ return(rf_test_RMSE_mean)
 } # Closing brace for rf1 function
 
 rf1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 1.818037
-```
-
-``` r
+#> [1] 1.779677
 warnings() # no warnings for individual random forest function
 ```
 
 ### 18. Ridge Regression
 
 
-``` r
+```r
 
 library(glmnet) # So we can run the ridge model
 
@@ -1482,17 +1404,14 @@ ridge_holdout_RMSE_mean <- mean(ridge_holdout_RMSE_df$ridge_holdout_RMSE[2:nrow(
 } # closing brace for the ridge function
 
 ridge1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 5.09164
-```
-
-``` r
+#> [1] 5.043585
 warnings() # no warnings for individual ridge function
 ```
 
 ### 19. Robust Regression
 
 
-``` r
+```r
 
 library(MASS) # To run rlm function for robust regression
 
@@ -1535,17 +1454,19 @@ return(robust_test_RMSE_mean)
 } # Closing brace for robust1 function
 
 robust1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.950721
-```
+#> Warning in rlm.default(x = train[, 1:ncol(df) - 1], y =
+#> train$y): 'rlm' failed to converge in 20 steps
 
-``` r
+#> Warning in rlm.default(x = train[, 1:ncol(df) - 1], y =
+#> train$y): 'rlm' failed to converge in 20 steps
+#> [1] 4.952534
 warnings() # no warnings for individual robust function
 ```
 
 ### 20. Rpart
 
 
-``` r
+```r
 
 library(rpart)
 
@@ -1587,17 +1508,14 @@ return(rpart_test_RMSE_mean)
 } # Closing brace for rpart1 function
 
 rpart1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.899757
-```
-
-``` r
+#> [1] 4.919528
 warnings() # no warnings for individual rpart function
 ```
 
 ### 21. Support Vector Machines
 
 
-``` r
+```r
 
 library(e1071)
 
@@ -1639,17 +1557,14 @@ svm_test_RMSE_mean <- mean(svm_test_RMSE)
 } # Closing brace for svm1 function
 
 svm1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 2.3304
-```
-
-``` r
+#> [1] 2.288686
 warnings() # no warnings for individual Support Vector Machines function
 ```
 
 ### 22. Trees
 
 
-``` r
+```r
 
 library(tree)
 
@@ -1692,26 +1607,20 @@ tree_test_RMSE_mean <- mean(tree_test_RMSE)
 } # Closing brace for tree1 function
 
 tree1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1] 4.803725
-```
-
-``` r
+#> [1] 5.019375
 warnings() # no warnings for individual tree function
 ```
 
 ### 23. XGBoost
 
 
-``` r
+```r
 library(xgboost)
 #> 
 #> Attaching package: 'xgboost'
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     slice
-```
-
-``` r
 
 # Set initial values to 0
 xgb_train_RMSE <- 0
@@ -1774,1759 +1683,1756 @@ xgb_holdout_RMSE_mean <- mean(xgb_holdout_RMSE)
 } # Closing brace for xgb1 function
 
 xgb1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
-#> [1]	train-rmse:17.106138	test-rmse:17.366893 
-#> [2]	train-rmse:12.381786	test-rmse:12.791063 
-#> [3]	train-rmse:9.054376	test-rmse:9.622087 
-#> [4]	train-rmse:6.732554	test-rmse:7.565010 
-#> [5]	train-rmse:5.149285	test-rmse:6.266702 
-#> [6]	train-rmse:4.076553	test-rmse:5.494029 
-#> [7]	train-rmse:3.324973	test-rmse:4.903619 
-#> [8]	train-rmse:2.847707	test-rmse:4.542260 
-#> [9]	train-rmse:2.530861	test-rmse:4.413045 
-#> [10]	train-rmse:2.307846	test-rmse:4.231765 
-#> [11]	train-rmse:2.152082	test-rmse:4.184429 
-#> [12]	train-rmse:2.055640	test-rmse:4.161266 
-#> [13]	train-rmse:1.946959	test-rmse:4.136018 
-#> [14]	train-rmse:1.869913	test-rmse:4.143107 
-#> [15]	train-rmse:1.805064	test-rmse:4.058231 
-#> [16]	train-rmse:1.758146	test-rmse:4.040621 
-#> [17]	train-rmse:1.713256	test-rmse:3.986970 
-#> [18]	train-rmse:1.681229	test-rmse:3.985656 
-#> [19]	train-rmse:1.620191	test-rmse:3.996229 
-#> [20]	train-rmse:1.564413	test-rmse:3.989849 
-#> [21]	train-rmse:1.533410	test-rmse:3.992445 
-#> [22]	train-rmse:1.512751	test-rmse:3.997344 
-#> [23]	train-rmse:1.473980	test-rmse:3.991080 
-#> [24]	train-rmse:1.450180	test-rmse:3.959146 
-#> [25]	train-rmse:1.419758	test-rmse:3.971367 
-#> [26]	train-rmse:1.381709	test-rmse:3.972488 
-#> [27]	train-rmse:1.341355	test-rmse:3.967456 
-#> [28]	train-rmse:1.327296	test-rmse:3.967204 
-#> [29]	train-rmse:1.315809	test-rmse:3.963369 
-#> [30]	train-rmse:1.276372	test-rmse:3.939496 
-#> [31]	train-rmse:1.245258	test-rmse:3.941929 
-#> [32]	train-rmse:1.227539	test-rmse:3.943494 
-#> [33]	train-rmse:1.205570	test-rmse:3.944429 
-#> [34]	train-rmse:1.178578	test-rmse:3.908206 
-#> [35]	train-rmse:1.147782	test-rmse:3.890774 
-#> [36]	train-rmse:1.130770	test-rmse:3.895550 
-#> [37]	train-rmse:1.110949	test-rmse:3.892502 
-#> [38]	train-rmse:1.086514	test-rmse:3.894933 
-#> [39]	train-rmse:1.059807	test-rmse:3.895144 
-#> [40]	train-rmse:1.037346	test-rmse:3.899691 
-#> [41]	train-rmse:1.027192	test-rmse:3.906265 
-#> [42]	train-rmse:1.008947	test-rmse:3.906913 
-#> [43]	train-rmse:0.982172	test-rmse:3.895650 
-#> [44]	train-rmse:0.955719	test-rmse:3.886293 
-#> [45]	train-rmse:0.934445	test-rmse:3.885709 
-#> [46]	train-rmse:0.922770	test-rmse:3.883157 
-#> [47]	train-rmse:0.904506	test-rmse:3.880058 
-#> [48]	train-rmse:0.888704	test-rmse:3.877216 
-#> [49]	train-rmse:0.873289	test-rmse:3.881064 
-#> [50]	train-rmse:0.863270	test-rmse:3.870378 
-#> [51]	train-rmse:0.856263	test-rmse:3.870180 
-#> [52]	train-rmse:0.849087	test-rmse:3.871422 
-#> [53]	train-rmse:0.831005	test-rmse:3.864546 
-#> [54]	train-rmse:0.812538	test-rmse:3.863428 
-#> [55]	train-rmse:0.803447	test-rmse:3.860963 
-#> [56]	train-rmse:0.792266	test-rmse:3.852648 
-#> [57]	train-rmse:0.783392	test-rmse:3.848370 
-#> [58]	train-rmse:0.778657	test-rmse:3.850442 
-#> [59]	train-rmse:0.773384	test-rmse:3.853208 
-#> [60]	train-rmse:0.766044	test-rmse:3.852157 
-#> [61]	train-rmse:0.761048	test-rmse:3.849829 
-#> [62]	train-rmse:0.752227	test-rmse:3.840653 
-#> [63]	train-rmse:0.736047	test-rmse:3.852588 
-#> [64]	train-rmse:0.724781	test-rmse:3.846104 
-#> [65]	train-rmse:0.713466	test-rmse:3.837874 
-#> [66]	train-rmse:0.703244	test-rmse:3.836673 
-#> [67]	train-rmse:0.689611	test-rmse:3.836109 
-#> [68]	train-rmse:0.684932	test-rmse:3.826088 
-#> [69]	train-rmse:0.664265	test-rmse:3.818385 
-#> [70]	train-rmse:0.652603	test-rmse:3.810074 
-#> [1]	train-rmse:16.924814	test-rmse:17.491308 
-#> [2]	train-rmse:12.224077	test-rmse:12.977083 
-#> [3]	train-rmse:8.935319	test-rmse:9.811723 
-#> [4]	train-rmse:6.643097	test-rmse:7.739571 
-#> [5]	train-rmse:5.062052	test-rmse:6.470779 
-#> [6]	train-rmse:3.994706	test-rmse:5.659490 
-#> [7]	train-rmse:3.290321	test-rmse:5.208584 
-#> [8]	train-rmse:2.811032	test-rmse:4.926356 
-#> [9]	train-rmse:2.511393	test-rmse:4.616665 
-#> [10]	train-rmse:2.302334	test-rmse:4.464360 
-#> [11]	train-rmse:2.133457	test-rmse:4.325686 
-#> [12]	train-rmse:2.020290	test-rmse:4.268084 
-#> [13]	train-rmse:1.952641	test-rmse:4.176074 
-#> [14]	train-rmse:1.909818	test-rmse:4.157850 
-#> [15]	train-rmse:1.828420	test-rmse:4.114806 
-#> [16]	train-rmse:1.762910	test-rmse:4.090413 
-#> [17]	train-rmse:1.716270	test-rmse:4.040192 
-#> [18]	train-rmse:1.684788	test-rmse:3.999977 
-#> [19]	train-rmse:1.629414	test-rmse:3.970050 
-#> [20]	train-rmse:1.570881	test-rmse:3.975561 
-#> [21]	train-rmse:1.539230	test-rmse:3.971791 
-#> [22]	train-rmse:1.483834	test-rmse:3.966041 
-#> [23]	train-rmse:1.455368	test-rmse:3.981049 
-#> [24]	train-rmse:1.440889	test-rmse:3.923917 
-#> [25]	train-rmse:1.417689	test-rmse:3.904749 
-#> [26]	train-rmse:1.377943	test-rmse:3.927352 
-#> [27]	train-rmse:1.351410	test-rmse:3.924684 
-#> [28]	train-rmse:1.307542	test-rmse:3.927266 
-#> [29]	train-rmse:1.289389	test-rmse:3.920995 
-#> [30]	train-rmse:1.281154	test-rmse:3.913963 
-#> [31]	train-rmse:1.262924	test-rmse:3.913638 
-#> [32]	train-rmse:1.240791	test-rmse:3.907200 
-#> [33]	train-rmse:1.225516	test-rmse:3.905394 
-#> [34]	train-rmse:1.212163	test-rmse:3.912072 
-#> [35]	train-rmse:1.195203	test-rmse:3.916352 
-#> [36]	train-rmse:1.187114	test-rmse:3.919584 
-#> [37]	train-rmse:1.169093	test-rmse:3.912839 
-#> [38]	train-rmse:1.139805	test-rmse:3.898301 
-#> [39]	train-rmse:1.128596	test-rmse:3.896211 
-#> [40]	train-rmse:1.117456	test-rmse:3.875217 
-#> [41]	train-rmse:1.082428	test-rmse:3.880888 
-#> [42]	train-rmse:1.073824	test-rmse:3.878762 
-#> [43]	train-rmse:1.057046	test-rmse:3.881334 
-#> [44]	train-rmse:1.044397	test-rmse:3.879126 
-#> [45]	train-rmse:1.039668	test-rmse:3.878866 
-#> [46]	train-rmse:1.023359	test-rmse:3.881689 
-#> [47]	train-rmse:0.999350	test-rmse:3.887873 
-#> [48]	train-rmse:0.978395	test-rmse:3.896517 
-#> [49]	train-rmse:0.968111	test-rmse:3.876398 
-#> [50]	train-rmse:0.959579	test-rmse:3.874545 
-#> [51]	train-rmse:0.940500	test-rmse:3.873539 
-#> [52]	train-rmse:0.917210	test-rmse:3.863689 
-#> [53]	train-rmse:0.912667	test-rmse:3.861802 
-#> [54]	train-rmse:0.906458	test-rmse:3.864835 
-#> [55]	train-rmse:0.899376	test-rmse:3.845328 
-#> [56]	train-rmse:0.894771	test-rmse:3.848354 
-#> [57]	train-rmse:0.888213	test-rmse:3.848686 
-#> [58]	train-rmse:0.884812	test-rmse:3.846327 
-#> [59]	train-rmse:0.868224	test-rmse:3.841791 
-#> [60]	train-rmse:0.850141	test-rmse:3.839369 
-#> [61]	train-rmse:0.838281	test-rmse:3.842239 
-#> [62]	train-rmse:0.809893	test-rmse:3.845711 
-#> [63]	train-rmse:0.801592	test-rmse:3.847079 
-#> [64]	train-rmse:0.797066	test-rmse:3.846509 
-#> [65]	train-rmse:0.783371	test-rmse:3.836707 
-#> [66]	train-rmse:0.760317	test-rmse:3.839897 
-#> [67]	train-rmse:0.755642	test-rmse:3.833284 
-#> [68]	train-rmse:0.750886	test-rmse:3.834663 
-#> [69]	train-rmse:0.737716	test-rmse:3.832866 
-#> [70]	train-rmse:0.730757	test-rmse:3.833470 
-#> [1]	train-rmse:16.769430	test-rmse:17.894876 
-#> [2]	train-rmse:12.179074	test-rmse:13.314768 
-#> [3]	train-rmse:8.959736	test-rmse:9.939200 
-#> [4]	train-rmse:6.744677	test-rmse:7.862458 
-#> [5]	train-rmse:5.215327	test-rmse:6.289669 
-#> [6]	train-rmse:4.166223	test-rmse:5.344343 
-#> [7]	train-rmse:3.448274	test-rmse:4.808412 
-#> [8]	train-rmse:3.000724	test-rmse:4.346214 
-#> [9]	train-rmse:2.676890	test-rmse:4.018198 
-#> [10]	train-rmse:2.454332	test-rmse:3.864414 
-#> [11]	train-rmse:2.320214	test-rmse:3.706553 
-#> [12]	train-rmse:2.168896	test-rmse:3.625093 
-#> [13]	train-rmse:2.087479	test-rmse:3.566353 
-#> [14]	train-rmse:1.988021	test-rmse:3.482312 
-#> [15]	train-rmse:1.900084	test-rmse:3.473857 
-#> [16]	train-rmse:1.830392	test-rmse:3.442453 
-#> [17]	train-rmse:1.798654	test-rmse:3.423610 
-#> [18]	train-rmse:1.735404	test-rmse:3.392003 
-#> [19]	train-rmse:1.689292	test-rmse:3.344842 
-#> [20]	train-rmse:1.658038	test-rmse:3.329957 
-#> [21]	train-rmse:1.615931	test-rmse:3.323461 
-#> [22]	train-rmse:1.597195	test-rmse:3.320635 
-#> [23]	train-rmse:1.547681	test-rmse:3.315211 
-#> [24]	train-rmse:1.522034	test-rmse:3.289021 
-#> [25]	train-rmse:1.502220	test-rmse:3.273123 
-#> [26]	train-rmse:1.452952	test-rmse:3.264563 
-#> [27]	train-rmse:1.440006	test-rmse:3.266037 
-#> [28]	train-rmse:1.407211	test-rmse:3.267691 
-#> [29]	train-rmse:1.380584	test-rmse:3.252523 
-#> [30]	train-rmse:1.347878	test-rmse:3.254423 
-#> [31]	train-rmse:1.323356	test-rmse:3.247834 
-#> [32]	train-rmse:1.307834	test-rmse:3.243761 
-#> [33]	train-rmse:1.284736	test-rmse:3.229237 
-#> [34]	train-rmse:1.261906	test-rmse:3.218660 
-#> [35]	train-rmse:1.230486	test-rmse:3.216589 
-#> [36]	train-rmse:1.201938	test-rmse:3.205829 
-#> [37]	train-rmse:1.186259	test-rmse:3.204344 
-#> [38]	train-rmse:1.179335	test-rmse:3.192806 
-#> [39]	train-rmse:1.162139	test-rmse:3.192417 
-#> [40]	train-rmse:1.147543	test-rmse:3.182245 
-#> [41]	train-rmse:1.130188	test-rmse:3.175907 
-#> [42]	train-rmse:1.111416	test-rmse:3.182595 
-#> [43]	train-rmse:1.098352	test-rmse:3.190045 
-#> [44]	train-rmse:1.093224	test-rmse:3.190668 
-#> [45]	train-rmse:1.057084	test-rmse:3.183423 
-#> [46]	train-rmse:1.049201	test-rmse:3.184489 
-#> [47]	train-rmse:1.030767	test-rmse:3.184654 
-#> [48]	train-rmse:1.005605	test-rmse:3.189390 
-#> [49]	train-rmse:0.983366	test-rmse:3.196911 
-#> [50]	train-rmse:0.964676	test-rmse:3.202144 
-#> [51]	train-rmse:0.948305	test-rmse:3.189985 
-#> [52]	train-rmse:0.920270	test-rmse:3.199393 
-#> [53]	train-rmse:0.915890	test-rmse:3.199914 
-#> [54]	train-rmse:0.892648	test-rmse:3.199218 
-#> [55]	train-rmse:0.882845	test-rmse:3.196315 
-#> [56]	train-rmse:0.872703	test-rmse:3.185576 
-#> [57]	train-rmse:0.861601	test-rmse:3.193927 
-#> [58]	train-rmse:0.838209	test-rmse:3.184323 
-#> [59]	train-rmse:0.828727	test-rmse:3.182709 
-#> [60]	train-rmse:0.810560	test-rmse:3.176715 
-#> [61]	train-rmse:0.805448	test-rmse:3.176383 
-#> [62]	train-rmse:0.798437	test-rmse:3.180692 
-#> [63]	train-rmse:0.782868	test-rmse:3.188952 
-#> [64]	train-rmse:0.775681	test-rmse:3.180862 
-#> [65]	train-rmse:0.759254	test-rmse:3.183831 
-#> [66]	train-rmse:0.745204	test-rmse:3.182465 
-#> [67]	train-rmse:0.741159	test-rmse:3.183134 
-#> [68]	train-rmse:0.736253	test-rmse:3.184094 
-#> [69]	train-rmse:0.729998	test-rmse:3.191249 
-#> [70]	train-rmse:0.716184	test-rmse:3.184404 
-#> [1]	train-rmse:17.087106	test-rmse:17.547975 
-#> [2]	train-rmse:12.433314	test-rmse:12.898015 
-#> [3]	train-rmse:9.181515	test-rmse:9.806146 
-#> [4]	train-rmse:6.907137	test-rmse:7.608362 
-#> [5]	train-rmse:5.315277	test-rmse:6.191429 
-#> [6]	train-rmse:4.277091	test-rmse:5.247489 
-#> [7]	train-rmse:3.555920	test-rmse:4.620634 
-#> [8]	train-rmse:3.091994	test-rmse:4.277427 
-#> [9]	train-rmse:2.773289	test-rmse:4.039136 
-#> [10]	train-rmse:2.542963	test-rmse:3.837833 
-#> [11]	train-rmse:2.358420	test-rmse:3.719522 
-#> [12]	train-rmse:2.259905	test-rmse:3.657435 
-#> [13]	train-rmse:2.143198	test-rmse:3.614771 
-#> [14]	train-rmse:2.016831	test-rmse:3.509346 
-#> [15]	train-rmse:1.926708	test-rmse:3.452235 
-#> [16]	train-rmse:1.831159	test-rmse:3.424980 
-#> [17]	train-rmse:1.764247	test-rmse:3.401318 
-#> [18]	train-rmse:1.717560	test-rmse:3.386264 
-#> [19]	train-rmse:1.686371	test-rmse:3.359821 
-#> [20]	train-rmse:1.635582	test-rmse:3.344121 
-#> [21]	train-rmse:1.597862	test-rmse:3.321821 
-#> [22]	train-rmse:1.551536	test-rmse:3.314438 
-#> [23]	train-rmse:1.493920	test-rmse:3.301745 
-#> [24]	train-rmse:1.468887	test-rmse:3.307657 
-#> [25]	train-rmse:1.440494	test-rmse:3.318599 
-#> [26]	train-rmse:1.399639	test-rmse:3.308133 
-#> [27]	train-rmse:1.371753	test-rmse:3.321056 
-#> [28]	train-rmse:1.356785	test-rmse:3.311057 
-#> [29]	train-rmse:1.334746	test-rmse:3.315460 
-#> [30]	train-rmse:1.314431	test-rmse:3.313619 
-#> [31]	train-rmse:1.286656	test-rmse:3.301253 
-#> [32]	train-rmse:1.275029	test-rmse:3.300700 
-#> [33]	train-rmse:1.261278	test-rmse:3.313080 
-#> [34]	train-rmse:1.228144	test-rmse:3.307229 
-#> [35]	train-rmse:1.209504	test-rmse:3.301115 
-#> [36]	train-rmse:1.186792	test-rmse:3.290215 
-#> [37]	train-rmse:1.168979	test-rmse:3.284940 
-#> [38]	train-rmse:1.140622	test-rmse:3.289209 
-#> [39]	train-rmse:1.125910	test-rmse:3.283581 
-#> [40]	train-rmse:1.114858	test-rmse:3.286099 
-#> [41]	train-rmse:1.090374	test-rmse:3.302602 
-#> [42]	train-rmse:1.076803	test-rmse:3.301566 
-#> [43]	train-rmse:1.068855	test-rmse:3.296318 
-#> [44]	train-rmse:1.042066	test-rmse:3.292759 
-#> [45]	train-rmse:1.028457	test-rmse:3.294081 
-#> [46]	train-rmse:0.995959	test-rmse:3.270298 
-#> [47]	train-rmse:0.980871	test-rmse:3.268985 
-#> [48]	train-rmse:0.958533	test-rmse:3.274377 
-#> [49]	train-rmse:0.938282	test-rmse:3.272335 
-#> [50]	train-rmse:0.928156	test-rmse:3.275671 
-#> [51]	train-rmse:0.921367	test-rmse:3.278549 
-#> [52]	train-rmse:0.911435	test-rmse:3.271091 
-#> [53]	train-rmse:0.903200	test-rmse:3.273346 
-#> [54]	train-rmse:0.878155	test-rmse:3.275489 
-#> [55]	train-rmse:0.856695	test-rmse:3.268017 
-#> [56]	train-rmse:0.843457	test-rmse:3.263470 
-#> [57]	train-rmse:0.825039	test-rmse:3.262049 
-#> [58]	train-rmse:0.801914	test-rmse:3.260554 
-#> [59]	train-rmse:0.790788	test-rmse:3.264901 
-#> [60]	train-rmse:0.780473	test-rmse:3.265901 
-#> [61]	train-rmse:0.764497	test-rmse:3.257577 
-#> [62]	train-rmse:0.755715	test-rmse:3.257109 
-#> [63]	train-rmse:0.743633	test-rmse:3.251935 
-#> [64]	train-rmse:0.735593	test-rmse:3.251824 
-#> [65]	train-rmse:0.716100	test-rmse:3.252355 
-#> [66]	train-rmse:0.708078	test-rmse:3.256886 
-#> [67]	train-rmse:0.701784	test-rmse:3.254948 
-#> [68]	train-rmse:0.694658	test-rmse:3.253093 
-#> [69]	train-rmse:0.692237	test-rmse:3.252560 
-#> [70]	train-rmse:0.682665	test-rmse:3.252795 
-#> [1]	train-rmse:17.039314	test-rmse:17.372493 
-#> [2]	train-rmse:12.364930	test-rmse:12.737714 
-#> [3]	train-rmse:9.152790	test-rmse:9.706442 
-#> [4]	train-rmse:6.880103	test-rmse:7.469698 
-#> [5]	train-rmse:5.385033	test-rmse:6.221769 
-#> [6]	train-rmse:4.334779	test-rmse:5.418746 
-#> [7]	train-rmse:3.623685	test-rmse:4.894852 
-#> [8]	train-rmse:3.119375	test-rmse:4.530647 
-#> [9]	train-rmse:2.808541	test-rmse:4.299940 
-#> [10]	train-rmse:2.608400	test-rmse:4.144907 
-#> [11]	train-rmse:2.438045	test-rmse:4.021411 
-#> [12]	train-rmse:2.284360	test-rmse:3.923246 
-#> [13]	train-rmse:2.160649	test-rmse:3.878706 
-#> [14]	train-rmse:2.074205	test-rmse:3.879430 
-#> [15]	train-rmse:2.001493	test-rmse:3.882180 
-#> [16]	train-rmse:1.931897	test-rmse:3.853905 
-#> [17]	train-rmse:1.886886	test-rmse:3.839471 
-#> [18]	train-rmse:1.842014	test-rmse:3.817174 
-#> [19]	train-rmse:1.770499	test-rmse:3.809698 
-#> [20]	train-rmse:1.741151	test-rmse:3.788846 
-#> [21]	train-rmse:1.706989	test-rmse:3.786862 
-#> [22]	train-rmse:1.682979	test-rmse:3.788694 
-#> [23]	train-rmse:1.667438	test-rmse:3.801298 
-#> [24]	train-rmse:1.644861	test-rmse:3.800593 
-#> [25]	train-rmse:1.625596	test-rmse:3.807905 
-#> [26]	train-rmse:1.588505	test-rmse:3.830860 
-#> [27]	train-rmse:1.556805	test-rmse:3.830283 
-#> [28]	train-rmse:1.504327	test-rmse:3.831677 
-#> [29]	train-rmse:1.484864	test-rmse:3.827646 
-#> [30]	train-rmse:1.436177	test-rmse:3.831639 
-#> [31]	train-rmse:1.406546	test-rmse:3.843213 
-#> [32]	train-rmse:1.386777	test-rmse:3.850847 
-#> [33]	train-rmse:1.362030	test-rmse:3.850510 
-#> [34]	train-rmse:1.337454	test-rmse:3.846228 
-#> [35]	train-rmse:1.321338	test-rmse:3.831758 
-#> [36]	train-rmse:1.296574	test-rmse:3.823850 
-#> [37]	train-rmse:1.275097	test-rmse:3.802191 
-#> [38]	train-rmse:1.258453	test-rmse:3.806852 
-#> [39]	train-rmse:1.247943	test-rmse:3.816175 
-#> [40]	train-rmse:1.208008	test-rmse:3.815497 
-#> [41]	train-rmse:1.180333	test-rmse:3.810803 
-#> [42]	train-rmse:1.166932	test-rmse:3.802153 
-#> [43]	train-rmse:1.141532	test-rmse:3.800314 
-#> [44]	train-rmse:1.125231	test-rmse:3.801838 
-#> [45]	train-rmse:1.114843	test-rmse:3.801716 
-#> [46]	train-rmse:1.103012	test-rmse:3.790983 
-#> [47]	train-rmse:1.090691	test-rmse:3.789959 
-#> [48]	train-rmse:1.059705	test-rmse:3.758672 
-#> [49]	train-rmse:1.043280	test-rmse:3.760127 
-#> [50]	train-rmse:1.021525	test-rmse:3.757465 
-#> [51]	train-rmse:1.009641	test-rmse:3.761157 
-#> [52]	train-rmse:0.995215	test-rmse:3.761631 
-#> [53]	train-rmse:0.987668	test-rmse:3.767853 
-#> [54]	train-rmse:0.976287	test-rmse:3.764637 
-#> [55]	train-rmse:0.961583	test-rmse:3.763548 
-#> [56]	train-rmse:0.948269	test-rmse:3.765997 
-#> [57]	train-rmse:0.939112	test-rmse:3.760699 
-#> [58]	train-rmse:0.914079	test-rmse:3.762832 
-#> [59]	train-rmse:0.894459	test-rmse:3.750531 
-#> [60]	train-rmse:0.871483	test-rmse:3.749053 
-#> [61]	train-rmse:0.861584	test-rmse:3.756978 
-#> [62]	train-rmse:0.844814	test-rmse:3.756580 
-#> [63]	train-rmse:0.829690	test-rmse:3.756497 
-#> [64]	train-rmse:0.810550	test-rmse:3.755744 
-#> [65]	train-rmse:0.804361	test-rmse:3.762233 
-#> [66]	train-rmse:0.800803	test-rmse:3.762128 
-#> [67]	train-rmse:0.776651	test-rmse:3.751693 
-#> [68]	train-rmse:0.772505	test-rmse:3.748052 
-#> [69]	train-rmse:0.760311	test-rmse:3.744858 
-#> [70]	train-rmse:0.750680	test-rmse:3.737034 
-#> [1]	train-rmse:17.101483	test-rmse:17.221152 
-#> [2]	train-rmse:12.444646	test-rmse:12.615811 
-#> [3]	train-rmse:9.172284	test-rmse:9.598002 
-#> [4]	train-rmse:6.884956	test-rmse:7.412542 
-#> [5]	train-rmse:5.322263	test-rmse:5.931355 
-#> [6]	train-rmse:4.280939	test-rmse:5.076201 
-#> [7]	train-rmse:3.569942	test-rmse:4.549952 
-#> [8]	train-rmse:3.081976	test-rmse:4.256225 
-#> [9]	train-rmse:2.781709	test-rmse:4.040227 
-#> [10]	train-rmse:2.530248	test-rmse:3.816286 
-#> [11]	train-rmse:2.366431	test-rmse:3.756852 
-#> [12]	train-rmse:2.261999	test-rmse:3.717622 
-#> [13]	train-rmse:2.164082	test-rmse:3.678948 
-#> [14]	train-rmse:2.076715	test-rmse:3.604042 
-#> [15]	train-rmse:2.014051	test-rmse:3.578147 
-#> [16]	train-rmse:1.969042	test-rmse:3.556411 
-#> [17]	train-rmse:1.883153	test-rmse:3.516556 
-#> [18]	train-rmse:1.834229	test-rmse:3.496479 
-#> [19]	train-rmse:1.792077	test-rmse:3.487370 
-#> [20]	train-rmse:1.724855	test-rmse:3.454408 
-#> [21]	train-rmse:1.697145	test-rmse:3.424916 
-#> [22]	train-rmse:1.660443	test-rmse:3.425995 
-#> [23]	train-rmse:1.615386	test-rmse:3.415980 
-#> [24]	train-rmse:1.596917	test-rmse:3.384274 
-#> [25]	train-rmse:1.569208	test-rmse:3.387216 
-#> [26]	train-rmse:1.522134	test-rmse:3.372645 
-#> [27]	train-rmse:1.498584	test-rmse:3.373395 
-#> [28]	train-rmse:1.465949	test-rmse:3.366745 
-#> [29]	train-rmse:1.457054	test-rmse:3.369736 
-#> [30]	train-rmse:1.429412	test-rmse:3.367073 
-#> [31]	train-rmse:1.385224	test-rmse:3.361896 
-#> [32]	train-rmse:1.365340	test-rmse:3.369315 
-#> [33]	train-rmse:1.348392	test-rmse:3.338163 
-#> [34]	train-rmse:1.314974	test-rmse:3.347388 
-#> [35]	train-rmse:1.279139	test-rmse:3.354428 
-#> [36]	train-rmse:1.271114	test-rmse:3.360353 
-#> [37]	train-rmse:1.255547	test-rmse:3.370428 
-#> [38]	train-rmse:1.244996	test-rmse:3.364618 
-#> [39]	train-rmse:1.233660	test-rmse:3.355773 
-#> [40]	train-rmse:1.204007	test-rmse:3.354770 
-#> [41]	train-rmse:1.176796	test-rmse:3.350602 
-#> [42]	train-rmse:1.158870	test-rmse:3.351266 
-#> [43]	train-rmse:1.142927	test-rmse:3.354656 
-#> [44]	train-rmse:1.127056	test-rmse:3.359469 
-#> [45]	train-rmse:1.122091	test-rmse:3.365171 
-#> [46]	train-rmse:1.105127	test-rmse:3.363288 
-#> [47]	train-rmse:1.092647	test-rmse:3.366496 
-#> [48]	train-rmse:1.076022	test-rmse:3.364519 
-#> [49]	train-rmse:1.061236	test-rmse:3.363286 
-#> [50]	train-rmse:1.049585	test-rmse:3.369344 
-#> [51]	train-rmse:1.029361	test-rmse:3.373790 
-#> [52]	train-rmse:1.014524	test-rmse:3.370027 
-#> [53]	train-rmse:1.004017	test-rmse:3.368937 
-#> [54]	train-rmse:0.994354	test-rmse:3.369895 
-#> [55]	train-rmse:0.991787	test-rmse:3.370348 
-#> [56]	train-rmse:0.968377	test-rmse:3.365827 
-#> [57]	train-rmse:0.944894	test-rmse:3.368889 
-#> [58]	train-rmse:0.940092	test-rmse:3.365939 
-#> [59]	train-rmse:0.930072	test-rmse:3.365950 
-#> [60]	train-rmse:0.913780	test-rmse:3.371885 
-#> [61]	train-rmse:0.894146	test-rmse:3.370491 
-#> [62]	train-rmse:0.882759	test-rmse:3.372006 
-#> [63]	train-rmse:0.869799	test-rmse:3.380177 
-#> [64]	train-rmse:0.859722	test-rmse:3.369491 
-#> [65]	train-rmse:0.844869	test-rmse:3.376588 
-#> [66]	train-rmse:0.827649	test-rmse:3.382764 
-#> [67]	train-rmse:0.819069	test-rmse:3.384356 
-#> [68]	train-rmse:0.800752	test-rmse:3.387998 
-#> [69]	train-rmse:0.789417	test-rmse:3.393218 
-#> [70]	train-rmse:0.779049	test-rmse:3.397949 
-#> [1]	train-rmse:17.526194	test-rmse:16.532628 
-#> [2]	train-rmse:12.705034	test-rmse:12.224050 
-#> [3]	train-rmse:9.338710	test-rmse:9.098551 
-#> [4]	train-rmse:7.012505	test-rmse:7.200110 
-#> [5]	train-rmse:5.414610	test-rmse:5.915792 
-#> [6]	train-rmse:4.332967	test-rmse:5.032077 
-#> [7]	train-rmse:3.629258	test-rmse:4.617346 
-#> [8]	train-rmse:3.135208	test-rmse:4.254942 
-#> [9]	train-rmse:2.795479	test-rmse:4.046990 
-#> [10]	train-rmse:2.560827	test-rmse:3.883091 
-#> [11]	train-rmse:2.386630	test-rmse:3.803737 
-#> [12]	train-rmse:2.279182	test-rmse:3.746729 
-#> [13]	train-rmse:2.172721	test-rmse:3.744097 
-#> [14]	train-rmse:2.107357	test-rmse:3.706228 
-#> [15]	train-rmse:2.030903	test-rmse:3.674772 
-#> [16]	train-rmse:1.968384	test-rmse:3.674313 
-#> [17]	train-rmse:1.939995	test-rmse:3.661536 
-#> [18]	train-rmse:1.898635	test-rmse:3.636892 
-#> [19]	train-rmse:1.870243	test-rmse:3.640828 
-#> [20]	train-rmse:1.837476	test-rmse:3.620710 
-#> [21]	train-rmse:1.770018	test-rmse:3.621513 
-#> [22]	train-rmse:1.705829	test-rmse:3.569995 
-#> [23]	train-rmse:1.685498	test-rmse:3.568959 
-#> [24]	train-rmse:1.642241	test-rmse:3.541168 
-#> [25]	train-rmse:1.618518	test-rmse:3.535743 
-#> [26]	train-rmse:1.601418	test-rmse:3.541819 
-#> [27]	train-rmse:1.570618	test-rmse:3.513438 
-#> [28]	train-rmse:1.535657	test-rmse:3.505832 
-#> [29]	train-rmse:1.509630	test-rmse:3.493689 
-#> [30]	train-rmse:1.492543	test-rmse:3.497684 
-#> [31]	train-rmse:1.452068	test-rmse:3.493939 
-#> [32]	train-rmse:1.427910	test-rmse:3.486587 
-#> [33]	train-rmse:1.418973	test-rmse:3.491128 
-#> [34]	train-rmse:1.398376	test-rmse:3.490988 
-#> [35]	train-rmse:1.372867	test-rmse:3.486871 
-#> [36]	train-rmse:1.335636	test-rmse:3.477362 
-#> [37]	train-rmse:1.313383	test-rmse:3.455708 
-#> [38]	train-rmse:1.281301	test-rmse:3.431872 
-#> [39]	train-rmse:1.267660	test-rmse:3.424936 
-#> [40]	train-rmse:1.245438	test-rmse:3.427774 
-#> [41]	train-rmse:1.228806	test-rmse:3.413491 
-#> [42]	train-rmse:1.200659	test-rmse:3.411115 
-#> [43]	train-rmse:1.183586	test-rmse:3.410945 
-#> [44]	train-rmse:1.161724	test-rmse:3.413806 
-#> [45]	train-rmse:1.144605	test-rmse:3.407710 
-#> [46]	train-rmse:1.129759	test-rmse:3.406934 
-#> [47]	train-rmse:1.093113	test-rmse:3.395997 
-#> [48]	train-rmse:1.068301	test-rmse:3.397111 
-#> [49]	train-rmse:1.044730	test-rmse:3.402970 
-#> [50]	train-rmse:1.030032	test-rmse:3.404501 
-#> [51]	train-rmse:1.020507	test-rmse:3.401476 
-#> [52]	train-rmse:1.002199	test-rmse:3.400382 
-#> [53]	train-rmse:0.991375	test-rmse:3.400221 
-#> [54]	train-rmse:0.980811	test-rmse:3.394219 
-#> [55]	train-rmse:0.969603	test-rmse:3.387702 
-#> [56]	train-rmse:0.960491	test-rmse:3.384092 
-#> [57]	train-rmse:0.931411	test-rmse:3.376298 
-#> [58]	train-rmse:0.906902	test-rmse:3.379070 
-#> [59]	train-rmse:0.892301	test-rmse:3.378847 
-#> [60]	train-rmse:0.870655	test-rmse:3.379813 
-#> [61]	train-rmse:0.862239	test-rmse:3.373054 
-#> [62]	train-rmse:0.852125	test-rmse:3.362553 
-#> [63]	train-rmse:0.847975	test-rmse:3.363875 
-#> [64]	train-rmse:0.833654	test-rmse:3.361672 
-#> [65]	train-rmse:0.825251	test-rmse:3.358061 
-#> [66]	train-rmse:0.810980	test-rmse:3.361093 
-#> [67]	train-rmse:0.796412	test-rmse:3.357863 
-#> [68]	train-rmse:0.780503	test-rmse:3.360487 
-#> [69]	train-rmse:0.773635	test-rmse:3.354451 
-#> [70]	train-rmse:0.754839	test-rmse:3.344973 
-#> [1]	train-rmse:17.483723	test-rmse:16.602402 
-#> [2]	train-rmse:12.677203	test-rmse:11.971884 
-#> [3]	train-rmse:9.334857	test-rmse:8.970090 
-#> [4]	train-rmse:6.974731	test-rmse:6.865298 
-#> [5]	train-rmse:5.294664	test-rmse:5.452871 
-#> [6]	train-rmse:4.147150	test-rmse:4.587184 
-#> [7]	train-rmse:3.400253	test-rmse:4.028282 
-#> [8]	train-rmse:2.909693	test-rmse:3.673200 
-#> [9]	train-rmse:2.595444	test-rmse:3.490276 
-#> [10]	train-rmse:2.391398	test-rmse:3.390995 
-#> [11]	train-rmse:2.223429	test-rmse:3.317579 
-#> [12]	train-rmse:2.114670	test-rmse:3.244576 
-#> [13]	train-rmse:2.040906	test-rmse:3.243893 
-#> [14]	train-rmse:1.961224	test-rmse:3.237762 
-#> [15]	train-rmse:1.882405	test-rmse:3.230505 
-#> [16]	train-rmse:1.804731	test-rmse:3.211189 
-#> [17]	train-rmse:1.754230	test-rmse:3.187206 
-#> [18]	train-rmse:1.705020	test-rmse:3.164158 
-#> [19]	train-rmse:1.680249	test-rmse:3.155934 
-#> [20]	train-rmse:1.650263	test-rmse:3.148356 
-#> [21]	train-rmse:1.592729	test-rmse:3.138569 
-#> [22]	train-rmse:1.557427	test-rmse:3.137305 
-#> [23]	train-rmse:1.529177	test-rmse:3.140099 
-#> [24]	train-rmse:1.493994	test-rmse:3.130350 
-#> [25]	train-rmse:1.470884	test-rmse:3.131758 
-#> [26]	train-rmse:1.448832	test-rmse:3.132505 
-#> [27]	train-rmse:1.415059	test-rmse:3.131703 
-#> [28]	train-rmse:1.377509	test-rmse:3.121365 
-#> [29]	train-rmse:1.356290	test-rmse:3.122179 
-#> [30]	train-rmse:1.322679	test-rmse:3.120752 
-#> [31]	train-rmse:1.297073	test-rmse:3.114314 
-#> [32]	train-rmse:1.277549	test-rmse:3.120934 
-#> [33]	train-rmse:1.251928	test-rmse:3.113675 
-#> [34]	train-rmse:1.231383	test-rmse:3.110015 
-#> [35]	train-rmse:1.199163	test-rmse:3.099596 
-#> [36]	train-rmse:1.178040	test-rmse:3.091530 
-#> [37]	train-rmse:1.161323	test-rmse:3.096724 
-#> [38]	train-rmse:1.138615	test-rmse:3.096789 
-#> [39]	train-rmse:1.125595	test-rmse:3.096618 
-#> [40]	train-rmse:1.111898	test-rmse:3.094366 
-#> [41]	train-rmse:1.094701	test-rmse:3.097805 
-#> [42]	train-rmse:1.085883	test-rmse:3.092502 
-#> [43]	train-rmse:1.072696	test-rmse:3.087899 
-#> [44]	train-rmse:1.064667	test-rmse:3.088633 
-#> [45]	train-rmse:1.047441	test-rmse:3.090840 
-#> [46]	train-rmse:1.021197	test-rmse:3.073791 
-#> [47]	train-rmse:1.010193	test-rmse:3.078463 
-#> [48]	train-rmse:0.985304	test-rmse:3.073091 
-#> [49]	train-rmse:0.977418	test-rmse:3.076953 
-#> [50]	train-rmse:0.967475	test-rmse:3.077545 
-#> [51]	train-rmse:0.942087	test-rmse:3.083860 
-#> [52]	train-rmse:0.911916	test-rmse:3.081977 
-#> [53]	train-rmse:0.886563	test-rmse:3.078180 
-#> [54]	train-rmse:0.855724	test-rmse:3.078831 
-#> [55]	train-rmse:0.845150	test-rmse:3.077916 
-#> [56]	train-rmse:0.826518	test-rmse:3.080387 
-#> [57]	train-rmse:0.821122	test-rmse:3.081350 
-#> [58]	train-rmse:0.813287	test-rmse:3.083647 
-#> [59]	train-rmse:0.795808	test-rmse:3.085114 
-#> [60]	train-rmse:0.790514	test-rmse:3.083795 
-#> [61]	train-rmse:0.783901	test-rmse:3.070323 
-#> [62]	train-rmse:0.773177	test-rmse:3.068162 
-#> [63]	train-rmse:0.762865	test-rmse:3.055478 
-#> [64]	train-rmse:0.749724	test-rmse:3.054018 
-#> [65]	train-rmse:0.734997	test-rmse:3.053921 
-#> [66]	train-rmse:0.725137	test-rmse:3.063874 
-#> [67]	train-rmse:0.716506	test-rmse:3.065351 
-#> [68]	train-rmse:0.709745	test-rmse:3.067690 
-#> [69]	train-rmse:0.701490	test-rmse:3.067873 
-#> [70]	train-rmse:0.696366	test-rmse:3.066660 
-#> [1]	train-rmse:17.103693	test-rmse:17.252991 
-#> [2]	train-rmse:12.348859	test-rmse:12.743414 
-#> [3]	train-rmse:9.045874	test-rmse:9.692068 
-#> [4]	train-rmse:6.783909	test-rmse:7.692183 
-#> [5]	train-rmse:5.199627	test-rmse:6.321737 
-#> [6]	train-rmse:4.150670	test-rmse:5.533554 
-#> [7]	train-rmse:3.470625	test-rmse:5.048434 
-#> [8]	train-rmse:3.040186	test-rmse:4.743094 
-#> [9]	train-rmse:2.743806	test-rmse:4.468214 
-#> [10]	train-rmse:2.512907	test-rmse:4.274009 
-#> [11]	train-rmse:2.335801	test-rmse:4.174132 
-#> [12]	train-rmse:2.216330	test-rmse:4.133427 
-#> [13]	train-rmse:2.159221	test-rmse:4.105270 
-#> [14]	train-rmse:2.083429	test-rmse:4.084567 
-#> [15]	train-rmse:2.021866	test-rmse:4.010781 
-#> [16]	train-rmse:1.937201	test-rmse:3.993215 
-#> [17]	train-rmse:1.874537	test-rmse:3.959648 
-#> [18]	train-rmse:1.830324	test-rmse:3.939004 
-#> [19]	train-rmse:1.795591	test-rmse:3.903961 
-#> [20]	train-rmse:1.762106	test-rmse:3.888590 
-#> [21]	train-rmse:1.744185	test-rmse:3.883671 
-#> [22]	train-rmse:1.710589	test-rmse:3.892285 
-#> [23]	train-rmse:1.690421	test-rmse:3.863746 
-#> [24]	train-rmse:1.643268	test-rmse:3.858944 
-#> [25]	train-rmse:1.606434	test-rmse:3.845628 
-#> [26]	train-rmse:1.557324	test-rmse:3.858439 
-#> [27]	train-rmse:1.535222	test-rmse:3.865503 
-#> [28]	train-rmse:1.510793	test-rmse:3.855497 
-#> [29]	train-rmse:1.455015	test-rmse:3.858603 
-#> [30]	train-rmse:1.437971	test-rmse:3.863025 
-#> [31]	train-rmse:1.410683	test-rmse:3.859476 
-#> [32]	train-rmse:1.378122	test-rmse:3.852221 
-#> [33]	train-rmse:1.349468	test-rmse:3.853856 
-#> [34]	train-rmse:1.337037	test-rmse:3.854812 
-#> [35]	train-rmse:1.315696	test-rmse:3.858581 
-#> [36]	train-rmse:1.297927	test-rmse:3.864516 
-#> [37]	train-rmse:1.282889	test-rmse:3.852512 
-#> [38]	train-rmse:1.268213	test-rmse:3.846431 
-#> [39]	train-rmse:1.249264	test-rmse:3.852976 
-#> [40]	train-rmse:1.226594	test-rmse:3.850417 
-#> [41]	train-rmse:1.193590	test-rmse:3.836281 
-#> [42]	train-rmse:1.168915	test-rmse:3.819372 
-#> [43]	train-rmse:1.151118	test-rmse:3.815312 
-#> [44]	train-rmse:1.127839	test-rmse:3.812875 
-#> [45]	train-rmse:1.099423	test-rmse:3.813757 
-#> [46]	train-rmse:1.081614	test-rmse:3.816851 
-#> [47]	train-rmse:1.071098	test-rmse:3.813645 
-#> [48]	train-rmse:1.051975	test-rmse:3.811646 
-#> [49]	train-rmse:1.034362	test-rmse:3.808453 
-#> [50]	train-rmse:1.016399	test-rmse:3.810196 
-#> [51]	train-rmse:1.005012	test-rmse:3.813361 
-#> [52]	train-rmse:0.983274	test-rmse:3.823564 
-#> [53]	train-rmse:0.957256	test-rmse:3.809035 
-#> [54]	train-rmse:0.952174	test-rmse:3.810448 
-#> [55]	train-rmse:0.942637	test-rmse:3.807311 
-#> [56]	train-rmse:0.934262	test-rmse:3.805659 
-#> [57]	train-rmse:0.913344	test-rmse:3.794403 
-#> [58]	train-rmse:0.892867	test-rmse:3.775166 
-#> [59]	train-rmse:0.881712	test-rmse:3.779293 
-#> [60]	train-rmse:0.866893	test-rmse:3.776759 
-#> [61]	train-rmse:0.848013	test-rmse:3.767446 
-#> [62]	train-rmse:0.838068	test-rmse:3.769425 
-#> [63]	train-rmse:0.820571	test-rmse:3.764812 
-#> [64]	train-rmse:0.800530	test-rmse:3.769180 
-#> [65]	train-rmse:0.788218	test-rmse:3.771906 
-#> [66]	train-rmse:0.763266	test-rmse:3.774454 
-#> [67]	train-rmse:0.753960	test-rmse:3.771909 
-#> [68]	train-rmse:0.742168	test-rmse:3.771918 
-#> [69]	train-rmse:0.725973	test-rmse:3.775693 
-#> [70]	train-rmse:0.718817	test-rmse:3.774767 
-#> [1]	train-rmse:17.086836	test-rmse:17.271259 
-#> [2]	train-rmse:12.423159	test-rmse:12.482463 
-#> [3]	train-rmse:9.137312	test-rmse:9.356235 
-#> [4]	train-rmse:6.844112	test-rmse:7.146619 
-#> [5]	train-rmse:5.306246	test-rmse:5.573422 
-#> [6]	train-rmse:4.189220	test-rmse:4.663308 
-#> [7]	train-rmse:3.462537	test-rmse:4.120639 
-#> [8]	train-rmse:2.944524	test-rmse:3.822552 
-#> [9]	train-rmse:2.606719	test-rmse:3.610832 
-#> [10]	train-rmse:2.366434	test-rmse:3.531172 
-#> [11]	train-rmse:2.204029	test-rmse:3.501713 
-#> [12]	train-rmse:2.089627	test-rmse:3.483928 
-#> [13]	train-rmse:1.995011	test-rmse:3.479363 
-#> [14]	train-rmse:1.933802	test-rmse:3.494651 
-#> [15]	train-rmse:1.870223	test-rmse:3.485901 
-#> [16]	train-rmse:1.830508	test-rmse:3.495230 
-#> [17]	train-rmse:1.786605	test-rmse:3.484070 
-#> [18]	train-rmse:1.720169	test-rmse:3.456908 
-#> [19]	train-rmse:1.670580	test-rmse:3.443953 
-#> [20]	train-rmse:1.620001	test-rmse:3.443137 
-#> [21]	train-rmse:1.604795	test-rmse:3.445152 
-#> [22]	train-rmse:1.578824	test-rmse:3.445412 
-#> [23]	train-rmse:1.548743	test-rmse:3.441911 
-#> [24]	train-rmse:1.518229	test-rmse:3.438313 
-#> [25]	train-rmse:1.504679	test-rmse:3.458323 
-#> [26]	train-rmse:1.484650	test-rmse:3.451733 
-#> [27]	train-rmse:1.450388	test-rmse:3.432473 
-#> [28]	train-rmse:1.427110	test-rmse:3.416934 
-#> [29]	train-rmse:1.412530	test-rmse:3.415223 
-#> [30]	train-rmse:1.376340	test-rmse:3.411791 
-#> [31]	train-rmse:1.363297	test-rmse:3.417721 
-#> [32]	train-rmse:1.345455	test-rmse:3.423720 
-#> [33]	train-rmse:1.308462	test-rmse:3.436598 
-#> [34]	train-rmse:1.289718	test-rmse:3.438217 
-#> [35]	train-rmse:1.266830	test-rmse:3.432317 
-#> [36]	train-rmse:1.249031	test-rmse:3.443272 
-#> [37]	train-rmse:1.212633	test-rmse:3.454168 
-#> [38]	train-rmse:1.178920	test-rmse:3.454109 
-#> [39]	train-rmse:1.145651	test-rmse:3.452442 
-#> [40]	train-rmse:1.131976	test-rmse:3.465035 
-#> [41]	train-rmse:1.108406	test-rmse:3.468541 
-#> [42]	train-rmse:1.089188	test-rmse:3.463397 
-#> [43]	train-rmse:1.083508	test-rmse:3.465469 
-#> [44]	train-rmse:1.076285	test-rmse:3.463153 
-#> [45]	train-rmse:1.055508	test-rmse:3.469290 
-#> [46]	train-rmse:1.046914	test-rmse:3.470375 
-#> [47]	train-rmse:1.033266	test-rmse:3.467631 
-#> [48]	train-rmse:1.013558	test-rmse:3.475531 
-#> [49]	train-rmse:0.996832	test-rmse:3.475539 
-#> [50]	train-rmse:0.980940	test-rmse:3.457934 
-#> [51]	train-rmse:0.965369	test-rmse:3.466527 
-#> [52]	train-rmse:0.953598	test-rmse:3.461404 
-#> [53]	train-rmse:0.947059	test-rmse:3.462820 
-#> [54]	train-rmse:0.925900	test-rmse:3.454268 
-#> [55]	train-rmse:0.919322	test-rmse:3.460876 
-#> [56]	train-rmse:0.912147	test-rmse:3.459374 
-#> [57]	train-rmse:0.903527	test-rmse:3.456502 
-#> [58]	train-rmse:0.894283	test-rmse:3.450772 
-#> [59]	train-rmse:0.888327	test-rmse:3.449615 
-#> [60]	train-rmse:0.863139	test-rmse:3.459265 
-#> [61]	train-rmse:0.841046	test-rmse:3.468838 
-#> [62]	train-rmse:0.835520	test-rmse:3.473780 
-#> [63]	train-rmse:0.832331	test-rmse:3.475061 
-#> [64]	train-rmse:0.829117	test-rmse:3.476901 
-#> [65]	train-rmse:0.823743	test-rmse:3.472604 
-#> [66]	train-rmse:0.811426	test-rmse:3.480739 
-#> [67]	train-rmse:0.795589	test-rmse:3.479755 
-#> [68]	train-rmse:0.786904	test-rmse:3.481300 
-#> [69]	train-rmse:0.767472	test-rmse:3.485711 
-#> [70]	train-rmse:0.760890	test-rmse:3.494196 
-#> [1]	train-rmse:17.132009	test-rmse:17.251055 
-#> [2]	train-rmse:12.474579	test-rmse:12.813663 
-#> [3]	train-rmse:9.196238	test-rmse:9.473038 
-#> [4]	train-rmse:6.926752	test-rmse:7.332922 
-#> [5]	train-rmse:5.335834	test-rmse:5.797878 
-#> [6]	train-rmse:4.291225	test-rmse:4.941513 
-#> [7]	train-rmse:3.591254	test-rmse:4.424441 
-#> [8]	train-rmse:3.083757	test-rmse:4.016705 
-#> [9]	train-rmse:2.779699	test-rmse:3.772171 
-#> [10]	train-rmse:2.584003	test-rmse:3.615159 
-#> [11]	train-rmse:2.422954	test-rmse:3.545441 
-#> [12]	train-rmse:2.304330	test-rmse:3.491544 
-#> [13]	train-rmse:2.186087	test-rmse:3.436542 
-#> [14]	train-rmse:2.122891	test-rmse:3.391602 
-#> [15]	train-rmse:2.068880	test-rmse:3.389993 
-#> [16]	train-rmse:2.031223	test-rmse:3.356006 
-#> [17]	train-rmse:1.928655	test-rmse:3.314187 
-#> [18]	train-rmse:1.890378	test-rmse:3.295842 
-#> [19]	train-rmse:1.851579	test-rmse:3.278900 
-#> [20]	train-rmse:1.804133	test-rmse:3.283719 
-#> [21]	train-rmse:1.752445	test-rmse:3.292249 
-#> [22]	train-rmse:1.726916	test-rmse:3.280337 
-#> [23]	train-rmse:1.691543	test-rmse:3.255034 
-#> [24]	train-rmse:1.660882	test-rmse:3.244141 
-#> [25]	train-rmse:1.586876	test-rmse:3.253855 
-#> [26]	train-rmse:1.544081	test-rmse:3.226763 
-#> [27]	train-rmse:1.516795	test-rmse:3.211534 
-#> [28]	train-rmse:1.474672	test-rmse:3.209140 
-#> [29]	train-rmse:1.434904	test-rmse:3.204160 
-#> [30]	train-rmse:1.415943	test-rmse:3.199675 
-#> [31]	train-rmse:1.398198	test-rmse:3.209786 
-#> [32]	train-rmse:1.355882	test-rmse:3.195988 
-#> [33]	train-rmse:1.333300	test-rmse:3.198368 
-#> [34]	train-rmse:1.318887	test-rmse:3.192620 
-#> [35]	train-rmse:1.299203	test-rmse:3.186128 
-#> [36]	train-rmse:1.259877	test-rmse:3.193987 
-#> [37]	train-rmse:1.244086	test-rmse:3.192305 
-#> [38]	train-rmse:1.214626	test-rmse:3.184889 
-#> [39]	train-rmse:1.176503	test-rmse:3.189001 
-#> [40]	train-rmse:1.147220	test-rmse:3.184795 
-#> [41]	train-rmse:1.133412	test-rmse:3.178203 
-#> [42]	train-rmse:1.107119	test-rmse:3.176926 
-#> [43]	train-rmse:1.096034	test-rmse:3.179563 
-#> [44]	train-rmse:1.084785	test-rmse:3.180497 
-#> [45]	train-rmse:1.073845	test-rmse:3.174839 
-#> [46]	train-rmse:1.063945	test-rmse:3.164721 
-#> [47]	train-rmse:1.040868	test-rmse:3.161488 
-#> [48]	train-rmse:1.008156	test-rmse:3.173606 
-#> [49]	train-rmse:0.996106	test-rmse:3.177930 
-#> [50]	train-rmse:0.990406	test-rmse:3.181367 
-#> [51]	train-rmse:0.963512	test-rmse:3.186441 
-#> [52]	train-rmse:0.954483	test-rmse:3.171163 
-#> [53]	train-rmse:0.929998	test-rmse:3.170383 
-#> [54]	train-rmse:0.912704	test-rmse:3.153999 
-#> [55]	train-rmse:0.897730	test-rmse:3.148199 
-#> [56]	train-rmse:0.890404	test-rmse:3.148111 
-#> [57]	train-rmse:0.877286	test-rmse:3.139555 
-#> [58]	train-rmse:0.855869	test-rmse:3.144100 
-#> [59]	train-rmse:0.846142	test-rmse:3.148114 
-#> [60]	train-rmse:0.838000	test-rmse:3.147561 
-#> [61]	train-rmse:0.824123	test-rmse:3.147864 
-#> [62]	train-rmse:0.802475	test-rmse:3.158312 
-#> [63]	train-rmse:0.790599	test-rmse:3.156652 
-#> [64]	train-rmse:0.781960	test-rmse:3.158303 
-#> [65]	train-rmse:0.776998	test-rmse:3.158212 
-#> [66]	train-rmse:0.771446	test-rmse:3.157373 
-#> [67]	train-rmse:0.756462	test-rmse:3.156132 
-#> [68]	train-rmse:0.747627	test-rmse:3.155212 
-#> [69]	train-rmse:0.731652	test-rmse:3.163408 
-#> [70]	train-rmse:0.728644	test-rmse:3.163302 
-#> [1]	train-rmse:17.278292	test-rmse:17.131271 
-#> [2]	train-rmse:12.556230	test-rmse:12.753764 
-#> [3]	train-rmse:9.281087	test-rmse:9.710914 
-#> [4]	train-rmse:6.964630	test-rmse:7.441855 
-#> [5]	train-rmse:5.380251	test-rmse:6.080617 
-#> [6]	train-rmse:4.302356	test-rmse:5.150695 
-#> [7]	train-rmse:3.597071	test-rmse:4.589758 
-#> [8]	train-rmse:3.156724	test-rmse:4.261594 
-#> [9]	train-rmse:2.860281	test-rmse:4.087005 
-#> [10]	train-rmse:2.670655	test-rmse:4.006988 
-#> [11]	train-rmse:2.486593	test-rmse:3.949593 
-#> [12]	train-rmse:2.355701	test-rmse:3.857403 
-#> [13]	train-rmse:2.284873	test-rmse:3.850330 
-#> [14]	train-rmse:2.147371	test-rmse:3.810094 
-#> [15]	train-rmse:2.072834	test-rmse:3.798598 
-#> [16]	train-rmse:1.991673	test-rmse:3.761367 
-#> [17]	train-rmse:1.946457	test-rmse:3.704476 
-#> [18]	train-rmse:1.894600	test-rmse:3.707522 
-#> [19]	train-rmse:1.851904	test-rmse:3.692939 
-#> [20]	train-rmse:1.779696	test-rmse:3.674443 
-#> [21]	train-rmse:1.747371	test-rmse:3.630174 
-#> [22]	train-rmse:1.691118	test-rmse:3.579103 
-#> [23]	train-rmse:1.653306	test-rmse:3.547489 
-#> [24]	train-rmse:1.615739	test-rmse:3.547281 
-#> [25]	train-rmse:1.583314	test-rmse:3.524839 
-#> [26]	train-rmse:1.535739	test-rmse:3.516026 
-#> [27]	train-rmse:1.499918	test-rmse:3.527197 
-#> [28]	train-rmse:1.482618	test-rmse:3.543929 
-#> [29]	train-rmse:1.445713	test-rmse:3.535451 
-#> [30]	train-rmse:1.412574	test-rmse:3.518838 
-#> [31]	train-rmse:1.396444	test-rmse:3.524303 
-#> [32]	train-rmse:1.376443	test-rmse:3.515206 
-#> [33]	train-rmse:1.336527	test-rmse:3.489955 
-#> [34]	train-rmse:1.312602	test-rmse:3.490443 
-#> [35]	train-rmse:1.288183	test-rmse:3.488138 
-#> [36]	train-rmse:1.264677	test-rmse:3.498917 
-#> [37]	train-rmse:1.244928	test-rmse:3.489153 
-#> [38]	train-rmse:1.214395	test-rmse:3.470848 
-#> [39]	train-rmse:1.199964	test-rmse:3.465575 
-#> [40]	train-rmse:1.166921	test-rmse:3.465804 
-#> [41]	train-rmse:1.133459	test-rmse:3.471084 
-#> [42]	train-rmse:1.105368	test-rmse:3.475036 
-#> [43]	train-rmse:1.083675	test-rmse:3.476203 
-#> [44]	train-rmse:1.069402	test-rmse:3.464823 
-#> [45]	train-rmse:1.060441	test-rmse:3.448605 
-#> [46]	train-rmse:1.044142	test-rmse:3.440452 
-#> [47]	train-rmse:1.024233	test-rmse:3.447371 
-#> [48]	train-rmse:1.011220	test-rmse:3.449913 
-#> [49]	train-rmse:1.000908	test-rmse:3.446062 
-#> [50]	train-rmse:0.982938	test-rmse:3.441698 
-#> [51]	train-rmse:0.977451	test-rmse:3.451431 
-#> [52]	train-rmse:0.970785	test-rmse:3.447929 
-#> [53]	train-rmse:0.939961	test-rmse:3.448962 
-#> [54]	train-rmse:0.929331	test-rmse:3.447889 
-#> [55]	train-rmse:0.909236	test-rmse:3.458525 
-#> [56]	train-rmse:0.895298	test-rmse:3.446665 
-#> [57]	train-rmse:0.888991	test-rmse:3.448505 
-#> [58]	train-rmse:0.881190	test-rmse:3.449063 
-#> [59]	train-rmse:0.870374	test-rmse:3.446085 
-#> [60]	train-rmse:0.852684	test-rmse:3.443754 
-#> [61]	train-rmse:0.834644	test-rmse:3.435974 
-#> [62]	train-rmse:0.815564	test-rmse:3.426854 
-#> [63]	train-rmse:0.799357	test-rmse:3.423715 
-#> [64]	train-rmse:0.793762	test-rmse:3.428804 
-#> [65]	train-rmse:0.782843	test-rmse:3.428723 
-#> [66]	train-rmse:0.771491	test-rmse:3.432789 
-#> [67]	train-rmse:0.762924	test-rmse:3.433431 
-#> [68]	train-rmse:0.746974	test-rmse:3.427707 
-#> [69]	train-rmse:0.728521	test-rmse:3.430997 
-#> [70]	train-rmse:0.715470	test-rmse:3.432857 
-#> [1]	train-rmse:17.395387	test-rmse:16.807481 
-#> [2]	train-rmse:12.607171	test-rmse:12.209140 
-#> [3]	train-rmse:9.287325	test-rmse:8.937328 
-#> [4]	train-rmse:7.013758	test-rmse:6.761207 
-#> [5]	train-rmse:5.418121	test-rmse:5.271652 
-#> [6]	train-rmse:4.309007	test-rmse:4.362471 
-#> [7]	train-rmse:3.593338	test-rmse:3.809283 
-#> [8]	train-rmse:3.125462	test-rmse:3.488303 
-#> [9]	train-rmse:2.808215	test-rmse:3.257830 
-#> [10]	train-rmse:2.613578	test-rmse:3.154585 
-#> [11]	train-rmse:2.471688	test-rmse:3.079359 
-#> [12]	train-rmse:2.326925	test-rmse:2.990096 
-#> [13]	train-rmse:2.243460	test-rmse:2.929664 
-#> [14]	train-rmse:2.134441	test-rmse:2.890038 
-#> [15]	train-rmse:2.068489	test-rmse:2.834206 
-#> [16]	train-rmse:2.009764	test-rmse:2.824391 
-#> [17]	train-rmse:1.972183	test-rmse:2.825643 
-#> [18]	train-rmse:1.915850	test-rmse:2.827552 
-#> [19]	train-rmse:1.860962	test-rmse:2.804798 
-#> [20]	train-rmse:1.825913	test-rmse:2.805106 
-#> [21]	train-rmse:1.795406	test-rmse:2.794276 
-#> [22]	train-rmse:1.755088	test-rmse:2.794035 
-#> [23]	train-rmse:1.721797	test-rmse:2.775509 
-#> [24]	train-rmse:1.676102	test-rmse:2.762334 
-#> [25]	train-rmse:1.645750	test-rmse:2.755726 
-#> [26]	train-rmse:1.606884	test-rmse:2.752308 
-#> [27]	train-rmse:1.554420	test-rmse:2.725800 
-#> [28]	train-rmse:1.533663	test-rmse:2.709923 
-#> [29]	train-rmse:1.515497	test-rmse:2.715273 
-#> [30]	train-rmse:1.487916	test-rmse:2.688154 
-#> [31]	train-rmse:1.438739	test-rmse:2.688176 
-#> [32]	train-rmse:1.423625	test-rmse:2.672790 
-#> [33]	train-rmse:1.390451	test-rmse:2.663642 
-#> [34]	train-rmse:1.375332	test-rmse:2.664944 
-#> [35]	train-rmse:1.338564	test-rmse:2.667463 
-#> [36]	train-rmse:1.303356	test-rmse:2.654060 
-#> [37]	train-rmse:1.275568	test-rmse:2.665540 
-#> [38]	train-rmse:1.261996	test-rmse:2.659455 
-#> [39]	train-rmse:1.251079	test-rmse:2.665207 
-#> [40]	train-rmse:1.227448	test-rmse:2.653628 
-#> [41]	train-rmse:1.213734	test-rmse:2.646677 
-#> [42]	train-rmse:1.176958	test-rmse:2.649511 
-#> [43]	train-rmse:1.158550	test-rmse:2.659746 
-#> [44]	train-rmse:1.146393	test-rmse:2.661095 
-#> [45]	train-rmse:1.112010	test-rmse:2.650501 
-#> [46]	train-rmse:1.092421	test-rmse:2.659812 
-#> [47]	train-rmse:1.075534	test-rmse:2.660230 
-#> [48]	train-rmse:1.049945	test-rmse:2.655150 
-#> [49]	train-rmse:1.035587	test-rmse:2.660354 
-#> [50]	train-rmse:1.027057	test-rmse:2.658988 
-#> [51]	train-rmse:1.005431	test-rmse:2.649592 
-#> [52]	train-rmse:0.987424	test-rmse:2.645430 
-#> [53]	train-rmse:0.971436	test-rmse:2.647272 
-#> [54]	train-rmse:0.951233	test-rmse:2.637944 
-#> [55]	train-rmse:0.934642	test-rmse:2.638550 
-#> [56]	train-rmse:0.914529	test-rmse:2.639281 
-#> [57]	train-rmse:0.905744	test-rmse:2.634091 
-#> [58]	train-rmse:0.897733	test-rmse:2.635307 
-#> [59]	train-rmse:0.883033	test-rmse:2.625912 
-#> [60]	train-rmse:0.865160	test-rmse:2.627433 
-#> [61]	train-rmse:0.853266	test-rmse:2.628132 
-#> [62]	train-rmse:0.848135	test-rmse:2.625140 
-#> [63]	train-rmse:0.835240	test-rmse:2.620551 
-#> [64]	train-rmse:0.819862	test-rmse:2.629525 
-#> [65]	train-rmse:0.816406	test-rmse:2.631767 
-#> [66]	train-rmse:0.797353	test-rmse:2.636911 
-#> [67]	train-rmse:0.789818	test-rmse:2.636512 
-#> [68]	train-rmse:0.775842	test-rmse:2.636128 
-#> [69]	train-rmse:0.762010	test-rmse:2.640448 
-#> [70]	train-rmse:0.755448	test-rmse:2.634867 
-#> [1]	train-rmse:17.369700	test-rmse:17.163387 
-#> [2]	train-rmse:12.538664	test-rmse:12.632404 
-#> [3]	train-rmse:9.180276	test-rmse:9.463454 
-#> [4]	train-rmse:6.822798	test-rmse:7.408056 
-#> [5]	train-rmse:5.157894	test-rmse:6.144156 
-#> [6]	train-rmse:4.053398	test-rmse:5.392924 
-#> [7]	train-rmse:3.282756	test-rmse:4.813340 
-#> [8]	train-rmse:2.763495	test-rmse:4.541041 
-#> [9]	train-rmse:2.432271	test-rmse:4.383377 
-#> [10]	train-rmse:2.200080	test-rmse:4.191137 
-#> [11]	train-rmse:2.020068	test-rmse:4.085083 
-#> [12]	train-rmse:1.924612	test-rmse:4.041232 
-#> [13]	train-rmse:1.848469	test-rmse:4.027526 
-#> [14]	train-rmse:1.782436	test-rmse:4.080986 
-#> [15]	train-rmse:1.730807	test-rmse:4.065269 
-#> [16]	train-rmse:1.664313	test-rmse:4.020690 
-#> [17]	train-rmse:1.614103	test-rmse:3.966595 
-#> [18]	train-rmse:1.575948	test-rmse:3.973121 
-#> [19]	train-rmse:1.547222	test-rmse:3.971151 
-#> [20]	train-rmse:1.514206	test-rmse:3.951577 
-#> [21]	train-rmse:1.462316	test-rmse:3.959171 
-#> [22]	train-rmse:1.440970	test-rmse:3.968296 
-#> [23]	train-rmse:1.399896	test-rmse:3.967540 
-#> [24]	train-rmse:1.368519	test-rmse:3.964019 
-#> [25]	train-rmse:1.353368	test-rmse:3.948828 
-#> [26]	train-rmse:1.327715	test-rmse:3.951640 
-#> [27]	train-rmse:1.293445	test-rmse:3.937234 
-#> [28]	train-rmse:1.272693	test-rmse:3.912807 
-#> [29]	train-rmse:1.240026	test-rmse:3.901195 
-#> [30]	train-rmse:1.206814	test-rmse:3.899558 
-#> [31]	train-rmse:1.193308	test-rmse:3.902120 
-#> [32]	train-rmse:1.179732	test-rmse:3.887835 
-#> [33]	train-rmse:1.130219	test-rmse:3.853357 
-#> [34]	train-rmse:1.108433	test-rmse:3.837914 
-#> [35]	train-rmse:1.082396	test-rmse:3.830936 
-#> [36]	train-rmse:1.072405	test-rmse:3.831802 
-#> [37]	train-rmse:1.059950	test-rmse:3.836254 
-#> [38]	train-rmse:1.040796	test-rmse:3.836272 
-#> [39]	train-rmse:1.034363	test-rmse:3.835807 
-#> [40]	train-rmse:1.009050	test-rmse:3.830396 
-#> [41]	train-rmse:0.992680	test-rmse:3.829704 
-#> [42]	train-rmse:0.979284	test-rmse:3.818401 
-#> [43]	train-rmse:0.959056	test-rmse:3.817649 
-#> [44]	train-rmse:0.931938	test-rmse:3.802608 
-#> [45]	train-rmse:0.915750	test-rmse:3.806075 
-#> [46]	train-rmse:0.902265	test-rmse:3.805916 
-#> [47]	train-rmse:0.874482	test-rmse:3.802125 
-#> [48]	train-rmse:0.864981	test-rmse:3.801639 
-#> [49]	train-rmse:0.852830	test-rmse:3.806106 
-#> [50]	train-rmse:0.835721	test-rmse:3.797447 
-#> [51]	train-rmse:0.824056	test-rmse:3.802764 
-#> [52]	train-rmse:0.808376	test-rmse:3.800457 
-#> [53]	train-rmse:0.800746	test-rmse:3.802641 
-#> [54]	train-rmse:0.783422	test-rmse:3.796594 
-#> [55]	train-rmse:0.771401	test-rmse:3.804255 
-#> [56]	train-rmse:0.762217	test-rmse:3.798605 
-#> [57]	train-rmse:0.749706	test-rmse:3.799337 
-#> [58]	train-rmse:0.739627	test-rmse:3.796423 
-#> [59]	train-rmse:0.721745	test-rmse:3.796050 
-#> [60]	train-rmse:0.709733	test-rmse:3.789439 
-#> [61]	train-rmse:0.702526	test-rmse:3.787663 
-#> [62]	train-rmse:0.696618	test-rmse:3.785630 
-#> [63]	train-rmse:0.690819	test-rmse:3.780841 
-#> [64]	train-rmse:0.679432	test-rmse:3.782988 
-#> [65]	train-rmse:0.674282	test-rmse:3.784567 
-#> [66]	train-rmse:0.664273	test-rmse:3.784069 
-#> [67]	train-rmse:0.651228	test-rmse:3.785054 
-#> [68]	train-rmse:0.644693	test-rmse:3.786495 
-#> [69]	train-rmse:0.638943	test-rmse:3.788826 
-#> [70]	train-rmse:0.631541	test-rmse:3.779159 
-#> [1]	train-rmse:16.851618	test-rmse:17.689038 
-#> [2]	train-rmse:12.247046	test-rmse:13.146214 
-#> [3]	train-rmse:9.055132	test-rmse:9.992292 
-#> [4]	train-rmse:6.811049	test-rmse:7.597927 
-#> [5]	train-rmse:5.287718	test-rmse:6.017995 
-#> [6]	train-rmse:4.287591	test-rmse:5.168742 
-#> [7]	train-rmse:3.604025	test-rmse:4.545065 
-#> [8]	train-rmse:3.144249	test-rmse:4.192109 
-#> [9]	train-rmse:2.836724	test-rmse:3.936045 
-#> [10]	train-rmse:2.629665	test-rmse:3.844183 
-#> [11]	train-rmse:2.446611	test-rmse:3.774374 
-#> [12]	train-rmse:2.350734	test-rmse:3.656684 
-#> [13]	train-rmse:2.246979	test-rmse:3.608158 
-#> [14]	train-rmse:2.199923	test-rmse:3.614383 
-#> [15]	train-rmse:2.130916	test-rmse:3.566512 
-#> [16]	train-rmse:2.092222	test-rmse:3.569966 
-#> [17]	train-rmse:2.056247	test-rmse:3.531677 
-#> [18]	train-rmse:1.989196	test-rmse:3.509704 
-#> [19]	train-rmse:1.904293	test-rmse:3.526812 
-#> [20]	train-rmse:1.874183	test-rmse:3.542455 
-#> [21]	train-rmse:1.836572	test-rmse:3.529170 
-#> [22]	train-rmse:1.803295	test-rmse:3.528720 
-#> [23]	train-rmse:1.751647	test-rmse:3.509608 
-#> [24]	train-rmse:1.733535	test-rmse:3.533424 
-#> [25]	train-rmse:1.690835	test-rmse:3.526375 
-#> [26]	train-rmse:1.675032	test-rmse:3.528541 
-#> [27]	train-rmse:1.637364	test-rmse:3.531943 
-#> [28]	train-rmse:1.595909	test-rmse:3.532742 
-#> [29]	train-rmse:1.530506	test-rmse:3.529922 
-#> [30]	train-rmse:1.495419	test-rmse:3.524897 
-#> [31]	train-rmse:1.482784	test-rmse:3.530953 
-#> [32]	train-rmse:1.459573	test-rmse:3.524708 
-#> [33]	train-rmse:1.443076	test-rmse:3.540299 
-#> [34]	train-rmse:1.419467	test-rmse:3.559708 
-#> [35]	train-rmse:1.393598	test-rmse:3.551996 
-#> [36]	train-rmse:1.381127	test-rmse:3.549354 
-#> [37]	train-rmse:1.343972	test-rmse:3.546839 
-#> [38]	train-rmse:1.293013	test-rmse:3.547004 
-#> [39]	train-rmse:1.258523	test-rmse:3.550533 
-#> [40]	train-rmse:1.227583	test-rmse:3.552073 
-#> [41]	train-rmse:1.218001	test-rmse:3.565416 
-#> [42]	train-rmse:1.191352	test-rmse:3.555782 
-#> [43]	train-rmse:1.167781	test-rmse:3.555559 
-#> [44]	train-rmse:1.154672	test-rmse:3.560110 
-#> [45]	train-rmse:1.143491	test-rmse:3.561748 
-#> [46]	train-rmse:1.112355	test-rmse:3.573442 
-#> [47]	train-rmse:1.104252	test-rmse:3.576608 
-#> [48]	train-rmse:1.086042	test-rmse:3.564718 
-#> [49]	train-rmse:1.065225	test-rmse:3.573229 
-#> [50]	train-rmse:1.055505	test-rmse:3.572608 
-#> [51]	train-rmse:1.050356	test-rmse:3.574039 
-#> [52]	train-rmse:1.024839	test-rmse:3.582760 
-#> [53]	train-rmse:1.007063	test-rmse:3.594317 
-#> [54]	train-rmse:0.989760	test-rmse:3.596190 
-#> [55]	train-rmse:0.985288	test-rmse:3.589626 
-#> [56]	train-rmse:0.968332	test-rmse:3.587761 
-#> [57]	train-rmse:0.955451	test-rmse:3.588921 
-#> [58]	train-rmse:0.935644	test-rmse:3.581341 
-#> [59]	train-rmse:0.915201	test-rmse:3.576290 
-#> [60]	train-rmse:0.894053	test-rmse:3.575263 
-#> [61]	train-rmse:0.886351	test-rmse:3.578476 
-#> [62]	train-rmse:0.868200	test-rmse:3.574945 
-#> [63]	train-rmse:0.864606	test-rmse:3.570811 
-#> [64]	train-rmse:0.843844	test-rmse:3.571999 
-#> [65]	train-rmse:0.825551	test-rmse:3.578927 
-#> [66]	train-rmse:0.822725	test-rmse:3.575870 
-#> [67]	train-rmse:0.814655	test-rmse:3.573540 
-#> [68]	train-rmse:0.803614	test-rmse:3.577983 
-#> [69]	train-rmse:0.797038	test-rmse:3.584130 
-#> [70]	train-rmse:0.791149	test-rmse:3.583348 
-#> [1]	train-rmse:17.477357	test-rmse:16.527321 
-#> [2]	train-rmse:12.664641	test-rmse:11.995947 
-#> [3]	train-rmse:9.302649	test-rmse:8.958430 
-#> [4]	train-rmse:6.986884	test-rmse:6.865748 
-#> [5]	train-rmse:5.376294	test-rmse:5.499326 
-#> [6]	train-rmse:4.299956	test-rmse:4.772482 
-#> [7]	train-rmse:3.560704	test-rmse:4.274495 
-#> [8]	train-rmse:3.081282	test-rmse:3.934724 
-#> [9]	train-rmse:2.734935	test-rmse:3.754312 
-#> [10]	train-rmse:2.515792	test-rmse:3.590660 
-#> [11]	train-rmse:2.348332	test-rmse:3.475234 
-#> [12]	train-rmse:2.250497	test-rmse:3.442904 
-#> [13]	train-rmse:2.157210	test-rmse:3.383382 
-#> [14]	train-rmse:2.092833	test-rmse:3.351163 
-#> [15]	train-rmse:2.019703	test-rmse:3.355036 
-#> [16]	train-rmse:1.964612	test-rmse:3.332666 
-#> [17]	train-rmse:1.907572	test-rmse:3.299823 
-#> [18]	train-rmse:1.874738	test-rmse:3.292053 
-#> [19]	train-rmse:1.822290	test-rmse:3.308171 
-#> [20]	train-rmse:1.774891	test-rmse:3.277486 
-#> [21]	train-rmse:1.727159	test-rmse:3.252848 
-#> [22]	train-rmse:1.705368	test-rmse:3.217827 
-#> [23]	train-rmse:1.684295	test-rmse:3.203909 
-#> [24]	train-rmse:1.653245	test-rmse:3.201445 
-#> [25]	train-rmse:1.617504	test-rmse:3.202111 
-#> [26]	train-rmse:1.580065	test-rmse:3.188726 
-#> [27]	train-rmse:1.546369	test-rmse:3.184266 
-#> [28]	train-rmse:1.516384	test-rmse:3.181718 
-#> [29]	train-rmse:1.476499	test-rmse:3.170822 
-#> [30]	train-rmse:1.449459	test-rmse:3.162337 
-#> [31]	train-rmse:1.416426	test-rmse:3.176795 
-#> [32]	train-rmse:1.398788	test-rmse:3.177891 
-#> [33]	train-rmse:1.367230	test-rmse:3.175756 
-#> [34]	train-rmse:1.337373	test-rmse:3.174424 
-#> [35]	train-rmse:1.314864	test-rmse:3.169255 
-#> [36]	train-rmse:1.294271	test-rmse:3.176421 
-#> [37]	train-rmse:1.282166	test-rmse:3.171310 
-#> [38]	train-rmse:1.263780	test-rmse:3.168343 
-#> [39]	train-rmse:1.250331	test-rmse:3.168549 
-#> [40]	train-rmse:1.239088	test-rmse:3.170896 
-#> [41]	train-rmse:1.227630	test-rmse:3.165811 
-#> [42]	train-rmse:1.219705	test-rmse:3.167467 
-#> [43]	train-rmse:1.197678	test-rmse:3.158448 
-#> [44]	train-rmse:1.189214	test-rmse:3.150690 
-#> [45]	train-rmse:1.174734	test-rmse:3.144025 
-#> [46]	train-rmse:1.167863	test-rmse:3.140134 
-#> [47]	train-rmse:1.153933	test-rmse:3.138493 
-#> [48]	train-rmse:1.144011	test-rmse:3.136328 
-#> [49]	train-rmse:1.117278	test-rmse:3.118836 
-#> [50]	train-rmse:1.094564	test-rmse:3.093019 
-#> [51]	train-rmse:1.078295	test-rmse:3.092524 
-#> [52]	train-rmse:1.059747	test-rmse:3.090600 
-#> [53]	train-rmse:1.055997	test-rmse:3.091937 
-#> [54]	train-rmse:1.038776	test-rmse:3.088562 
-#> [55]	train-rmse:1.024767	test-rmse:3.092815 
-#> [56]	train-rmse:1.009588	test-rmse:3.096786 
-#> [57]	train-rmse:0.987335	test-rmse:3.099280 
-#> [58]	train-rmse:0.977918	test-rmse:3.100591 
-#> [59]	train-rmse:0.965779	test-rmse:3.105325 
-#> [60]	train-rmse:0.959166	test-rmse:3.106332 
-#> [61]	train-rmse:0.941844	test-rmse:3.110665 
-#> [62]	train-rmse:0.927847	test-rmse:3.097986 
-#> [63]	train-rmse:0.908501	test-rmse:3.103467 
-#> [64]	train-rmse:0.897267	test-rmse:3.105768 
-#> [65]	train-rmse:0.885763	test-rmse:3.104582 
-#> [66]	train-rmse:0.877413	test-rmse:3.109884 
-#> [67]	train-rmse:0.858192	test-rmse:3.113015 
-#> [68]	train-rmse:0.841577	test-rmse:3.112886 
-#> [69]	train-rmse:0.827335	test-rmse:3.111785 
-#> [70]	train-rmse:0.810480	test-rmse:3.102859 
-#> [1]	train-rmse:17.516712	test-rmse:16.439532 
-#> [2]	train-rmse:12.704872	test-rmse:11.972499 
-#> [3]	train-rmse:9.309501	test-rmse:8.962723 
-#> [4]	train-rmse:6.952581	test-rmse:6.891552 
-#> [5]	train-rmse:5.359371	test-rmse:5.631844 
-#> [6]	train-rmse:4.216955	test-rmse:4.851716 
-#> [7]	train-rmse:3.465746	test-rmse:4.414256 
-#> [8]	train-rmse:2.948136	test-rmse:4.126199 
-#> [9]	train-rmse:2.632189	test-rmse:3.988165 
-#> [10]	train-rmse:2.396595	test-rmse:3.910492 
-#> [11]	train-rmse:2.235672	test-rmse:3.861430 
-#> [12]	train-rmse:2.128849	test-rmse:3.879963 
-#> [13]	train-rmse:2.007587	test-rmse:3.839521 
-#> [14]	train-rmse:1.917538	test-rmse:3.819519 
-#> [15]	train-rmse:1.834964	test-rmse:3.834588 
-#> [16]	train-rmse:1.799470	test-rmse:3.846834 
-#> [17]	train-rmse:1.732873	test-rmse:3.842931 
-#> [18]	train-rmse:1.666987	test-rmse:3.819122 
-#> [19]	train-rmse:1.625099	test-rmse:3.788526 
-#> [20]	train-rmse:1.588039	test-rmse:3.763336 
-#> [21]	train-rmse:1.558551	test-rmse:3.747225 
-#> [22]	train-rmse:1.510424	test-rmse:3.756382 
-#> [23]	train-rmse:1.497681	test-rmse:3.734523 
-#> [24]	train-rmse:1.482040	test-rmse:3.733861 
-#> [25]	train-rmse:1.463634	test-rmse:3.753645 
-#> [26]	train-rmse:1.448568	test-rmse:3.741722 
-#> [27]	train-rmse:1.419823	test-rmse:3.727728 
-#> [28]	train-rmse:1.399649	test-rmse:3.719883 
-#> [29]	train-rmse:1.353190	test-rmse:3.690821 
-#> [30]	train-rmse:1.319409	test-rmse:3.697237 
-#> [31]	train-rmse:1.305254	test-rmse:3.692799 
-#> [32]	train-rmse:1.284274	test-rmse:3.683033 
-#> [33]	train-rmse:1.260786	test-rmse:3.694678 
-#> [34]	train-rmse:1.252847	test-rmse:3.687495 
-#> [35]	train-rmse:1.232505	test-rmse:3.690181 
-#> [36]	train-rmse:1.216862	test-rmse:3.689011 
-#> [37]	train-rmse:1.180909	test-rmse:3.689362 
-#> [38]	train-rmse:1.163879	test-rmse:3.686103 
-#> [39]	train-rmse:1.146814	test-rmse:3.695191 
-#> [40]	train-rmse:1.118845	test-rmse:3.702853 
-#> [41]	train-rmse:1.091918	test-rmse:3.707081 
-#> [42]	train-rmse:1.076218	test-rmse:3.704513 
-#> [43]	train-rmse:1.056559	test-rmse:3.704579 
-#> [44]	train-rmse:1.034916	test-rmse:3.696735 
-#> [45]	train-rmse:1.017518	test-rmse:3.686453 
-#> [46]	train-rmse:1.010944	test-rmse:3.672369 
-#> [47]	train-rmse:0.998823	test-rmse:3.671160 
-#> [48]	train-rmse:0.985772	test-rmse:3.669297 
-#> [49]	train-rmse:0.967363	test-rmse:3.678855 
-#> [50]	train-rmse:0.944085	test-rmse:3.677862 
-#> [51]	train-rmse:0.925227	test-rmse:3.675951 
-#> [52]	train-rmse:0.921101	test-rmse:3.666867 
-#> [53]	train-rmse:0.902544	test-rmse:3.658930 
-#> [54]	train-rmse:0.881444	test-rmse:3.660465 
-#> [55]	train-rmse:0.872768	test-rmse:3.665478 
-#> [56]	train-rmse:0.864121	test-rmse:3.662788 
-#> [57]	train-rmse:0.848972	test-rmse:3.651639 
-#> [58]	train-rmse:0.828335	test-rmse:3.641569 
-#> [59]	train-rmse:0.816252	test-rmse:3.636778 
-#> [60]	train-rmse:0.806125	test-rmse:3.639459 
-#> [61]	train-rmse:0.788547	test-rmse:3.634627 
-#> [62]	train-rmse:0.773397	test-rmse:3.629928 
-#> [63]	train-rmse:0.757270	test-rmse:3.619143 
-#> [64]	train-rmse:0.743927	test-rmse:3.622712 
-#> [65]	train-rmse:0.734305	test-rmse:3.624204 
-#> [66]	train-rmse:0.723893	test-rmse:3.626602 
-#> [67]	train-rmse:0.715963	test-rmse:3.626080 
-#> [68]	train-rmse:0.708651	test-rmse:3.625414 
-#> [69]	train-rmse:0.692336	test-rmse:3.621810 
-#> [70]	train-rmse:0.684827	test-rmse:3.617717 
-#> [1]	train-rmse:16.922243	test-rmse:17.651039 
-#> [2]	train-rmse:12.250031	test-rmse:12.887329 
-#> [3]	train-rmse:9.013010	test-rmse:9.756794 
-#> [4]	train-rmse:6.793117	test-rmse:7.768504 
-#> [5]	train-rmse:5.235041	test-rmse:6.281144 
-#> [6]	train-rmse:4.170303	test-rmse:5.362771 
-#> [7]	train-rmse:3.486009	test-rmse:4.830497 
-#> [8]	train-rmse:3.051639	test-rmse:4.501959 
-#> [9]	train-rmse:2.750394	test-rmse:4.297157 
-#> [10]	train-rmse:2.528267	test-rmse:4.143705 
-#> [11]	train-rmse:2.385107	test-rmse:4.056694 
-#> [12]	train-rmse:2.282677	test-rmse:4.011703 
-#> [13]	train-rmse:2.206975	test-rmse:3.983616 
-#> [14]	train-rmse:2.131304	test-rmse:3.921142 
-#> [15]	train-rmse:2.077097	test-rmse:3.898018 
-#> [16]	train-rmse:1.992156	test-rmse:3.874507 
-#> [17]	train-rmse:1.946122	test-rmse:3.832192 
-#> [18]	train-rmse:1.879951	test-rmse:3.791515 
-#> [19]	train-rmse:1.814209	test-rmse:3.778795 
-#> [20]	train-rmse:1.777613	test-rmse:3.767908 
-#> [21]	train-rmse:1.730406	test-rmse:3.749057 
-#> [22]	train-rmse:1.710667	test-rmse:3.742828 
-#> [23]	train-rmse:1.672707	test-rmse:3.727354 
-#> [24]	train-rmse:1.624492	test-rmse:3.710978 
-#> [25]	train-rmse:1.585969	test-rmse:3.717527 
-#> [26]	train-rmse:1.539809	test-rmse:3.718164 
-#> [27]	train-rmse:1.502219	test-rmse:3.711564 
-#> [28]	train-rmse:1.487363	test-rmse:3.716270 
-#> [29]	train-rmse:1.472990	test-rmse:3.729529 
-#> [30]	train-rmse:1.456847	test-rmse:3.730548 
-#> [31]	train-rmse:1.438577	test-rmse:3.720914 
-#> [32]	train-rmse:1.414038	test-rmse:3.713137 
-#> [33]	train-rmse:1.393750	test-rmse:3.698787 
-#> [34]	train-rmse:1.377710	test-rmse:3.685371 
-#> [35]	train-rmse:1.366862	test-rmse:3.677508 
-#> [36]	train-rmse:1.353890	test-rmse:3.680680 
-#> [37]	train-rmse:1.318616	test-rmse:3.679199 
-#> [38]	train-rmse:1.292043	test-rmse:3.676492 
-#> [39]	train-rmse:1.269161	test-rmse:3.670951 
-#> [40]	train-rmse:1.256788	test-rmse:3.679901 
-#> [41]	train-rmse:1.237353	test-rmse:3.677076 
-#> [42]	train-rmse:1.217982	test-rmse:3.671050 
-#> [43]	train-rmse:1.182463	test-rmse:3.674857 
-#> [44]	train-rmse:1.157537	test-rmse:3.667582 
-#> [45]	train-rmse:1.145929	test-rmse:3.660398 
-#> [46]	train-rmse:1.124955	test-rmse:3.661673 
-#> [47]	train-rmse:1.108189	test-rmse:3.659959 
-#> [48]	train-rmse:1.102524	test-rmse:3.661394 
-#> [49]	train-rmse:1.064052	test-rmse:3.663788 
-#> [50]	train-rmse:1.034119	test-rmse:3.665225 
-#> [51]	train-rmse:1.010867	test-rmse:3.658235 
-#> [52]	train-rmse:1.002326	test-rmse:3.648886 
-#> [53]	train-rmse:0.982503	test-rmse:3.663341 
-#> [54]	train-rmse:0.970714	test-rmse:3.660239 
-#> [55]	train-rmse:0.955684	test-rmse:3.655650 
-#> [56]	train-rmse:0.933728	test-rmse:3.649022 
-#> [57]	train-rmse:0.921975	test-rmse:3.646999 
-#> [58]	train-rmse:0.907513	test-rmse:3.651628 
-#> [59]	train-rmse:0.886558	test-rmse:3.654107 
-#> [60]	train-rmse:0.866756	test-rmse:3.662212 
-#> [61]	train-rmse:0.862832	test-rmse:3.658910 
-#> [62]	train-rmse:0.847068	test-rmse:3.651673 
-#> [63]	train-rmse:0.837279	test-rmse:3.652087 
-#> [64]	train-rmse:0.822307	test-rmse:3.651748 
-#> [65]	train-rmse:0.807431	test-rmse:3.652063 
-#> [66]	train-rmse:0.797902	test-rmse:3.655239 
-#> [67]	train-rmse:0.791800	test-rmse:3.658549 
-#> [68]	train-rmse:0.776808	test-rmse:3.658271 
-#> [69]	train-rmse:0.770397	test-rmse:3.659264 
-#> [70]	train-rmse:0.767124	test-rmse:3.662660 
-#> [1]	train-rmse:17.152837	test-rmse:17.312627 
-#> [2]	train-rmse:12.417863	test-rmse:12.623049 
-#> [3]	train-rmse:9.109260	test-rmse:9.430341 
-#> [4]	train-rmse:6.806087	test-rmse:7.340749 
-#> [5]	train-rmse:5.236341	test-rmse:5.969851 
-#> [6]	train-rmse:4.124409	test-rmse:5.180520 
-#> [7]	train-rmse:3.409541	test-rmse:4.725769 
-#> [8]	train-rmse:2.907675	test-rmse:4.370898 
-#> [9]	train-rmse:2.616327	test-rmse:4.193904 
-#> [10]	train-rmse:2.403490	test-rmse:4.063455 
-#> [11]	train-rmse:2.245480	test-rmse:3.954606 
-#> [12]	train-rmse:2.131974	test-rmse:3.909208 
-#> [13]	train-rmse:2.056478	test-rmse:3.883845 
-#> [14]	train-rmse:1.988316	test-rmse:3.829907 
-#> [15]	train-rmse:1.918525	test-rmse:3.846480 
-#> [16]	train-rmse:1.853409	test-rmse:3.844287 
-#> [17]	train-rmse:1.764102	test-rmse:3.808609 
-#> [18]	train-rmse:1.728920	test-rmse:3.798865 
-#> [19]	train-rmse:1.686462	test-rmse:3.801505 
-#> [20]	train-rmse:1.643720	test-rmse:3.768817 
-#> [21]	train-rmse:1.615638	test-rmse:3.772158 
-#> [22]	train-rmse:1.581222	test-rmse:3.754727 
-#> [23]	train-rmse:1.532340	test-rmse:3.742759 
-#> [24]	train-rmse:1.511468	test-rmse:3.754419 
-#> [25]	train-rmse:1.464715	test-rmse:3.738069 
-#> [26]	train-rmse:1.425049	test-rmse:3.750589 
-#> [27]	train-rmse:1.403122	test-rmse:3.755480 
-#> [28]	train-rmse:1.358186	test-rmse:3.725604 
-#> [29]	train-rmse:1.339987	test-rmse:3.718350 
-#> [30]	train-rmse:1.315209	test-rmse:3.706850 
-#> [31]	train-rmse:1.283096	test-rmse:3.697370 
-#> [32]	train-rmse:1.253204	test-rmse:3.704360 
-#> [33]	train-rmse:1.239898	test-rmse:3.701379 
-#> [34]	train-rmse:1.218439	test-rmse:3.705304 
-#> [35]	train-rmse:1.202165	test-rmse:3.717953 
-#> [36]	train-rmse:1.188075	test-rmse:3.712864 
-#> [37]	train-rmse:1.172806	test-rmse:3.706612 
-#> [38]	train-rmse:1.130514	test-rmse:3.693831 
-#> [39]	train-rmse:1.123755	test-rmse:3.687604 
-#> [40]	train-rmse:1.110395	test-rmse:3.683130 
-#> [41]	train-rmse:1.088629	test-rmse:3.684874 
-#> [42]	train-rmse:1.057146	test-rmse:3.673015 
-#> [43]	train-rmse:1.037357	test-rmse:3.669375 
-#> [44]	train-rmse:1.012744	test-rmse:3.667050 
-#> [45]	train-rmse:0.995983	test-rmse:3.663645 
-#> [46]	train-rmse:0.987530	test-rmse:3.662034 
-#> [47]	train-rmse:0.982015	test-rmse:3.661063 
-#> [48]	train-rmse:0.963825	test-rmse:3.663633 
-#> [49]	train-rmse:0.949556	test-rmse:3.656571 
-#> [50]	train-rmse:0.929863	test-rmse:3.654831 
-#> [51]	train-rmse:0.917359	test-rmse:3.656136 
-#> [52]	train-rmse:0.906694	test-rmse:3.650071 
-#> [53]	train-rmse:0.896932	test-rmse:3.651673 
-#> [54]	train-rmse:0.886899	test-rmse:3.646640 
-#> [55]	train-rmse:0.881587	test-rmse:3.644913 
-#> [56]	train-rmse:0.865127	test-rmse:3.649565 
-#> [57]	train-rmse:0.852795	test-rmse:3.653401 
-#> [58]	train-rmse:0.832879	test-rmse:3.655664 
-#> [59]	train-rmse:0.828237	test-rmse:3.649560 
-#> [60]	train-rmse:0.813814	test-rmse:3.649660 
-#> [61]	train-rmse:0.801674	test-rmse:3.646815 
-#> [62]	train-rmse:0.795732	test-rmse:3.652086 
-#> [63]	train-rmse:0.792014	test-rmse:3.650749 
-#> [64]	train-rmse:0.780086	test-rmse:3.654672 
-#> [65]	train-rmse:0.768030	test-rmse:3.653059 
-#> [66]	train-rmse:0.759222	test-rmse:3.653827 
-#> [67]	train-rmse:0.751381	test-rmse:3.647739 
-#> [68]	train-rmse:0.733078	test-rmse:3.651626 
-#> [69]	train-rmse:0.715336	test-rmse:3.653775 
-#> [70]	train-rmse:0.703349	test-rmse:3.657565 
-#> [1]	train-rmse:17.431329	test-rmse:16.703654 
-#> [2]	train-rmse:12.696194	test-rmse:12.218873 
-#> [3]	train-rmse:9.337002	test-rmse:9.118414 
-#> [4]	train-rmse:7.018587	test-rmse:7.088290 
-#> [5]	train-rmse:5.415362	test-rmse:5.711857 
-#> [6]	train-rmse:4.329083	test-rmse:4.831852 
-#> [7]	train-rmse:3.601945	test-rmse:4.270706 
-#> [8]	train-rmse:3.149155	test-rmse:4.009935 
-#> [9]	train-rmse:2.825517	test-rmse:3.852722 
-#> [10]	train-rmse:2.529904	test-rmse:3.700324 
-#> [11]	train-rmse:2.371822	test-rmse:3.619504 
-#> [12]	train-rmse:2.248299	test-rmse:3.526853 
-#> [13]	train-rmse:2.148486	test-rmse:3.510621 
-#> [14]	train-rmse:2.083448	test-rmse:3.522890 
-#> [15]	train-rmse:2.014768	test-rmse:3.492488 
-#> [16]	train-rmse:1.969852	test-rmse:3.492779 
-#> [17]	train-rmse:1.919457	test-rmse:3.484013 
-#> [18]	train-rmse:1.836285	test-rmse:3.480110 
-#> [19]	train-rmse:1.789915	test-rmse:3.494580 
-#> [20]	train-rmse:1.745980	test-rmse:3.485723 
-#> [21]	train-rmse:1.688302	test-rmse:3.466251 
-#> [22]	train-rmse:1.651237	test-rmse:3.448205 
-#> [23]	train-rmse:1.624050	test-rmse:3.451121 
-#> [24]	train-rmse:1.544799	test-rmse:3.454887 
-#> [25]	train-rmse:1.508494	test-rmse:3.443285 
-#> [26]	train-rmse:1.494843	test-rmse:3.448496 
-#> [27]	train-rmse:1.470220	test-rmse:3.435564 
-#> [28]	train-rmse:1.425408	test-rmse:3.425121 
-#> [29]	train-rmse:1.380475	test-rmse:3.413315 
-#> [30]	train-rmse:1.340690	test-rmse:3.408225 
-#> [31]	train-rmse:1.318358	test-rmse:3.410019 
-#> [32]	train-rmse:1.305773	test-rmse:3.408686 
-#> [33]	train-rmse:1.281862	test-rmse:3.411578 
-#> [34]	train-rmse:1.269213	test-rmse:3.401081 
-#> [35]	train-rmse:1.243276	test-rmse:3.401679 
-#> [36]	train-rmse:1.230148	test-rmse:3.400291 
-#> [37]	train-rmse:1.212566	test-rmse:3.396719 
-#> [38]	train-rmse:1.199863	test-rmse:3.398044 
-#> [39]	train-rmse:1.171560	test-rmse:3.402795 
-#> [40]	train-rmse:1.154470	test-rmse:3.399611 
-#> [41]	train-rmse:1.125709	test-rmse:3.389426 
-#> [42]	train-rmse:1.117133	test-rmse:3.384284 
-#> [43]	train-rmse:1.100629	test-rmse:3.384461 
-#> [44]	train-rmse:1.074666	test-rmse:3.384487 
-#> [45]	train-rmse:1.048657	test-rmse:3.389365 
-#> [46]	train-rmse:1.040674	test-rmse:3.390344 
-#> [47]	train-rmse:1.030349	test-rmse:3.391706 
-#> [48]	train-rmse:1.004669	test-rmse:3.384443 
-#> [49]	train-rmse:0.996423	test-rmse:3.387312 
-#> [50]	train-rmse:0.986165	test-rmse:3.379558 
-#> [51]	train-rmse:0.970477	test-rmse:3.379549 
-#> [52]	train-rmse:0.965665	test-rmse:3.380382 
-#> [53]	train-rmse:0.948489	test-rmse:3.382174 
-#> [54]	train-rmse:0.910145	test-rmse:3.388917 
-#> [55]	train-rmse:0.899244	test-rmse:3.380107 
-#> [56]	train-rmse:0.894504	test-rmse:3.377116 
-#> [57]	train-rmse:0.888464	test-rmse:3.379834 
-#> [58]	train-rmse:0.870660	test-rmse:3.377150 
-#> [59]	train-rmse:0.866385	test-rmse:3.382585 
-#> [60]	train-rmse:0.856161	test-rmse:3.374949 
-#> [61]	train-rmse:0.850367	test-rmse:3.375091 
-#> [62]	train-rmse:0.843837	test-rmse:3.378089 
-#> [63]	train-rmse:0.835610	test-rmse:3.380332 
-#> [64]	train-rmse:0.828715	test-rmse:3.380860 
-#> [65]	train-rmse:0.821685	test-rmse:3.381212 
-#> [66]	train-rmse:0.805571	test-rmse:3.384954 
-#> [67]	train-rmse:0.796083	test-rmse:3.388942 
-#> [68]	train-rmse:0.781292	test-rmse:3.395359 
-#> [69]	train-rmse:0.768496	test-rmse:3.386272 
-#> [70]	train-rmse:0.760739	test-rmse:3.386573 
-#> [1]	train-rmse:17.233425	test-rmse:17.250586 
-#> [2]	train-rmse:12.485570	test-rmse:12.623902 
-#> [3]	train-rmse:9.195193	test-rmse:9.623004 
-#> [4]	train-rmse:6.837540	test-rmse:7.513643 
-#> [5]	train-rmse:5.241085	test-rmse:6.061415 
-#> [6]	train-rmse:4.133397	test-rmse:5.169767 
-#> [7]	train-rmse:3.391679	test-rmse:4.621963 
-#> [8]	train-rmse:2.904424	test-rmse:4.311491 
-#> [9]	train-rmse:2.583741	test-rmse:4.097347 
-#> [10]	train-rmse:2.386201	test-rmse:3.944636 
-#> [11]	train-rmse:2.250730	test-rmse:3.868993 
-#> [12]	train-rmse:2.108683	test-rmse:3.764592 
-#> [13]	train-rmse:2.052999	test-rmse:3.729400 
-#> [14]	train-rmse:1.976534	test-rmse:3.697717 
-#> [15]	train-rmse:1.921351	test-rmse:3.658235 
-#> [16]	train-rmse:1.823806	test-rmse:3.602679 
-#> [17]	train-rmse:1.791829	test-rmse:3.590524 
-#> [18]	train-rmse:1.732673	test-rmse:3.588665 
-#> [19]	train-rmse:1.691548	test-rmse:3.541515 
-#> [20]	train-rmse:1.663846	test-rmse:3.533724 
-#> [21]	train-rmse:1.644180	test-rmse:3.518984 
-#> [22]	train-rmse:1.574901	test-rmse:3.499891 
-#> [23]	train-rmse:1.559760	test-rmse:3.497970 
-#> [24]	train-rmse:1.511802	test-rmse:3.470968 
-#> [25]	train-rmse:1.472486	test-rmse:3.463712 
-#> [26]	train-rmse:1.453882	test-rmse:3.467987 
-#> [27]	train-rmse:1.425199	test-rmse:3.454385 
-#> [28]	train-rmse:1.371651	test-rmse:3.477113 
-#> [29]	train-rmse:1.356004	test-rmse:3.478002 
-#> [30]	train-rmse:1.341601	test-rmse:3.466878 
-#> [31]	train-rmse:1.324580	test-rmse:3.460670 
-#> [32]	train-rmse:1.295253	test-rmse:3.451498 
-#> [33]	train-rmse:1.283414	test-rmse:3.444746 
-#> [34]	train-rmse:1.253856	test-rmse:3.437694 
-#> [35]	train-rmse:1.236857	test-rmse:3.436742 
-#> [36]	train-rmse:1.215436	test-rmse:3.425606 
-#> [37]	train-rmse:1.180066	test-rmse:3.407364 
-#> [38]	train-rmse:1.157078	test-rmse:3.406668 
-#> [39]	train-rmse:1.141348	test-rmse:3.401793 
-#> [40]	train-rmse:1.134249	test-rmse:3.398003 
-#> [41]	train-rmse:1.100634	test-rmse:3.382796 
-#> [42]	train-rmse:1.091744	test-rmse:3.386709 
-#> [43]	train-rmse:1.061454	test-rmse:3.377536 
-#> [44]	train-rmse:1.039501	test-rmse:3.379761 
-#> [45]	train-rmse:1.020237	test-rmse:3.375047 
-#> [46]	train-rmse:1.000813	test-rmse:3.376329 
-#> [47]	train-rmse:0.977879	test-rmse:3.370643 
-#> [48]	train-rmse:0.974470	test-rmse:3.368579 
-#> [49]	train-rmse:0.957972	test-rmse:3.370339 
-#> [50]	train-rmse:0.951925	test-rmse:3.369920 
-#> [51]	train-rmse:0.935729	test-rmse:3.366010 
-#> [52]	train-rmse:0.923628	test-rmse:3.372610 
-#> [53]	train-rmse:0.912039	test-rmse:3.357990 
-#> [54]	train-rmse:0.895802	test-rmse:3.361504 
-#> [55]	train-rmse:0.870712	test-rmse:3.362466 
-#> [56]	train-rmse:0.852411	test-rmse:3.359917 
-#> [57]	train-rmse:0.837318	test-rmse:3.352954 
-#> [58]	train-rmse:0.822292	test-rmse:3.342966 
-#> [59]	train-rmse:0.812269	test-rmse:3.340620 
-#> [60]	train-rmse:0.798920	test-rmse:3.341524 
-#> [61]	train-rmse:0.787027	test-rmse:3.336136 
-#> [62]	train-rmse:0.772426	test-rmse:3.333496 
-#> [63]	train-rmse:0.756167	test-rmse:3.329261 
-#> [64]	train-rmse:0.746415	test-rmse:3.332921 
-#> [65]	train-rmse:0.733260	test-rmse:3.331723 
-#> [66]	train-rmse:0.725389	test-rmse:3.327671 
-#> [67]	train-rmse:0.719412	test-rmse:3.326824 
-#> [68]	train-rmse:0.706745	test-rmse:3.326814 
-#> [69]	train-rmse:0.697934	test-rmse:3.319295 
-#> [70]	train-rmse:0.681594	test-rmse:3.318715 
-#> [1]	train-rmse:17.128594	test-rmse:17.124916 
-#> [2]	train-rmse:12.473696	test-rmse:12.576642 
-#> [3]	train-rmse:9.155455	test-rmse:9.317343 
-#> [4]	train-rmse:6.869103	test-rmse:7.051151 
-#> [5]	train-rmse:5.318934	test-rmse:5.554716 
-#> [6]	train-rmse:4.305869	test-rmse:4.620594 
-#> [7]	train-rmse:3.600153	test-rmse:3.880415 
-#> [8]	train-rmse:3.165971	test-rmse:3.499136 
-#> [9]	train-rmse:2.890240	test-rmse:3.277098 
-#> [10]	train-rmse:2.648240	test-rmse:3.197614 
-#> [11]	train-rmse:2.466549	test-rmse:3.075079 
-#> [12]	train-rmse:2.373009	test-rmse:3.025359 
-#> [13]	train-rmse:2.295470	test-rmse:2.996508 
-#> [14]	train-rmse:2.242929	test-rmse:2.987894 
-#> [15]	train-rmse:2.189766	test-rmse:2.936767 
-#> [16]	train-rmse:2.115994	test-rmse:2.928127 
-#> [17]	train-rmse:2.047733	test-rmse:2.922381 
-#> [18]	train-rmse:1.993770	test-rmse:2.893833 
-#> [19]	train-rmse:1.925173	test-rmse:2.868403 
-#> [20]	train-rmse:1.891927	test-rmse:2.858402 
-#> [21]	train-rmse:1.855631	test-rmse:2.846958 
-#> [22]	train-rmse:1.817977	test-rmse:2.817564 
-#> [23]	train-rmse:1.793867	test-rmse:2.826849 
-#> [24]	train-rmse:1.760676	test-rmse:2.799355 
-#> [25]	train-rmse:1.733016	test-rmse:2.806548 
-#> [26]	train-rmse:1.698300	test-rmse:2.790279 
-#> [27]	train-rmse:1.667252	test-rmse:2.818433 
-#> [28]	train-rmse:1.632844	test-rmse:2.801740 
-#> [29]	train-rmse:1.584815	test-rmse:2.803550 
-#> [30]	train-rmse:1.559019	test-rmse:2.791002 
-#> [31]	train-rmse:1.523995	test-rmse:2.788743 
-#> [32]	train-rmse:1.496033	test-rmse:2.808156 
-#> [33]	train-rmse:1.480189	test-rmse:2.802236 
-#> [34]	train-rmse:1.453507	test-rmse:2.801068 
-#> [35]	train-rmse:1.441042	test-rmse:2.798688 
-#> [36]	train-rmse:1.425898	test-rmse:2.795132 
-#> [37]	train-rmse:1.380954	test-rmse:2.779995 
-#> [38]	train-rmse:1.356294	test-rmse:2.787496 
-#> [39]	train-rmse:1.333006	test-rmse:2.790582 
-#> [40]	train-rmse:1.316990	test-rmse:2.789516 
-#> [41]	train-rmse:1.291145	test-rmse:2.784462 
-#> [42]	train-rmse:1.267506	test-rmse:2.772754 
-#> [43]	train-rmse:1.236319	test-rmse:2.773344 
-#> [44]	train-rmse:1.209988	test-rmse:2.779797 
-#> [45]	train-rmse:1.181657	test-rmse:2.770077 
-#> [46]	train-rmse:1.156871	test-rmse:2.777735 
-#> [47]	train-rmse:1.121685	test-rmse:2.780174 
-#> [48]	train-rmse:1.100434	test-rmse:2.755684 
-#> [49]	train-rmse:1.082500	test-rmse:2.758530 
-#> [50]	train-rmse:1.060479	test-rmse:2.755751 
-#> [51]	train-rmse:1.042871	test-rmse:2.749594 
-#> [52]	train-rmse:1.026156	test-rmse:2.750159 
-#> [53]	train-rmse:1.014550	test-rmse:2.748956 
-#> [54]	train-rmse:0.992050	test-rmse:2.740920 
-#> [55]	train-rmse:0.979768	test-rmse:2.744747 
-#> [56]	train-rmse:0.957779	test-rmse:2.744108 
-#> [57]	train-rmse:0.936233	test-rmse:2.743346 
-#> [58]	train-rmse:0.930738	test-rmse:2.744985 
-#> [59]	train-rmse:0.914788	test-rmse:2.746578 
-#> [60]	train-rmse:0.897444	test-rmse:2.742718 
-#> [61]	train-rmse:0.881162	test-rmse:2.746288 
-#> [62]	train-rmse:0.873362	test-rmse:2.739386 
-#> [63]	train-rmse:0.855085	test-rmse:2.746520 
-#> [64]	train-rmse:0.835583	test-rmse:2.751073 
-#> [65]	train-rmse:0.825417	test-rmse:2.744734 
-#> [66]	train-rmse:0.805799	test-rmse:2.757439 
-#> [67]	train-rmse:0.793748	test-rmse:2.762758 
-#> [68]	train-rmse:0.780451	test-rmse:2.767125 
-#> [69]	train-rmse:0.774147	test-rmse:2.769935 
-#> [70]	train-rmse:0.762300	test-rmse:2.769790 
-#> [1]	train-rmse:17.292655	test-rmse:16.876471 
-#> [2]	train-rmse:12.577736	test-rmse:12.195365 
-#> [3]	train-rmse:9.241283	test-rmse:8.922933 
-#> [4]	train-rmse:6.913518	test-rmse:6.724334 
-#> [5]	train-rmse:5.326545	test-rmse:5.265766 
-#> [6]	train-rmse:4.262574	test-rmse:4.416342 
-#> [7]	train-rmse:3.480536	test-rmse:3.935688 
-#> [8]	train-rmse:2.985960	test-rmse:3.632995 
-#> [9]	train-rmse:2.660206	test-rmse:3.538935 
-#> [10]	train-rmse:2.435057	test-rmse:3.492154 
-#> [11]	train-rmse:2.264139	test-rmse:3.480262 
-#> [12]	train-rmse:2.115240	test-rmse:3.447267 
-#> [13]	train-rmse:1.997048	test-rmse:3.432714 
-#> [14]	train-rmse:1.913323	test-rmse:3.423979 
-#> [15]	train-rmse:1.836868	test-rmse:3.391161 
-#> [16]	train-rmse:1.781762	test-rmse:3.377973 
-#> [17]	train-rmse:1.708092	test-rmse:3.359732 
-#> [18]	train-rmse:1.681469	test-rmse:3.367809 
-#> [19]	train-rmse:1.625341	test-rmse:3.353789 
-#> [20]	train-rmse:1.564421	test-rmse:3.327785 
-#> [21]	train-rmse:1.531215	test-rmse:3.320419 
-#> [22]	train-rmse:1.488833	test-rmse:3.341321 
-#> [23]	train-rmse:1.456582	test-rmse:3.319002 
-#> [24]	train-rmse:1.425750	test-rmse:3.304326 
-#> [25]	train-rmse:1.379122	test-rmse:3.285657 
-#> [26]	train-rmse:1.335484	test-rmse:3.281933 
-#> [27]	train-rmse:1.307765	test-rmse:3.261889 
-#> [28]	train-rmse:1.264471	test-rmse:3.255168 
-#> [29]	train-rmse:1.254344	test-rmse:3.249777 
-#> [30]	train-rmse:1.217107	test-rmse:3.232775 
-#> [31]	train-rmse:1.201509	test-rmse:3.229382 
-#> [32]	train-rmse:1.184240	test-rmse:3.222288 
-#> [33]	train-rmse:1.156229	test-rmse:3.213939 
-#> [34]	train-rmse:1.136092	test-rmse:3.216067 
-#> [35]	train-rmse:1.110480	test-rmse:3.216788 
-#> [36]	train-rmse:1.094752	test-rmse:3.206662 
-#> [37]	train-rmse:1.075361	test-rmse:3.211364 
-#> [38]	train-rmse:1.061166	test-rmse:3.207463 
-#> [39]	train-rmse:1.044627	test-rmse:3.212024 
-#> [40]	train-rmse:1.017754	test-rmse:3.214319 
-#> [41]	train-rmse:0.995682	test-rmse:3.211204 
-#> [42]	train-rmse:0.975897	test-rmse:3.204311 
-#> [43]	train-rmse:0.969302	test-rmse:3.209325 
-#> [44]	train-rmse:0.962742	test-rmse:3.213350 
-#> [45]	train-rmse:0.950907	test-rmse:3.205705 
-#> [46]	train-rmse:0.926037	test-rmse:3.203800 
-#> [47]	train-rmse:0.913792	test-rmse:3.188461 
-#> [48]	train-rmse:0.895957	test-rmse:3.184823 
-#> [49]	train-rmse:0.883827	test-rmse:3.181743 
-#> [50]	train-rmse:0.861841	test-rmse:3.181888 
-#> [51]	train-rmse:0.850236	test-rmse:3.177201 
-#> [52]	train-rmse:0.842394	test-rmse:3.176773 
-#> [53]	train-rmse:0.827710	test-rmse:3.171668 
-#> [54]	train-rmse:0.817296	test-rmse:3.175845 
-#> [55]	train-rmse:0.812589	test-rmse:3.174930 
-#> [56]	train-rmse:0.807248	test-rmse:3.178411 
-#> [57]	train-rmse:0.799478	test-rmse:3.172622 
-#> [58]	train-rmse:0.785276	test-rmse:3.171110 
-#> [59]	train-rmse:0.780453	test-rmse:3.172351 
-#> [60]	train-rmse:0.767954	test-rmse:3.173666 
-#> [61]	train-rmse:0.764007	test-rmse:3.172314 
-#> [62]	train-rmse:0.758229	test-rmse:3.173465 
-#> [63]	train-rmse:0.747242	test-rmse:3.172619 
-#> [64]	train-rmse:0.735999	test-rmse:3.170532 
-#> [65]	train-rmse:0.725830	test-rmse:3.174557 
-#> [66]	train-rmse:0.708749	test-rmse:3.173571 
-#> [67]	train-rmse:0.689192	test-rmse:3.178361 
-#> [68]	train-rmse:0.675599	test-rmse:3.176243 
-#> [69]	train-rmse:0.657948	test-rmse:3.178651 
-#> [70]	train-rmse:0.649430	test-rmse:3.176308 
-#> [1]	train-rmse:17.544533	test-rmse:16.355680 
-#> [2]	train-rmse:12.719916	test-rmse:11.847680 
-#> [3]	train-rmse:9.325918	test-rmse:8.587711 
-#> [4]	train-rmse:6.978470	test-rmse:6.520126 
-#> [5]	train-rmse:5.330168	test-rmse:5.197999 
-#> [6]	train-rmse:4.227713	test-rmse:4.370258 
-#> [7]	train-rmse:3.452389	test-rmse:3.899105 
-#> [8]	train-rmse:2.953947	test-rmse:3.646518 
-#> [9]	train-rmse:2.621221	test-rmse:3.488626 
-#> [10]	train-rmse:2.390508	test-rmse:3.434280 
-#> [11]	train-rmse:2.248430	test-rmse:3.393405 
-#> [12]	train-rmse:2.148335	test-rmse:3.397108 
-#> [13]	train-rmse:2.062937	test-rmse:3.364962 
-#> [14]	train-rmse:1.965071	test-rmse:3.319566 
-#> [15]	train-rmse:1.898697	test-rmse:3.274744 
-#> [16]	train-rmse:1.864320	test-rmse:3.256337 
-#> [17]	train-rmse:1.837230	test-rmse:3.262007 
-#> [18]	train-rmse:1.803225	test-rmse:3.235490 
-#> [19]	train-rmse:1.749646	test-rmse:3.211386 
-#> [20]	train-rmse:1.711134	test-rmse:3.192852 
-#> [21]	train-rmse:1.666622	test-rmse:3.184116 
-#> [22]	train-rmse:1.628228	test-rmse:3.183039 
-#> [23]	train-rmse:1.593111	test-rmse:3.160884 
-#> [24]	train-rmse:1.569067	test-rmse:3.152188 
-#> [25]	train-rmse:1.538398	test-rmse:3.129954 
-#> [26]	train-rmse:1.487646	test-rmse:3.142378 
-#> [27]	train-rmse:1.463082	test-rmse:3.140700 
-#> [28]	train-rmse:1.420317	test-rmse:3.114777 
-#> [29]	train-rmse:1.403061	test-rmse:3.115688 
-#> [30]	train-rmse:1.358206	test-rmse:3.101864 
-#> [31]	train-rmse:1.340879	test-rmse:3.100730 
-#> [32]	train-rmse:1.311146	test-rmse:3.082216 
-#> [33]	train-rmse:1.290238	test-rmse:3.077993 
-#> [34]	train-rmse:1.280471	test-rmse:3.072337 
-#> [35]	train-rmse:1.237008	test-rmse:3.043744 
-#> [36]	train-rmse:1.223663	test-rmse:3.029086 
-#> [37]	train-rmse:1.214975	test-rmse:3.022611 
-#> [38]	train-rmse:1.185739	test-rmse:3.017997 
-#> [39]	train-rmse:1.164385	test-rmse:3.013672 
-#> [40]	train-rmse:1.154593	test-rmse:3.013402 
-#> [41]	train-rmse:1.139351	test-rmse:3.012511 
-#> [42]	train-rmse:1.121388	test-rmse:3.008539 
-#> [43]	train-rmse:1.104007	test-rmse:2.995401 
-#> [44]	train-rmse:1.097245	test-rmse:2.987109 
-#> [45]	train-rmse:1.077283	test-rmse:2.990181 
-#> [46]	train-rmse:1.050955	test-rmse:2.983796 
-#> [47]	train-rmse:1.036467	test-rmse:2.979257 
-#> [48]	train-rmse:1.028401	test-rmse:2.984757 
-#> [49]	train-rmse:0.994774	test-rmse:2.976397 
-#> [50]	train-rmse:0.985299	test-rmse:2.964851 
-#> [51]	train-rmse:0.977850	test-rmse:2.957399 
-#> [52]	train-rmse:0.956651	test-rmse:2.944479 
-#> [53]	train-rmse:0.949326	test-rmse:2.947867 
-#> [54]	train-rmse:0.927821	test-rmse:2.952446 
-#> [55]	train-rmse:0.908993	test-rmse:2.944909 
-#> [56]	train-rmse:0.884882	test-rmse:2.935588 
-#> [57]	train-rmse:0.873803	test-rmse:2.938716 
-#> [58]	train-rmse:0.845808	test-rmse:2.936628 
-#> [59]	train-rmse:0.840582	test-rmse:2.937588 
-#> [60]	train-rmse:0.831460	test-rmse:2.938824 
-#> [61]	train-rmse:0.813577	test-rmse:2.944781 
-#> [62]	train-rmse:0.800639	test-rmse:2.936827 
-#> [63]	train-rmse:0.790201	test-rmse:2.933134 
-#> [64]	train-rmse:0.776988	test-rmse:2.928452 
-#> [65]	train-rmse:0.757110	test-rmse:2.933903 
-#> [66]	train-rmse:0.743001	test-rmse:2.931065 
-#> [67]	train-rmse:0.735839	test-rmse:2.929767 
-#> [68]	train-rmse:0.723563	test-rmse:2.927346 
-#> [69]	train-rmse:0.713754	test-rmse:2.925463 
-#> [70]	train-rmse:0.698813	test-rmse:2.927692 
-#> [1]	train-rmse:16.674860	test-rmse:18.015271 
-#> [2]	train-rmse:12.063769	test-rmse:13.222241 
-#> [3]	train-rmse:8.811503	test-rmse:9.994677 
-#> [4]	train-rmse:6.582876	test-rmse:7.760594 
-#> [5]	train-rmse:5.018353	test-rmse:6.298805 
-#> [6]	train-rmse:3.953114	test-rmse:5.304116 
-#> [7]	train-rmse:3.254362	test-rmse:4.729481 
-#> [8]	train-rmse:2.794439	test-rmse:4.387156 
-#> [9]	train-rmse:2.501569	test-rmse:4.179851 
-#> [10]	train-rmse:2.274560	test-rmse:4.039873 
-#> [11]	train-rmse:2.137563	test-rmse:3.954427 
-#> [12]	train-rmse:2.045113	test-rmse:3.914518 
-#> [13]	train-rmse:1.954443	test-rmse:3.868235 
-#> [14]	train-rmse:1.882999	test-rmse:3.860332 
-#> [15]	train-rmse:1.804658	test-rmse:3.836931 
-#> [16]	train-rmse:1.754922	test-rmse:3.828111 
-#> [17]	train-rmse:1.716032	test-rmse:3.805052 
-#> [18]	train-rmse:1.650214	test-rmse:3.778186 
-#> [19]	train-rmse:1.600299	test-rmse:3.757008 
-#> [20]	train-rmse:1.553732	test-rmse:3.739166 
-#> [21]	train-rmse:1.525169	test-rmse:3.731639 
-#> [22]	train-rmse:1.489868	test-rmse:3.712193 
-#> [23]	train-rmse:1.442279	test-rmse:3.697139 
-#> [24]	train-rmse:1.414500	test-rmse:3.692106 
-#> [25]	train-rmse:1.365578	test-rmse:3.680468 
-#> [26]	train-rmse:1.347896	test-rmse:3.673943 
-#> [27]	train-rmse:1.332444	test-rmse:3.672703 
-#> [28]	train-rmse:1.305014	test-rmse:3.661026 
-#> [29]	train-rmse:1.277232	test-rmse:3.662294 
-#> [30]	train-rmse:1.248798	test-rmse:3.650389 
-#> [31]	train-rmse:1.241240	test-rmse:3.651887 
-#> [32]	train-rmse:1.217933	test-rmse:3.639778 
-#> [33]	train-rmse:1.206731	test-rmse:3.638429 
-#> [34]	train-rmse:1.187312	test-rmse:3.635264 
-#> [35]	train-rmse:1.164374	test-rmse:3.632264 
-#> [36]	train-rmse:1.131843	test-rmse:3.640556 
-#> [37]	train-rmse:1.124082	test-rmse:3.633127 
-#> [38]	train-rmse:1.110077	test-rmse:3.630717 
-#> [39]	train-rmse:1.100095	test-rmse:3.631217 
-#> [40]	train-rmse:1.081659	test-rmse:3.635696 
-#> [41]	train-rmse:1.072853	test-rmse:3.632723 
-#> [42]	train-rmse:1.055953	test-rmse:3.633422 
-#> [43]	train-rmse:1.031922	test-rmse:3.637305 
-#> [44]	train-rmse:1.023225	test-rmse:3.625068 
-#> [45]	train-rmse:1.006294	test-rmse:3.620948 
-#> [46]	train-rmse:0.994529	test-rmse:3.617117 
-#> [47]	train-rmse:0.979627	test-rmse:3.611547 
-#> [48]	train-rmse:0.971881	test-rmse:3.608559 
-#> [49]	train-rmse:0.965366	test-rmse:3.604040 
-#> [50]	train-rmse:0.954073	test-rmse:3.605317 
-#> [51]	train-rmse:0.931940	test-rmse:3.602057 
-#> [52]	train-rmse:0.920522	test-rmse:3.596360 
-#> [53]	train-rmse:0.916464	test-rmse:3.593168 
-#> [54]	train-rmse:0.898960	test-rmse:3.587739 
-#> [55]	train-rmse:0.873178	test-rmse:3.578689 
-#> [56]	train-rmse:0.863999	test-rmse:3.576982 
-#> [57]	train-rmse:0.844966	test-rmse:3.583278 
-#> [58]	train-rmse:0.833886	test-rmse:3.580366 
-#> [59]	train-rmse:0.818516	test-rmse:3.577260 
-#> [60]	train-rmse:0.805208	test-rmse:3.577898 
-#> [61]	train-rmse:0.797068	test-rmse:3.577023 
-#> [62]	train-rmse:0.785239	test-rmse:3.568169 
-#> [63]	train-rmse:0.776081	test-rmse:3.572902 
-#> [64]	train-rmse:0.756783	test-rmse:3.572786 
-#> [65]	train-rmse:0.737046	test-rmse:3.571570 
-#> [66]	train-rmse:0.729238	test-rmse:3.572501 
-#> [67]	train-rmse:0.723132	test-rmse:3.578412 
-#> [68]	train-rmse:0.710213	test-rmse:3.568142 
-#> [69]	train-rmse:0.703534	test-rmse:3.568780 
-#> [70]	train-rmse:0.688026	test-rmse:3.571313
-#> [1] 3.486078
-```
-
-``` r
+#> [1]	train-rmse:17.486497	test-rmse:16.481208 
+#> [2]	train-rmse:12.680142	test-rmse:11.986695 
+#> [3]	train-rmse:9.347974	test-rmse:8.749361 
+#> [4]	train-rmse:7.008353	test-rmse:6.675755 
+#> [5]	train-rmse:5.419391	test-rmse:5.367051 
+#> [6]	train-rmse:4.361966	test-rmse:4.561522 
+#> [7]	train-rmse:3.624947	test-rmse:4.032414 
+#> [8]	train-rmse:3.160847	test-rmse:3.820689 
+#> [9]	train-rmse:2.824743	test-rmse:3.610561 
+#> [10]	train-rmse:2.619698	test-rmse:3.507650 
+#> [11]	train-rmse:2.446987	test-rmse:3.484689 
+#> [12]	train-rmse:2.329737	test-rmse:3.439376 
+#> [13]	train-rmse:2.240210	test-rmse:3.430371 
+#> [14]	train-rmse:2.145244	test-rmse:3.391075 
+#> [15]	train-rmse:2.084449	test-rmse:3.360280 
+#> [16]	train-rmse:2.037245	test-rmse:3.379184 
+#> [17]	train-rmse:2.002897	test-rmse:3.366566 
+#> [18]	train-rmse:1.945952	test-rmse:3.376486 
+#> [19]	train-rmse:1.897742	test-rmse:3.367665 
+#> [20]	train-rmse:1.854231	test-rmse:3.348448 
+#> [21]	train-rmse:1.822154	test-rmse:3.349097 
+#> [22]	train-rmse:1.787204	test-rmse:3.304920 
+#> [23]	train-rmse:1.754270	test-rmse:3.293085 
+#> [24]	train-rmse:1.709816	test-rmse:3.272922 
+#> [25]	train-rmse:1.674145	test-rmse:3.269630 
+#> [26]	train-rmse:1.658251	test-rmse:3.258794 
+#> [27]	train-rmse:1.641139	test-rmse:3.242577 
+#> [28]	train-rmse:1.614929	test-rmse:3.240223 
+#> [29]	train-rmse:1.567291	test-rmse:3.240452 
+#> [30]	train-rmse:1.505544	test-rmse:3.201182 
+#> [31]	train-rmse:1.476929	test-rmse:3.205659 
+#> [32]	train-rmse:1.449647	test-rmse:3.194901 
+#> [33]	train-rmse:1.416530	test-rmse:3.203879 
+#> [34]	train-rmse:1.374986	test-rmse:3.187995 
+#> [35]	train-rmse:1.351330	test-rmse:3.190713 
+#> [36]	train-rmse:1.316853	test-rmse:3.191331 
+#> [37]	train-rmse:1.309591	test-rmse:3.182175 
+#> [38]	train-rmse:1.294090	test-rmse:3.175570 
+#> [39]	train-rmse:1.277757	test-rmse:3.180537 
+#> [40]	train-rmse:1.242837	test-rmse:3.186998 
+#> [41]	train-rmse:1.216383	test-rmse:3.187467 
+#> [42]	train-rmse:1.189996	test-rmse:3.184045 
+#> [43]	train-rmse:1.154658	test-rmse:3.159547 
+#> [44]	train-rmse:1.127478	test-rmse:3.139461 
+#> [45]	train-rmse:1.115798	test-rmse:3.134894 
+#> [46]	train-rmse:1.104211	test-rmse:3.128842 
+#> [47]	train-rmse:1.071158	test-rmse:3.123660 
+#> [48]	train-rmse:1.054669	test-rmse:3.138948 
+#> [49]	train-rmse:1.046175	test-rmse:3.131209 
+#> [50]	train-rmse:1.027679	test-rmse:3.124061 
+#> [51]	train-rmse:1.014130	test-rmse:3.101524 
+#> [52]	train-rmse:0.993697	test-rmse:3.111012 
+#> [53]	train-rmse:0.971893	test-rmse:3.107055 
+#> [54]	train-rmse:0.950926	test-rmse:3.110510 
+#> [55]	train-rmse:0.941455	test-rmse:3.112877 
+#> [56]	train-rmse:0.933776	test-rmse:3.106882 
+#> [57]	train-rmse:0.929408	test-rmse:3.108469 
+#> [58]	train-rmse:0.923074	test-rmse:3.107276 
+#> [59]	train-rmse:0.905856	test-rmse:3.098320 
+#> [60]	train-rmse:0.899052	test-rmse:3.094325 
+#> [61]	train-rmse:0.885400	test-rmse:3.100936 
+#> [62]	train-rmse:0.880479	test-rmse:3.099746 
+#> [63]	train-rmse:0.865969	test-rmse:3.094835 
+#> [64]	train-rmse:0.844476	test-rmse:3.100751 
+#> [65]	train-rmse:0.820401	test-rmse:3.091629 
+#> [66]	train-rmse:0.805832	test-rmse:3.097608 
+#> [67]	train-rmse:0.789846	test-rmse:3.092611 
+#> [68]	train-rmse:0.777879	test-rmse:3.098650 
+#> [69]	train-rmse:0.765226	test-rmse:3.102803 
+#> [70]	train-rmse:0.760578	test-rmse:3.103667 
+#> [1]	train-rmse:17.271000	test-rmse:16.919832 
+#> [2]	train-rmse:12.515867	test-rmse:12.332933 
+#> [3]	train-rmse:9.176305	test-rmse:9.186107 
+#> [4]	train-rmse:6.859001	test-rmse:7.174320 
+#> [5]	train-rmse:5.312209	test-rmse:5.824901 
+#> [6]	train-rmse:4.221931	test-rmse:5.080645 
+#> [7]	train-rmse:3.523406	test-rmse:4.570028 
+#> [8]	train-rmse:3.052697	test-rmse:4.377020 
+#> [9]	train-rmse:2.707503	test-rmse:4.246629 
+#> [10]	train-rmse:2.520544	test-rmse:4.196648 
+#> [11]	train-rmse:2.365464	test-rmse:4.141710 
+#> [12]	train-rmse:2.269290	test-rmse:4.131828 
+#> [13]	train-rmse:2.185941	test-rmse:4.165351 
+#> [14]	train-rmse:2.101735	test-rmse:4.138577 
+#> [15]	train-rmse:2.024846	test-rmse:4.137209 
+#> [16]	train-rmse:1.993709	test-rmse:4.152307 
+#> [17]	train-rmse:1.945708	test-rmse:4.175986 
+#> [18]	train-rmse:1.847535	test-rmse:4.171342 
+#> [19]	train-rmse:1.807317	test-rmse:4.181224 
+#> [20]	train-rmse:1.769414	test-rmse:4.178264 
+#> [21]	train-rmse:1.731118	test-rmse:4.161658 
+#> [22]	train-rmse:1.700002	test-rmse:4.176502 
+#> [23]	train-rmse:1.676733	test-rmse:4.192347 
+#> [24]	train-rmse:1.640807	test-rmse:4.199664 
+#> [25]	train-rmse:1.619645	test-rmse:4.182642 
+#> [26]	train-rmse:1.585201	test-rmse:4.188219 
+#> [27]	train-rmse:1.538859	test-rmse:4.193522 
+#> [28]	train-rmse:1.516105	test-rmse:4.200009 
+#> [29]	train-rmse:1.471954	test-rmse:4.171491 
+#> [30]	train-rmse:1.447593	test-rmse:4.184000 
+#> [31]	train-rmse:1.410964	test-rmse:4.163903 
+#> [32]	train-rmse:1.385057	test-rmse:4.159180 
+#> [33]	train-rmse:1.370980	test-rmse:4.157527 
+#> [34]	train-rmse:1.342666	test-rmse:4.163018 
+#> [35]	train-rmse:1.305707	test-rmse:4.167307 
+#> [36]	train-rmse:1.276964	test-rmse:4.157421 
+#> [37]	train-rmse:1.260409	test-rmse:4.156494 
+#> [38]	train-rmse:1.247981	test-rmse:4.153613 
+#> [39]	train-rmse:1.206421	test-rmse:4.146320 
+#> [40]	train-rmse:1.192975	test-rmse:4.150320 
+#> [41]	train-rmse:1.181422	test-rmse:4.152663 
+#> [42]	train-rmse:1.163184	test-rmse:4.153904 
+#> [43]	train-rmse:1.129128	test-rmse:4.171885 
+#> [44]	train-rmse:1.117972	test-rmse:4.162864 
+#> [45]	train-rmse:1.089349	test-rmse:4.159964 
+#> [46]	train-rmse:1.071597	test-rmse:4.175901 
+#> [47]	train-rmse:1.049902	test-rmse:4.172292 
+#> [48]	train-rmse:1.033387	test-rmse:4.176787 
+#> [49]	train-rmse:1.025796	test-rmse:4.179763 
+#> [50]	train-rmse:1.014940	test-rmse:4.177002 
+#> [51]	train-rmse:0.988000	test-rmse:4.167849 
+#> [52]	train-rmse:0.968624	test-rmse:4.168490 
+#> [53]	train-rmse:0.954143	test-rmse:4.184151 
+#> [54]	train-rmse:0.938822	test-rmse:4.176074 
+#> [55]	train-rmse:0.924480	test-rmse:4.195964 
+#> [56]	train-rmse:0.915237	test-rmse:4.191507 
+#> [57]	train-rmse:0.896332	test-rmse:4.198041 
+#> [58]	train-rmse:0.888031	test-rmse:4.190549 
+#> [59]	train-rmse:0.878456	test-rmse:4.190976 
+#> [60]	train-rmse:0.866349	test-rmse:4.188612 
+#> [61]	train-rmse:0.850429	test-rmse:4.171399 
+#> [62]	train-rmse:0.838005	test-rmse:4.171440 
+#> [63]	train-rmse:0.818213	test-rmse:4.164876 
+#> [64]	train-rmse:0.812399	test-rmse:4.160797 
+#> [65]	train-rmse:0.805299	test-rmse:4.160084 
+#> [66]	train-rmse:0.785106	test-rmse:4.159871 
+#> [67]	train-rmse:0.765562	test-rmse:4.169879 
+#> [68]	train-rmse:0.752423	test-rmse:4.161290 
+#> [69]	train-rmse:0.744580	test-rmse:4.158569 
+#> [70]	train-rmse:0.737120	test-rmse:4.149397 
+#> [1]	train-rmse:17.395489	test-rmse:16.510984 
+#> [2]	train-rmse:12.561541	test-rmse:12.113637 
+#> [3]	train-rmse:9.194729	test-rmse:9.024100 
+#> [4]	train-rmse:6.871181	test-rmse:6.819280 
+#> [5]	train-rmse:5.283668	test-rmse:5.467459 
+#> [6]	train-rmse:4.159390	test-rmse:4.582748 
+#> [7]	train-rmse:3.437048	test-rmse:4.007805 
+#> [8]	train-rmse:2.938627	test-rmse:3.730191 
+#> [9]	train-rmse:2.607829	test-rmse:3.559813 
+#> [10]	train-rmse:2.387627	test-rmse:3.441103 
+#> [11]	train-rmse:2.259817	test-rmse:3.354965 
+#> [12]	train-rmse:2.163043	test-rmse:3.318793 
+#> [13]	train-rmse:2.090711	test-rmse:3.260732 
+#> [14]	train-rmse:2.001951	test-rmse:3.229978 
+#> [15]	train-rmse:1.947110	test-rmse:3.248306 
+#> [16]	train-rmse:1.877404	test-rmse:3.216982 
+#> [17]	train-rmse:1.825344	test-rmse:3.195938 
+#> [18]	train-rmse:1.776860	test-rmse:3.173275 
+#> [19]	train-rmse:1.749610	test-rmse:3.168493 
+#> [20]	train-rmse:1.696357	test-rmse:3.144102 
+#> [21]	train-rmse:1.670021	test-rmse:3.126842 
+#> [22]	train-rmse:1.643466	test-rmse:3.105513 
+#> [23]	train-rmse:1.596573	test-rmse:3.110415 
+#> [24]	train-rmse:1.576580	test-rmse:3.104983 
+#> [25]	train-rmse:1.563637	test-rmse:3.099317 
+#> [26]	train-rmse:1.540325	test-rmse:3.092570 
+#> [27]	train-rmse:1.530043	test-rmse:3.093045 
+#> [28]	train-rmse:1.509687	test-rmse:3.106363 
+#> [29]	train-rmse:1.481246	test-rmse:3.082575 
+#> [30]	train-rmse:1.449740	test-rmse:3.083743 
+#> [31]	train-rmse:1.425405	test-rmse:3.098682 
+#> [32]	train-rmse:1.382464	test-rmse:3.101694 
+#> [33]	train-rmse:1.363775	test-rmse:3.083235 
+#> [34]	train-rmse:1.349192	test-rmse:3.075221 
+#> [35]	train-rmse:1.323078	test-rmse:3.076637 
+#> [36]	train-rmse:1.314223	test-rmse:3.073725 
+#> [37]	train-rmse:1.303232	test-rmse:3.069449 
+#> [38]	train-rmse:1.284872	test-rmse:3.079453 
+#> [39]	train-rmse:1.263972	test-rmse:3.068180 
+#> [40]	train-rmse:1.239298	test-rmse:3.084689 
+#> [41]	train-rmse:1.213229	test-rmse:3.096412 
+#> [42]	train-rmse:1.202738	test-rmse:3.099342 
+#> [43]	train-rmse:1.181719	test-rmse:3.097213 
+#> [44]	train-rmse:1.175878	test-rmse:3.091491 
+#> [45]	train-rmse:1.156718	test-rmse:3.087315 
+#> [46]	train-rmse:1.144089	test-rmse:3.095235 
+#> [47]	train-rmse:1.130485	test-rmse:3.094214 
+#> [48]	train-rmse:1.100811	test-rmse:3.071416 
+#> [49]	train-rmse:1.085433	test-rmse:3.068388 
+#> [50]	train-rmse:1.053607	test-rmse:3.061209 
+#> [51]	train-rmse:1.038903	test-rmse:3.052623 
+#> [52]	train-rmse:1.014005	test-rmse:3.035290 
+#> [53]	train-rmse:0.996117	test-rmse:3.040920 
+#> [54]	train-rmse:0.968683	test-rmse:3.043354 
+#> [55]	train-rmse:0.947833	test-rmse:3.020012 
+#> [56]	train-rmse:0.935359	test-rmse:3.012993 
+#> [57]	train-rmse:0.917079	test-rmse:3.002739 
+#> [58]	train-rmse:0.901128	test-rmse:3.009477 
+#> [59]	train-rmse:0.887161	test-rmse:2.998941 
+#> [60]	train-rmse:0.878894	test-rmse:2.993458 
+#> [61]	train-rmse:0.870364	test-rmse:2.988974 
+#> [62]	train-rmse:0.854939	test-rmse:2.986013 
+#> [63]	train-rmse:0.847620	test-rmse:2.983280 
+#> [64]	train-rmse:0.844183	test-rmse:2.980246 
+#> [65]	train-rmse:0.834523	test-rmse:2.972377 
+#> [66]	train-rmse:0.820483	test-rmse:2.973813 
+#> [67]	train-rmse:0.811202	test-rmse:2.962869 
+#> [68]	train-rmse:0.795636	test-rmse:2.959582 
+#> [69]	train-rmse:0.778703	test-rmse:2.950396 
+#> [70]	train-rmse:0.768674	test-rmse:2.959586 
+#> [1]	train-rmse:17.380206	test-rmse:17.031772 
+#> [2]	train-rmse:12.588357	test-rmse:12.494238 
+#> [3]	train-rmse:9.244460	test-rmse:9.391844 
+#> [4]	train-rmse:6.930907	test-rmse:7.257440 
+#> [5]	train-rmse:5.306428	test-rmse:5.935620 
+#> [6]	train-rmse:4.212014	test-rmse:5.070906 
+#> [7]	train-rmse:3.480988	test-rmse:4.427449 
+#> [8]	train-rmse:2.971855	test-rmse:4.134873 
+#> [9]	train-rmse:2.632878	test-rmse:3.940482 
+#> [10]	train-rmse:2.428489	test-rmse:3.843724 
+#> [11]	train-rmse:2.242322	test-rmse:3.705470 
+#> [12]	train-rmse:2.134822	test-rmse:3.654557 
+#> [13]	train-rmse:2.039841	test-rmse:3.597136 
+#> [14]	train-rmse:1.959057	test-rmse:3.540029 
+#> [15]	train-rmse:1.875066	test-rmse:3.546649 
+#> [16]	train-rmse:1.829356	test-rmse:3.556482 
+#> [17]	train-rmse:1.778048	test-rmse:3.541097 
+#> [18]	train-rmse:1.748775	test-rmse:3.534900 
+#> [19]	train-rmse:1.681980	test-rmse:3.511449 
+#> [20]	train-rmse:1.653488	test-rmse:3.488497 
+#> [21]	train-rmse:1.634753	test-rmse:3.488181 
+#> [22]	train-rmse:1.588483	test-rmse:3.465585 
+#> [23]	train-rmse:1.549751	test-rmse:3.468146 
+#> [24]	train-rmse:1.521693	test-rmse:3.459599 
+#> [25]	train-rmse:1.484244	test-rmse:3.458086 
+#> [26]	train-rmse:1.461672	test-rmse:3.469976 
+#> [27]	train-rmse:1.428051	test-rmse:3.464792 
+#> [28]	train-rmse:1.397826	test-rmse:3.483781 
+#> [29]	train-rmse:1.370554	test-rmse:3.475009 
+#> [30]	train-rmse:1.344898	test-rmse:3.475376 
+#> [31]	train-rmse:1.330812	test-rmse:3.474912 
+#> [32]	train-rmse:1.318602	test-rmse:3.481810 
+#> [33]	train-rmse:1.289089	test-rmse:3.468368 
+#> [34]	train-rmse:1.267479	test-rmse:3.470361 
+#> [35]	train-rmse:1.250811	test-rmse:3.467983 
+#> [36]	train-rmse:1.230678	test-rmse:3.485372 
+#> [37]	train-rmse:1.209182	test-rmse:3.490498 
+#> [38]	train-rmse:1.198441	test-rmse:3.480437 
+#> [39]	train-rmse:1.182828	test-rmse:3.484867 
+#> [40]	train-rmse:1.172483	test-rmse:3.487583 
+#> [41]	train-rmse:1.144719	test-rmse:3.484114 
+#> [42]	train-rmse:1.120774	test-rmse:3.478865 
+#> [43]	train-rmse:1.094923	test-rmse:3.470110 
+#> [44]	train-rmse:1.082106	test-rmse:3.477357 
+#> [45]	train-rmse:1.049023	test-rmse:3.470272 
+#> [46]	train-rmse:1.023616	test-rmse:3.466944 
+#> [47]	train-rmse:1.016039	test-rmse:3.466201 
+#> [48]	train-rmse:0.992702	test-rmse:3.473398 
+#> [49]	train-rmse:0.969921	test-rmse:3.472677 
+#> [50]	train-rmse:0.959166	test-rmse:3.483063 
+#> [51]	train-rmse:0.937026	test-rmse:3.475435 
+#> [52]	train-rmse:0.919188	test-rmse:3.464488 
+#> [53]	train-rmse:0.907835	test-rmse:3.460747 
+#> [54]	train-rmse:0.888932	test-rmse:3.459577 
+#> [55]	train-rmse:0.883432	test-rmse:3.455239 
+#> [56]	train-rmse:0.869079	test-rmse:3.452456 
+#> [57]	train-rmse:0.857464	test-rmse:3.453599 
+#> [58]	train-rmse:0.843735	test-rmse:3.448456 
+#> [59]	train-rmse:0.830671	test-rmse:3.445266 
+#> [60]	train-rmse:0.827228	test-rmse:3.443131 
+#> [61]	train-rmse:0.811642	test-rmse:3.438849 
+#> [62]	train-rmse:0.785364	test-rmse:3.432073 
+#> [63]	train-rmse:0.776901	test-rmse:3.436418 
+#> [64]	train-rmse:0.769347	test-rmse:3.437193 
+#> [65]	train-rmse:0.751765	test-rmse:3.433901 
+#> [66]	train-rmse:0.738440	test-rmse:3.432187 
+#> [67]	train-rmse:0.726259	test-rmse:3.429399 
+#> [68]	train-rmse:0.719352	test-rmse:3.424938 
+#> [69]	train-rmse:0.714389	test-rmse:3.432535 
+#> [70]	train-rmse:0.709031	test-rmse:3.433105 
+#> [1]	train-rmse:16.984875	test-rmse:17.697009 
+#> [2]	train-rmse:12.324817	test-rmse:12.953677 
+#> [3]	train-rmse:9.045915	test-rmse:9.644390 
+#> [4]	train-rmse:6.784900	test-rmse:7.500049 
+#> [5]	train-rmse:5.253843	test-rmse:6.065439 
+#> [6]	train-rmse:4.178446	test-rmse:5.162901 
+#> [7]	train-rmse:3.480812	test-rmse:4.724464 
+#> [8]	train-rmse:3.021814	test-rmse:4.466702 
+#> [9]	train-rmse:2.700977	test-rmse:4.238377 
+#> [10]	train-rmse:2.466828	test-rmse:4.115037 
+#> [11]	train-rmse:2.308248	test-rmse:4.046978 
+#> [12]	train-rmse:2.200536	test-rmse:4.003357 
+#> [13]	train-rmse:2.077451	test-rmse:3.937996 
+#> [14]	train-rmse:1.993869	test-rmse:3.915808 
+#> [15]	train-rmse:1.935727	test-rmse:3.875300 
+#> [16]	train-rmse:1.880466	test-rmse:3.874977 
+#> [17]	train-rmse:1.844265	test-rmse:3.858995 
+#> [18]	train-rmse:1.806236	test-rmse:3.880547 
+#> [19]	train-rmse:1.746038	test-rmse:3.860371 
+#> [20]	train-rmse:1.698725	test-rmse:3.859303 
+#> [21]	train-rmse:1.677481	test-rmse:3.847714 
+#> [22]	train-rmse:1.644719	test-rmse:3.846820 
+#> [23]	train-rmse:1.619180	test-rmse:3.864139 
+#> [24]	train-rmse:1.586591	test-rmse:3.864736 
+#> [25]	train-rmse:1.535714	test-rmse:3.855715 
+#> [26]	train-rmse:1.523442	test-rmse:3.848466 
+#> [27]	train-rmse:1.493008	test-rmse:3.820469 
+#> [28]	train-rmse:1.468519	test-rmse:3.814175 
+#> [29]	train-rmse:1.455317	test-rmse:3.819515 
+#> [30]	train-rmse:1.422747	test-rmse:3.834053 
+#> [31]	train-rmse:1.366023	test-rmse:3.834437 
+#> [32]	train-rmse:1.331921	test-rmse:3.818818 
+#> [33]	train-rmse:1.302149	test-rmse:3.814104 
+#> [34]	train-rmse:1.288872	test-rmse:3.815516 
+#> [35]	train-rmse:1.276577	test-rmse:3.801725 
+#> [36]	train-rmse:1.253637	test-rmse:3.793647 
+#> [37]	train-rmse:1.237153	test-rmse:3.813853 
+#> [38]	train-rmse:1.230567	test-rmse:3.813858 
+#> [39]	train-rmse:1.219340	test-rmse:3.813696 
+#> [40]	train-rmse:1.206634	test-rmse:3.811301 
+#> [41]	train-rmse:1.178934	test-rmse:3.817181 
+#> [42]	train-rmse:1.153515	test-rmse:3.819049 
+#> [43]	train-rmse:1.137846	test-rmse:3.813922 
+#> [44]	train-rmse:1.120400	test-rmse:3.797407 
+#> [45]	train-rmse:1.110760	test-rmse:3.797720 
+#> [46]	train-rmse:1.102493	test-rmse:3.794102 
+#> [47]	train-rmse:1.082844	test-rmse:3.787301 
+#> [48]	train-rmse:1.066238	test-rmse:3.797389 
+#> [49]	train-rmse:1.041964	test-rmse:3.800018 
+#> [50]	train-rmse:1.029571	test-rmse:3.801595 
+#> [51]	train-rmse:1.014837	test-rmse:3.802143 
+#> [52]	train-rmse:0.986400	test-rmse:3.804814 
+#> [53]	train-rmse:0.982557	test-rmse:3.799498 
+#> [54]	train-rmse:0.972485	test-rmse:3.806163 
+#> [55]	train-rmse:0.956978	test-rmse:3.808189 
+#> [56]	train-rmse:0.933708	test-rmse:3.801178 
+#> [57]	train-rmse:0.918174	test-rmse:3.798300 
+#> [58]	train-rmse:0.906931	test-rmse:3.798485 
+#> [59]	train-rmse:0.902619	test-rmse:3.801572 
+#> [60]	train-rmse:0.898097	test-rmse:3.797797 
+#> [61]	train-rmse:0.889969	test-rmse:3.790598 
+#> [62]	train-rmse:0.874802	test-rmse:3.789076 
+#> [63]	train-rmse:0.858111	test-rmse:3.781398 
+#> [64]	train-rmse:0.847368	test-rmse:3.782311 
+#> [65]	train-rmse:0.840788	test-rmse:3.784421 
+#> [66]	train-rmse:0.824566	test-rmse:3.786287 
+#> [67]	train-rmse:0.820674	test-rmse:3.785419 
+#> [68]	train-rmse:0.806288	test-rmse:3.782655 
+#> [69]	train-rmse:0.794688	test-rmse:3.777987 
+#> [70]	train-rmse:0.787247	test-rmse:3.781246 
+#> [1]	train-rmse:17.713810	test-rmse:16.241058 
+#> [2]	train-rmse:12.828331	test-rmse:11.856221 
+#> [3]	train-rmse:9.419469	test-rmse:8.836258 
+#> [4]	train-rmse:7.026210	test-rmse:6.923035 
+#> [5]	train-rmse:5.389105	test-rmse:5.719839 
+#> [6]	train-rmse:4.278109	test-rmse:5.031750 
+#> [7]	train-rmse:3.544784	test-rmse:4.677846 
+#> [8]	train-rmse:3.083702	test-rmse:4.488374 
+#> [9]	train-rmse:2.784028	test-rmse:4.375848 
+#> [10]	train-rmse:2.607710	test-rmse:4.356227 
+#> [11]	train-rmse:2.457488	test-rmse:4.225116 
+#> [12]	train-rmse:2.308632	test-rmse:4.120038 
+#> [13]	train-rmse:2.213545	test-rmse:4.118951 
+#> [14]	train-rmse:2.101512	test-rmse:4.099988 
+#> [15]	train-rmse:2.064077	test-rmse:4.084281 
+#> [16]	train-rmse:1.992316	test-rmse:4.112185 
+#> [17]	train-rmse:1.941101	test-rmse:4.068031 
+#> [18]	train-rmse:1.889634	test-rmse:4.047856 
+#> [19]	train-rmse:1.837156	test-rmse:4.047730 
+#> [20]	train-rmse:1.796701	test-rmse:4.030062 
+#> [21]	train-rmse:1.753100	test-rmse:4.037393 
+#> [22]	train-rmse:1.716282	test-rmse:4.035883 
+#> [23]	train-rmse:1.688023	test-rmse:4.044036 
+#> [24]	train-rmse:1.637178	test-rmse:4.025172 
+#> [25]	train-rmse:1.590153	test-rmse:4.001287 
+#> [26]	train-rmse:1.546720	test-rmse:3.999570 
+#> [27]	train-rmse:1.518661	test-rmse:3.996621 
+#> [28]	train-rmse:1.504567	test-rmse:3.997688 
+#> [29]	train-rmse:1.494228	test-rmse:4.000123 
+#> [30]	train-rmse:1.452043	test-rmse:3.998804 
+#> [31]	train-rmse:1.432224	test-rmse:3.995112 
+#> [32]	train-rmse:1.414814	test-rmse:3.993324 
+#> [33]	train-rmse:1.385945	test-rmse:3.988753 
+#> [34]	train-rmse:1.358210	test-rmse:3.974604 
+#> [35]	train-rmse:1.327928	test-rmse:3.959248 
+#> [36]	train-rmse:1.292086	test-rmse:3.921402 
+#> [37]	train-rmse:1.270701	test-rmse:3.925025 
+#> [38]	train-rmse:1.250430	test-rmse:3.928783 
+#> [39]	train-rmse:1.216950	test-rmse:3.926792 
+#> [40]	train-rmse:1.194814	test-rmse:3.923330 
+#> [41]	train-rmse:1.179701	test-rmse:3.927600 
+#> [42]	train-rmse:1.165947	test-rmse:3.926244 
+#> [43]	train-rmse:1.139723	test-rmse:3.925082 
+#> [44]	train-rmse:1.126418	test-rmse:3.931113 
+#> [45]	train-rmse:1.108641	test-rmse:3.927126 
+#> [46]	train-rmse:1.079074	test-rmse:3.912517 
+#> [47]	train-rmse:1.067105	test-rmse:3.914097 
+#> [48]	train-rmse:1.057996	test-rmse:3.912245 
+#> [49]	train-rmse:1.038300	test-rmse:3.911922 
+#> [50]	train-rmse:1.026288	test-rmse:3.906951 
+#> [51]	train-rmse:1.017630	test-rmse:3.903757 
+#> [52]	train-rmse:1.009007	test-rmse:3.906669 
+#> [53]	train-rmse:0.986859	test-rmse:3.904847 
+#> [54]	train-rmse:0.962731	test-rmse:3.899167 
+#> [55]	train-rmse:0.952384	test-rmse:3.887059 
+#> [56]	train-rmse:0.939516	test-rmse:3.885651 
+#> [57]	train-rmse:0.932103	test-rmse:3.884431 
+#> [58]	train-rmse:0.919283	test-rmse:3.878682 
+#> [59]	train-rmse:0.905617	test-rmse:3.876369 
+#> [60]	train-rmse:0.881147	test-rmse:3.883946 
+#> [61]	train-rmse:0.858171	test-rmse:3.884682 
+#> [62]	train-rmse:0.844415	test-rmse:3.882521 
+#> [63]	train-rmse:0.837669	test-rmse:3.882943 
+#> [64]	train-rmse:0.832174	test-rmse:3.880904 
+#> [65]	train-rmse:0.810570	test-rmse:3.889605 
+#> [66]	train-rmse:0.804834	test-rmse:3.894057 
+#> [67]	train-rmse:0.791626	test-rmse:3.893028 
+#> [68]	train-rmse:0.768779	test-rmse:3.879874 
+#> [69]	train-rmse:0.758766	test-rmse:3.879197 
+#> [70]	train-rmse:0.749967	test-rmse:3.879459 
+#> [1]	train-rmse:16.997379	test-rmse:17.451532 
+#> [2]	train-rmse:12.327516	test-rmse:12.704180 
+#> [3]	train-rmse:9.040641	test-rmse:9.445564 
+#> [4]	train-rmse:6.807076	test-rmse:7.205961 
+#> [5]	train-rmse:5.244356	test-rmse:5.800310 
+#> [6]	train-rmse:4.159316	test-rmse:4.861555 
+#> [7]	train-rmse:3.462708	test-rmse:4.311892 
+#> [8]	train-rmse:3.014366	test-rmse:4.028696 
+#> [9]	train-rmse:2.720645	test-rmse:3.843606 
+#> [10]	train-rmse:2.520422	test-rmse:3.689043 
+#> [11]	train-rmse:2.373553	test-rmse:3.583901 
+#> [12]	train-rmse:2.277313	test-rmse:3.518069 
+#> [13]	train-rmse:2.201194	test-rmse:3.488645 
+#> [14]	train-rmse:2.100364	test-rmse:3.458100 
+#> [15]	train-rmse:2.038767	test-rmse:3.436961 
+#> [16]	train-rmse:1.981704	test-rmse:3.423819 
+#> [17]	train-rmse:1.939475	test-rmse:3.405802 
+#> [18]	train-rmse:1.878451	test-rmse:3.391935 
+#> [19]	train-rmse:1.822122	test-rmse:3.356745 
+#> [20]	train-rmse:1.760522	test-rmse:3.348070 
+#> [21]	train-rmse:1.728997	test-rmse:3.338443 
+#> [22]	train-rmse:1.678775	test-rmse:3.331897 
+#> [23]	train-rmse:1.619983	test-rmse:3.302209 
+#> [24]	train-rmse:1.587433	test-rmse:3.294017 
+#> [25]	train-rmse:1.558678	test-rmse:3.283673 
+#> [26]	train-rmse:1.526820	test-rmse:3.272382 
+#> [27]	train-rmse:1.484628	test-rmse:3.279604 
+#> [28]	train-rmse:1.453687	test-rmse:3.294263 
+#> [29]	train-rmse:1.420792	test-rmse:3.286631 
+#> [30]	train-rmse:1.393862	test-rmse:3.271825 
+#> [31]	train-rmse:1.375700	test-rmse:3.273577 
+#> [32]	train-rmse:1.349823	test-rmse:3.277158 
+#> [33]	train-rmse:1.330934	test-rmse:3.276069 
+#> [34]	train-rmse:1.306806	test-rmse:3.261469 
+#> [35]	train-rmse:1.290785	test-rmse:3.248870 
+#> [36]	train-rmse:1.276678	test-rmse:3.256351 
+#> [37]	train-rmse:1.250650	test-rmse:3.249693 
+#> [38]	train-rmse:1.239255	test-rmse:3.236318 
+#> [39]	train-rmse:1.220674	test-rmse:3.239413 
+#> [40]	train-rmse:1.183392	test-rmse:3.232085 
+#> [41]	train-rmse:1.164879	test-rmse:3.237248 
+#> [42]	train-rmse:1.150750	test-rmse:3.229254 
+#> [43]	train-rmse:1.145172	test-rmse:3.225219 
+#> [44]	train-rmse:1.127229	test-rmse:3.224636 
+#> [45]	train-rmse:1.101395	test-rmse:3.223810 
+#> [46]	train-rmse:1.091903	test-rmse:3.213180 
+#> [47]	train-rmse:1.076728	test-rmse:3.220686 
+#> [48]	train-rmse:1.061354	test-rmse:3.215525 
+#> [49]	train-rmse:1.051190	test-rmse:3.225935 
+#> [50]	train-rmse:1.021991	test-rmse:3.224229 
+#> [51]	train-rmse:1.010068	test-rmse:3.224404 
+#> [52]	train-rmse:0.999470	test-rmse:3.223292 
+#> [53]	train-rmse:0.970067	test-rmse:3.206137 
+#> [54]	train-rmse:0.964163	test-rmse:3.209393 
+#> [55]	train-rmse:0.942628	test-rmse:3.200447 
+#> [56]	train-rmse:0.934682	test-rmse:3.211937 
+#> [57]	train-rmse:0.924950	test-rmse:3.206770 
+#> [58]	train-rmse:0.904265	test-rmse:3.206695 
+#> [59]	train-rmse:0.881713	test-rmse:3.209321 
+#> [60]	train-rmse:0.867272	test-rmse:3.208244 
+#> [61]	train-rmse:0.854953	test-rmse:3.211635 
+#> [62]	train-rmse:0.842953	test-rmse:3.216044 
+#> [63]	train-rmse:0.836405	test-rmse:3.213471 
+#> [64]	train-rmse:0.830658	test-rmse:3.210704 
+#> [65]	train-rmse:0.807639	test-rmse:3.200923 
+#> [66]	train-rmse:0.799781	test-rmse:3.199911 
+#> [67]	train-rmse:0.788423	test-rmse:3.192200 
+#> [68]	train-rmse:0.772786	test-rmse:3.195580 
+#> [69]	train-rmse:0.757038	test-rmse:3.199317 
+#> [70]	train-rmse:0.752378	test-rmse:3.192875 
+#> [1]	train-rmse:17.057881	test-rmse:17.368816 
+#> [2]	train-rmse:12.397999	test-rmse:12.721176 
+#> [3]	train-rmse:9.179658	test-rmse:9.397576 
+#> [4]	train-rmse:6.899103	test-rmse:7.217575 
+#> [5]	train-rmse:5.339070	test-rmse:5.748317 
+#> [6]	train-rmse:4.268698	test-rmse:4.793658 
+#> [7]	train-rmse:3.590526	test-rmse:4.206053 
+#> [8]	train-rmse:3.118371	test-rmse:3.869369 
+#> [9]	train-rmse:2.790172	test-rmse:3.652297 
+#> [10]	train-rmse:2.544289	test-rmse:3.532488 
+#> [11]	train-rmse:2.385160	test-rmse:3.444538 
+#> [12]	train-rmse:2.267360	test-rmse:3.375863 
+#> [13]	train-rmse:2.164550	test-rmse:3.327617 
+#> [14]	train-rmse:2.077892	test-rmse:3.311205 
+#> [15]	train-rmse:2.007370	test-rmse:3.300080 
+#> [16]	train-rmse:1.963144	test-rmse:3.297826 
+#> [17]	train-rmse:1.890445	test-rmse:3.244709 
+#> [18]	train-rmse:1.840363	test-rmse:3.226010 
+#> [19]	train-rmse:1.807124	test-rmse:3.226659 
+#> [20]	train-rmse:1.731958	test-rmse:3.221266 
+#> [21]	train-rmse:1.712411	test-rmse:3.213196 
+#> [22]	train-rmse:1.671912	test-rmse:3.209998 
+#> [23]	train-rmse:1.650644	test-rmse:3.207031 
+#> [24]	train-rmse:1.597803	test-rmse:3.192777 
+#> [25]	train-rmse:1.544983	test-rmse:3.176058 
+#> [26]	train-rmse:1.512009	test-rmse:3.164827 
+#> [27]	train-rmse:1.490265	test-rmse:3.165031 
+#> [28]	train-rmse:1.463455	test-rmse:3.145430 
+#> [29]	train-rmse:1.413624	test-rmse:3.118182 
+#> [30]	train-rmse:1.381894	test-rmse:3.114592 
+#> [31]	train-rmse:1.373177	test-rmse:3.115505 
+#> [32]	train-rmse:1.333080	test-rmse:3.099397 
+#> [33]	train-rmse:1.296291	test-rmse:3.102611 
+#> [34]	train-rmse:1.284492	test-rmse:3.100417 
+#> [35]	train-rmse:1.270912	test-rmse:3.096351 
+#> [36]	train-rmse:1.255799	test-rmse:3.103873 
+#> [37]	train-rmse:1.212618	test-rmse:3.110615 
+#> [38]	train-rmse:1.178545	test-rmse:3.099686 
+#> [39]	train-rmse:1.165140	test-rmse:3.092176 
+#> [40]	train-rmse:1.148148	test-rmse:3.088673 
+#> [41]	train-rmse:1.133738	test-rmse:3.073517 
+#> [42]	train-rmse:1.118084	test-rmse:3.060142 
+#> [43]	train-rmse:1.109201	test-rmse:3.060820 
+#> [44]	train-rmse:1.101690	test-rmse:3.059667 
+#> [45]	train-rmse:1.090387	test-rmse:3.056292 
+#> [46]	train-rmse:1.067051	test-rmse:3.052778 
+#> [47]	train-rmse:1.054564	test-rmse:3.050693 
+#> [48]	train-rmse:1.032769	test-rmse:3.049460 
+#> [49]	train-rmse:1.024019	test-rmse:3.047590 
+#> [50]	train-rmse:1.002596	test-rmse:3.046943 
+#> [51]	train-rmse:0.977975	test-rmse:3.050363 
+#> [52]	train-rmse:0.967894	test-rmse:3.053568 
+#> [53]	train-rmse:0.957275	test-rmse:3.051814 
+#> [54]	train-rmse:0.940385	test-rmse:3.055941 
+#> [55]	train-rmse:0.928878	test-rmse:3.055873 
+#> [56]	train-rmse:0.905830	test-rmse:3.052251 
+#> [57]	train-rmse:0.896455	test-rmse:3.052866 
+#> [58]	train-rmse:0.887365	test-rmse:3.057423 
+#> [59]	train-rmse:0.874122	test-rmse:3.056521 
+#> [60]	train-rmse:0.865980	test-rmse:3.057188 
+#> [61]	train-rmse:0.855847	test-rmse:3.051740 
+#> [62]	train-rmse:0.842819	test-rmse:3.047978 
+#> [63]	train-rmse:0.832470	test-rmse:3.051294 
+#> [64]	train-rmse:0.811250	test-rmse:3.051492 
+#> [65]	train-rmse:0.808786	test-rmse:3.051843 
+#> [66]	train-rmse:0.798990	test-rmse:3.057929 
+#> [67]	train-rmse:0.783010	test-rmse:3.064119 
+#> [68]	train-rmse:0.777822	test-rmse:3.062087 
+#> [69]	train-rmse:0.770918	test-rmse:3.059189 
+#> [70]	train-rmse:0.754899	test-rmse:3.059076 
+#> [1]	train-rmse:17.412960	test-rmse:16.681394 
+#> [2]	train-rmse:12.652660	test-rmse:12.189434 
+#> [3]	train-rmse:9.296199	test-rmse:8.954743 
+#> [4]	train-rmse:6.973352	test-rmse:6.788588 
+#> [5]	train-rmse:5.367166	test-rmse:5.339162 
+#> [6]	train-rmse:4.311594	test-rmse:4.608044 
+#> [7]	train-rmse:3.607140	test-rmse:4.078680 
+#> [8]	train-rmse:3.163652	test-rmse:3.843206 
+#> [9]	train-rmse:2.849114	test-rmse:3.649577 
+#> [10]	train-rmse:2.590645	test-rmse:3.550432 
+#> [11]	train-rmse:2.440900	test-rmse:3.519477 
+#> [12]	train-rmse:2.340064	test-rmse:3.474820 
+#> [13]	train-rmse:2.265105	test-rmse:3.441133 
+#> [14]	train-rmse:2.189529	test-rmse:3.415320 
+#> [15]	train-rmse:2.141899	test-rmse:3.384855 
+#> [16]	train-rmse:2.069348	test-rmse:3.358941 
+#> [17]	train-rmse:2.034522	test-rmse:3.340774 
+#> [18]	train-rmse:1.999661	test-rmse:3.344826 
+#> [19]	train-rmse:1.938931	test-rmse:3.319317 
+#> [20]	train-rmse:1.912546	test-rmse:3.293988 
+#> [21]	train-rmse:1.886576	test-rmse:3.258163 
+#> [22]	train-rmse:1.847894	test-rmse:3.253090 
+#> [23]	train-rmse:1.831469	test-rmse:3.234605 
+#> [24]	train-rmse:1.751538	test-rmse:3.214050 
+#> [25]	train-rmse:1.740301	test-rmse:3.206351 
+#> [26]	train-rmse:1.688788	test-rmse:3.189390 
+#> [27]	train-rmse:1.649900	test-rmse:3.176641 
+#> [28]	train-rmse:1.613690	test-rmse:3.180401 
+#> [29]	train-rmse:1.569443	test-rmse:3.179498 
+#> [30]	train-rmse:1.549176	test-rmse:3.178520 
+#> [31]	train-rmse:1.523100	test-rmse:3.163688 
+#> [32]	train-rmse:1.508207	test-rmse:3.164436 
+#> [33]	train-rmse:1.458552	test-rmse:3.158960 
+#> [34]	train-rmse:1.446232	test-rmse:3.143078 
+#> [35]	train-rmse:1.431799	test-rmse:3.140469 
+#> [36]	train-rmse:1.400321	test-rmse:3.133625 
+#> [37]	train-rmse:1.369973	test-rmse:3.115593 
+#> [38]	train-rmse:1.352752	test-rmse:3.129119 
+#> [39]	train-rmse:1.301946	test-rmse:3.116484 
+#> [40]	train-rmse:1.281978	test-rmse:3.113416 
+#> [41]	train-rmse:1.259055	test-rmse:3.109692 
+#> [42]	train-rmse:1.236656	test-rmse:3.115181 
+#> [43]	train-rmse:1.224697	test-rmse:3.121522 
+#> [44]	train-rmse:1.215824	test-rmse:3.118802 
+#> [45]	train-rmse:1.198657	test-rmse:3.124249 
+#> [46]	train-rmse:1.186001	test-rmse:3.116307 
+#> [47]	train-rmse:1.171970	test-rmse:3.117426 
+#> [48]	train-rmse:1.154399	test-rmse:3.107584 
+#> [49]	train-rmse:1.148894	test-rmse:3.108027 
+#> [50]	train-rmse:1.137316	test-rmse:3.111089 
+#> [51]	train-rmse:1.107201	test-rmse:3.109275 
+#> [52]	train-rmse:1.085121	test-rmse:3.120356 
+#> [53]	train-rmse:1.061365	test-rmse:3.113679 
+#> [54]	train-rmse:1.052869	test-rmse:3.113354 
+#> [55]	train-rmse:1.027213	test-rmse:3.112807 
+#> [56]	train-rmse:1.018945	test-rmse:3.116606 
+#> [57]	train-rmse:1.009530	test-rmse:3.117851 
+#> [58]	train-rmse:1.002134	test-rmse:3.105817 
+#> [59]	train-rmse:0.990317	test-rmse:3.100990 
+#> [60]	train-rmse:0.965903	test-rmse:3.090352 
+#> [61]	train-rmse:0.954821	test-rmse:3.085283 
+#> [62]	train-rmse:0.944863	test-rmse:3.089749 
+#> [63]	train-rmse:0.927950	test-rmse:3.091168 
+#> [64]	train-rmse:0.907285	test-rmse:3.087667 
+#> [65]	train-rmse:0.889235	test-rmse:3.076890 
+#> [66]	train-rmse:0.875737	test-rmse:3.087059 
+#> [67]	train-rmse:0.862707	test-rmse:3.090322 
+#> [68]	train-rmse:0.853752	test-rmse:3.085296 
+#> [69]	train-rmse:0.837307	test-rmse:3.084133 
+#> [70]	train-rmse:0.822196	test-rmse:3.084090 
+#> [1]	train-rmse:17.169506	test-rmse:17.225022 
+#> [2]	train-rmse:12.455913	test-rmse:12.752763 
+#> [3]	train-rmse:9.151926	test-rmse:9.553192 
+#> [4]	train-rmse:6.884537	test-rmse:7.505901 
+#> [5]	train-rmse:5.325362	test-rmse:6.039607 
+#> [6]	train-rmse:4.302497	test-rmse:5.109753 
+#> [7]	train-rmse:3.606837	test-rmse:4.558336 
+#> [8]	train-rmse:3.093282	test-rmse:4.084655 
+#> [9]	train-rmse:2.800401	test-rmse:3.924412 
+#> [10]	train-rmse:2.540384	test-rmse:3.814947 
+#> [11]	train-rmse:2.354165	test-rmse:3.688904 
+#> [12]	train-rmse:2.256497	test-rmse:3.611516 
+#> [13]	train-rmse:2.132042	test-rmse:3.511207 
+#> [14]	train-rmse:2.069947	test-rmse:3.471555 
+#> [15]	train-rmse:1.997296	test-rmse:3.390646 
+#> [16]	train-rmse:1.940055	test-rmse:3.368159 
+#> [17]	train-rmse:1.885953	test-rmse:3.361642 
+#> [18]	train-rmse:1.838922	test-rmse:3.390506 
+#> [19]	train-rmse:1.798524	test-rmse:3.387458 
+#> [20]	train-rmse:1.756683	test-rmse:3.367634 
+#> [21]	train-rmse:1.724023	test-rmse:3.356533 
+#> [22]	train-rmse:1.685320	test-rmse:3.336750 
+#> [23]	train-rmse:1.661951	test-rmse:3.335087 
+#> [24]	train-rmse:1.603331	test-rmse:3.323405 
+#> [25]	train-rmse:1.555986	test-rmse:3.305589 
+#> [26]	train-rmse:1.529450	test-rmse:3.297357 
+#> [27]	train-rmse:1.504871	test-rmse:3.280927 
+#> [28]	train-rmse:1.485139	test-rmse:3.281735 
+#> [29]	train-rmse:1.469784	test-rmse:3.283056 
+#> [30]	train-rmse:1.420708	test-rmse:3.286066 
+#> [31]	train-rmse:1.392765	test-rmse:3.280234 
+#> [32]	train-rmse:1.383273	test-rmse:3.281691 
+#> [33]	train-rmse:1.362129	test-rmse:3.280715 
+#> [34]	train-rmse:1.331734	test-rmse:3.284393 
+#> [35]	train-rmse:1.310938	test-rmse:3.280485 
+#> [36]	train-rmse:1.302003	test-rmse:3.268143 
+#> [37]	train-rmse:1.285602	test-rmse:3.267923 
+#> [38]	train-rmse:1.270166	test-rmse:3.263989 
+#> [39]	train-rmse:1.259880	test-rmse:3.269257 
+#> [40]	train-rmse:1.234744	test-rmse:3.278989 
+#> [41]	train-rmse:1.217414	test-rmse:3.276972 
+#> [42]	train-rmse:1.211225	test-rmse:3.271526 
+#> [43]	train-rmse:1.199504	test-rmse:3.277273 
+#> [44]	train-rmse:1.179804	test-rmse:3.278123 
+#> [45]	train-rmse:1.147487	test-rmse:3.258568 
+#> [46]	train-rmse:1.134460	test-rmse:3.259104 
+#> [47]	train-rmse:1.106672	test-rmse:3.251910 
+#> [48]	train-rmse:1.089201	test-rmse:3.247609 
+#> [49]	train-rmse:1.079810	test-rmse:3.244909 
+#> [50]	train-rmse:1.047328	test-rmse:3.236303 
+#> [51]	train-rmse:1.035362	test-rmse:3.237717 
+#> [52]	train-rmse:1.004347	test-rmse:3.237464 
+#> [53]	train-rmse:0.990274	test-rmse:3.240111 
+#> [54]	train-rmse:0.979509	test-rmse:3.245756 
+#> [55]	train-rmse:0.975044	test-rmse:3.245766 
+#> [56]	train-rmse:0.955212	test-rmse:3.227891 
+#> [57]	train-rmse:0.934651	test-rmse:3.233161 
+#> [58]	train-rmse:0.912748	test-rmse:3.221678 
+#> [59]	train-rmse:0.897412	test-rmse:3.223187 
+#> [60]	train-rmse:0.881171	test-rmse:3.222607 
+#> [61]	train-rmse:0.871897	test-rmse:3.222442 
+#> [62]	train-rmse:0.851408	test-rmse:3.219850 
+#> [63]	train-rmse:0.833504	test-rmse:3.221976 
+#> [64]	train-rmse:0.826423	test-rmse:3.220464 
+#> [65]	train-rmse:0.819444	test-rmse:3.218707 
+#> [66]	train-rmse:0.803940	test-rmse:3.222166 
+#> [67]	train-rmse:0.798206	test-rmse:3.222465 
+#> [68]	train-rmse:0.785378	test-rmse:3.218759 
+#> [69]	train-rmse:0.780135	test-rmse:3.219273 
+#> [70]	train-rmse:0.773542	test-rmse:3.219333 
+#> [1]	train-rmse:17.164552	test-rmse:17.242814 
+#> [2]	train-rmse:12.471723	test-rmse:12.579258 
+#> [3]	train-rmse:9.207161	test-rmse:9.448715 
+#> [4]	train-rmse:6.867933	test-rmse:7.289990 
+#> [5]	train-rmse:5.303911	test-rmse:5.857567 
+#> [6]	train-rmse:4.206712	test-rmse:4.998401 
+#> [7]	train-rmse:3.465868	test-rmse:4.376139 
+#> [8]	train-rmse:2.991414	test-rmse:3.999812 
+#> [9]	train-rmse:2.668558	test-rmse:3.791950 
+#> [10]	train-rmse:2.428843	test-rmse:3.626125 
+#> [11]	train-rmse:2.295141	test-rmse:3.532538 
+#> [12]	train-rmse:2.209122	test-rmse:3.487994 
+#> [13]	train-rmse:2.135309	test-rmse:3.409080 
+#> [14]	train-rmse:2.062738	test-rmse:3.342879 
+#> [15]	train-rmse:1.972212	test-rmse:3.341761 
+#> [16]	train-rmse:1.905831	test-rmse:3.312981 
+#> [17]	train-rmse:1.864826	test-rmse:3.294408 
+#> [18]	train-rmse:1.821740	test-rmse:3.285478 
+#> [19]	train-rmse:1.776895	test-rmse:3.276286 
+#> [20]	train-rmse:1.739859	test-rmse:3.256479 
+#> [21]	train-rmse:1.679596	test-rmse:3.271925 
+#> [22]	train-rmse:1.623119	test-rmse:3.269289 
+#> [23]	train-rmse:1.604576	test-rmse:3.269806 
+#> [24]	train-rmse:1.577794	test-rmse:3.256249 
+#> [25]	train-rmse:1.544814	test-rmse:3.256503 
+#> [26]	train-rmse:1.519333	test-rmse:3.246662 
+#> [27]	train-rmse:1.498719	test-rmse:3.244969 
+#> [28]	train-rmse:1.458306	test-rmse:3.245996 
+#> [29]	train-rmse:1.437625	test-rmse:3.240521 
+#> [30]	train-rmse:1.410925	test-rmse:3.234643 
+#> [31]	train-rmse:1.387669	test-rmse:3.218191 
+#> [32]	train-rmse:1.346276	test-rmse:3.200522 
+#> [33]	train-rmse:1.322706	test-rmse:3.205671 
+#> [34]	train-rmse:1.292469	test-rmse:3.201344 
+#> [35]	train-rmse:1.270995	test-rmse:3.193838 
+#> [36]	train-rmse:1.243724	test-rmse:3.191893 
+#> [37]	train-rmse:1.212973	test-rmse:3.184971 
+#> [38]	train-rmse:1.202365	test-rmse:3.172221 
+#> [39]	train-rmse:1.163736	test-rmse:3.169551 
+#> [40]	train-rmse:1.157949	test-rmse:3.173690 
+#> [41]	train-rmse:1.130852	test-rmse:3.183101 
+#> [42]	train-rmse:1.118583	test-rmse:3.181193 
+#> [43]	train-rmse:1.096160	test-rmse:3.180477 
+#> [44]	train-rmse:1.086879	test-rmse:3.167624 
+#> [45]	train-rmse:1.077244	test-rmse:3.174473 
+#> [46]	train-rmse:1.064686	test-rmse:3.181578 
+#> [47]	train-rmse:1.046804	test-rmse:3.178921 
+#> [48]	train-rmse:1.036998	test-rmse:3.179391 
+#> [49]	train-rmse:1.022280	test-rmse:3.176065 
+#> [50]	train-rmse:1.010822	test-rmse:3.174446 
+#> [51]	train-rmse:1.001944	test-rmse:3.166613 
+#> [52]	train-rmse:0.983659	test-rmse:3.177306 
+#> [53]	train-rmse:0.963870	test-rmse:3.166899 
+#> [54]	train-rmse:0.945945	test-rmse:3.164375 
+#> [55]	train-rmse:0.926894	test-rmse:3.165051 
+#> [56]	train-rmse:0.907626	test-rmse:3.156174 
+#> [57]	train-rmse:0.892841	test-rmse:3.158669 
+#> [58]	train-rmse:0.884488	test-rmse:3.153873 
+#> [59]	train-rmse:0.878829	test-rmse:3.155999 
+#> [60]	train-rmse:0.874050	test-rmse:3.156696 
+#> [61]	train-rmse:0.854229	test-rmse:3.148281 
+#> [62]	train-rmse:0.834348	test-rmse:3.143383 
+#> [63]	train-rmse:0.821748	test-rmse:3.139207 
+#> [64]	train-rmse:0.815034	test-rmse:3.132746 
+#> [65]	train-rmse:0.808634	test-rmse:3.126192 
+#> [66]	train-rmse:0.805577	test-rmse:3.128236 
+#> [67]	train-rmse:0.791926	test-rmse:3.133038 
+#> [68]	train-rmse:0.786542	test-rmse:3.127416 
+#> [69]	train-rmse:0.782589	test-rmse:3.126790 
+#> [70]	train-rmse:0.759756	test-rmse:3.117040 
+#> [1]	train-rmse:17.365677	test-rmse:16.981133 
+#> [2]	train-rmse:12.627085	test-rmse:12.371665 
+#> [3]	train-rmse:9.283167	test-rmse:9.081143 
+#> [4]	train-rmse:7.007401	test-rmse:6.895097 
+#> [5]	train-rmse:5.414292	test-rmse:5.378851 
+#> [6]	train-rmse:4.327584	test-rmse:4.426966 
+#> [7]	train-rmse:3.650806	test-rmse:3.858720 
+#> [8]	train-rmse:3.187126	test-rmse:3.570247 
+#> [9]	train-rmse:2.841159	test-rmse:3.415336 
+#> [10]	train-rmse:2.613889	test-rmse:3.311968 
+#> [11]	train-rmse:2.442909	test-rmse:3.265147 
+#> [12]	train-rmse:2.289956	test-rmse:3.127611 
+#> [13]	train-rmse:2.185121	test-rmse:3.084449 
+#> [14]	train-rmse:2.089459	test-rmse:3.048229 
+#> [15]	train-rmse:2.019436	test-rmse:3.046697 
+#> [16]	train-rmse:1.927465	test-rmse:3.041559 
+#> [17]	train-rmse:1.874340	test-rmse:3.059228 
+#> [18]	train-rmse:1.827809	test-rmse:3.033781 
+#> [19]	train-rmse:1.759303	test-rmse:3.054434 
+#> [20]	train-rmse:1.736359	test-rmse:3.050429 
+#> [21]	train-rmse:1.698841	test-rmse:3.060269 
+#> [22]	train-rmse:1.668556	test-rmse:3.057619 
+#> [23]	train-rmse:1.645172	test-rmse:3.067866 
+#> [24]	train-rmse:1.591316	test-rmse:3.093922 
+#> [25]	train-rmse:1.564144	test-rmse:3.092687 
+#> [26]	train-rmse:1.525636	test-rmse:3.078053 
+#> [27]	train-rmse:1.498496	test-rmse:3.073215 
+#> [28]	train-rmse:1.444955	test-rmse:3.091102 
+#> [29]	train-rmse:1.412006	test-rmse:3.088701 
+#> [30]	train-rmse:1.391050	test-rmse:3.080158 
+#> [31]	train-rmse:1.367150	test-rmse:3.089364 
+#> [32]	train-rmse:1.328217	test-rmse:3.094719 
+#> [33]	train-rmse:1.313198	test-rmse:3.094374 
+#> [34]	train-rmse:1.276102	test-rmse:3.094325 
+#> [35]	train-rmse:1.246812	test-rmse:3.087894 
+#> [36]	train-rmse:1.226088	test-rmse:3.090196 
+#> [37]	train-rmse:1.210656	test-rmse:3.096260 
+#> [38]	train-rmse:1.193339	test-rmse:3.106484 
+#> [39]	train-rmse:1.182922	test-rmse:3.114498 
+#> [40]	train-rmse:1.173687	test-rmse:3.112313 
+#> [41]	train-rmse:1.160263	test-rmse:3.105608 
+#> [42]	train-rmse:1.144793	test-rmse:3.123336 
+#> [43]	train-rmse:1.131790	test-rmse:3.123308 
+#> [44]	train-rmse:1.098635	test-rmse:3.122902 
+#> [45]	train-rmse:1.089013	test-rmse:3.116918 
+#> [46]	train-rmse:1.069510	test-rmse:3.120333 
+#> [47]	train-rmse:1.055863	test-rmse:3.128643 
+#> [48]	train-rmse:1.039188	test-rmse:3.131400 
+#> [49]	train-rmse:1.006483	test-rmse:3.125944 
+#> [50]	train-rmse:0.984161	test-rmse:3.137047 
+#> [51]	train-rmse:0.968635	test-rmse:3.144871 
+#> [52]	train-rmse:0.952427	test-rmse:3.139466 
+#> [53]	train-rmse:0.930935	test-rmse:3.131501 
+#> [54]	train-rmse:0.918740	test-rmse:3.138763 
+#> [55]	train-rmse:0.899297	test-rmse:3.138424 
+#> [56]	train-rmse:0.891931	test-rmse:3.147669 
+#> [57]	train-rmse:0.886033	test-rmse:3.149456 
+#> [58]	train-rmse:0.874594	test-rmse:3.151274 
+#> [59]	train-rmse:0.860872	test-rmse:3.142111 
+#> [60]	train-rmse:0.847046	test-rmse:3.137227 
+#> [61]	train-rmse:0.840928	test-rmse:3.141958 
+#> [62]	train-rmse:0.819154	test-rmse:3.147682 
+#> [63]	train-rmse:0.807491	test-rmse:3.147035 
+#> [64]	train-rmse:0.799199	test-rmse:3.149395 
+#> [65]	train-rmse:0.785173	test-rmse:3.151627 
+#> [66]	train-rmse:0.779256	test-rmse:3.155283 
+#> [67]	train-rmse:0.767509	test-rmse:3.151191 
+#> [68]	train-rmse:0.752762	test-rmse:3.140265 
+#> [69]	train-rmse:0.747249	test-rmse:3.138050 
+#> [70]	train-rmse:0.740448	test-rmse:3.142820 
+#> [1]	train-rmse:17.106814	test-rmse:17.250180 
+#> [2]	train-rmse:12.377038	test-rmse:12.772505 
+#> [3]	train-rmse:9.067686	test-rmse:9.741168 
+#> [4]	train-rmse:6.773091	test-rmse:7.754187 
+#> [5]	train-rmse:5.224824	test-rmse:6.525330 
+#> [6]	train-rmse:4.144283	test-rmse:5.684826 
+#> [7]	train-rmse:3.430951	test-rmse:5.265582 
+#> [8]	train-rmse:2.964625	test-rmse:4.986421 
+#> [9]	train-rmse:2.648607	test-rmse:4.886857 
+#> [10]	train-rmse:2.416541	test-rmse:4.725083 
+#> [11]	train-rmse:2.242877	test-rmse:4.528417 
+#> [12]	train-rmse:2.122946	test-rmse:4.397233 
+#> [13]	train-rmse:2.045196	test-rmse:4.360970 
+#> [14]	train-rmse:1.977138	test-rmse:4.332111 
+#> [15]	train-rmse:1.889960	test-rmse:4.321811 
+#> [16]	train-rmse:1.814296	test-rmse:4.311061 
+#> [17]	train-rmse:1.765740	test-rmse:4.285000 
+#> [18]	train-rmse:1.720769	test-rmse:4.266297 
+#> [19]	train-rmse:1.694682	test-rmse:4.260227 
+#> [20]	train-rmse:1.673406	test-rmse:4.248314 
+#> [21]	train-rmse:1.640517	test-rmse:4.242088 
+#> [22]	train-rmse:1.613464	test-rmse:4.247419 
+#> [23]	train-rmse:1.583350	test-rmse:4.238865 
+#> [24]	train-rmse:1.540880	test-rmse:4.231536 
+#> [25]	train-rmse:1.495060	test-rmse:4.252198 
+#> [26]	train-rmse:1.464764	test-rmse:4.244365 
+#> [27]	train-rmse:1.448202	test-rmse:4.198582 
+#> [28]	train-rmse:1.425685	test-rmse:4.188188 
+#> [29]	train-rmse:1.406633	test-rmse:4.192507 
+#> [30]	train-rmse:1.395349	test-rmse:4.193589 
+#> [31]	train-rmse:1.376466	test-rmse:4.190414 
+#> [32]	train-rmse:1.336125	test-rmse:4.189229 
+#> [33]	train-rmse:1.321900	test-rmse:4.154224 
+#> [34]	train-rmse:1.305214	test-rmse:4.146886 
+#> [35]	train-rmse:1.280075	test-rmse:4.143943 
+#> [36]	train-rmse:1.259627	test-rmse:4.139292 
+#> [37]	train-rmse:1.229639	test-rmse:4.132941 
+#> [38]	train-rmse:1.220821	test-rmse:4.138425 
+#> [39]	train-rmse:1.200879	test-rmse:4.129853 
+#> [40]	train-rmse:1.186947	test-rmse:4.104963 
+#> [41]	train-rmse:1.171959	test-rmse:4.102531 
+#> [42]	train-rmse:1.141721	test-rmse:4.086933 
+#> [43]	train-rmse:1.110592	test-rmse:4.099258 
+#> [44]	train-rmse:1.095057	test-rmse:4.098190 
+#> [45]	train-rmse:1.068194	test-rmse:4.097428 
+#> [46]	train-rmse:1.046173	test-rmse:4.089784 
+#> [47]	train-rmse:1.033784	test-rmse:4.076871 
+#> [48]	train-rmse:1.010406	test-rmse:4.068876 
+#> [49]	train-rmse:0.987087	test-rmse:4.080664 
+#> [50]	train-rmse:0.973166	test-rmse:4.082035 
+#> [51]	train-rmse:0.969764	test-rmse:4.082538 
+#> [52]	train-rmse:0.963108	test-rmse:4.085631 
+#> [53]	train-rmse:0.946885	test-rmse:4.088078 
+#> [54]	train-rmse:0.928519	test-rmse:4.095592 
+#> [55]	train-rmse:0.915581	test-rmse:4.091596 
+#> [56]	train-rmse:0.905270	test-rmse:4.087808 
+#> [57]	train-rmse:0.890827	test-rmse:4.082792 
+#> [58]	train-rmse:0.879801	test-rmse:4.077462 
+#> [59]	train-rmse:0.872119	test-rmse:4.084161 
+#> [60]	train-rmse:0.853952	test-rmse:4.089163 
+#> [61]	train-rmse:0.842883	test-rmse:4.088458 
+#> [62]	train-rmse:0.823886	test-rmse:4.080652 
+#> [63]	train-rmse:0.812544	test-rmse:4.080648 
+#> [64]	train-rmse:0.800273	test-rmse:4.082317 
+#> [65]	train-rmse:0.785629	test-rmse:4.078284 
+#> [66]	train-rmse:0.764952	test-rmse:4.077993 
+#> [67]	train-rmse:0.748780	test-rmse:4.068827 
+#> [68]	train-rmse:0.740748	test-rmse:4.063622 
+#> [69]	train-rmse:0.728420	test-rmse:4.071308 
+#> [70]	train-rmse:0.713275	test-rmse:4.068478 
+#> [1]	train-rmse:16.843327	test-rmse:17.630448 
+#> [2]	train-rmse:12.230086	test-rmse:13.025456 
+#> [3]	train-rmse:9.033050	test-rmse:9.805279 
+#> [4]	train-rmse:6.802771	test-rmse:7.573263 
+#> [5]	train-rmse:5.277781	test-rmse:6.218051 
+#> [6]	train-rmse:4.181441	test-rmse:5.410309 
+#> [7]	train-rmse:3.508052	test-rmse:4.869971 
+#> [8]	train-rmse:3.041484	test-rmse:4.473363 
+#> [9]	train-rmse:2.702130	test-rmse:4.224139 
+#> [10]	train-rmse:2.477018	test-rmse:4.049994 
+#> [11]	train-rmse:2.295460	test-rmse:3.941098 
+#> [12]	train-rmse:2.158347	test-rmse:3.840117 
+#> [13]	train-rmse:2.087225	test-rmse:3.776254 
+#> [14]	train-rmse:2.011524	test-rmse:3.755294 
+#> [15]	train-rmse:1.923977	test-rmse:3.706982 
+#> [16]	train-rmse:1.853436	test-rmse:3.697812 
+#> [17]	train-rmse:1.789510	test-rmse:3.637131 
+#> [18]	train-rmse:1.735547	test-rmse:3.615964 
+#> [19]	train-rmse:1.706160	test-rmse:3.613229 
+#> [20]	train-rmse:1.655062	test-rmse:3.593897 
+#> [21]	train-rmse:1.627220	test-rmse:3.571851 
+#> [22]	train-rmse:1.597271	test-rmse:3.553981 
+#> [23]	train-rmse:1.560725	test-rmse:3.536863 
+#> [24]	train-rmse:1.541744	test-rmse:3.518866 
+#> [25]	train-rmse:1.476404	test-rmse:3.508670 
+#> [26]	train-rmse:1.457586	test-rmse:3.496073 
+#> [27]	train-rmse:1.401413	test-rmse:3.477101 
+#> [28]	train-rmse:1.357625	test-rmse:3.455486 
+#> [29]	train-rmse:1.343528	test-rmse:3.465116 
+#> [30]	train-rmse:1.331339	test-rmse:3.450320 
+#> [31]	train-rmse:1.304855	test-rmse:3.438186 
+#> [32]	train-rmse:1.277205	test-rmse:3.429056 
+#> [33]	train-rmse:1.267476	test-rmse:3.431337 
+#> [34]	train-rmse:1.260252	test-rmse:3.429773 
+#> [35]	train-rmse:1.239489	test-rmse:3.418485 
+#> [36]	train-rmse:1.211899	test-rmse:3.418756 
+#> [37]	train-rmse:1.175095	test-rmse:3.421404 
+#> [38]	train-rmse:1.168278	test-rmse:3.431754 
+#> [39]	train-rmse:1.145681	test-rmse:3.428072 
+#> [40]	train-rmse:1.110845	test-rmse:3.425727 
+#> [41]	train-rmse:1.099152	test-rmse:3.415371 
+#> [42]	train-rmse:1.072962	test-rmse:3.406520 
+#> [43]	train-rmse:1.063818	test-rmse:3.409243 
+#> [44]	train-rmse:1.055725	test-rmse:3.402111 
+#> [45]	train-rmse:1.039420	test-rmse:3.396152 
+#> [46]	train-rmse:1.018120	test-rmse:3.388016 
+#> [47]	train-rmse:1.012710	test-rmse:3.396671 
+#> [48]	train-rmse:1.007173	test-rmse:3.396966 
+#> [49]	train-rmse:0.988877	test-rmse:3.403745 
+#> [50]	train-rmse:0.964777	test-rmse:3.414491 
+#> [51]	train-rmse:0.950579	test-rmse:3.420110 
+#> [52]	train-rmse:0.942251	test-rmse:3.408809 
+#> [53]	train-rmse:0.934431	test-rmse:3.404427 
+#> [54]	train-rmse:0.910658	test-rmse:3.406597 
+#> [55]	train-rmse:0.897827	test-rmse:3.399108 
+#> [56]	train-rmse:0.881912	test-rmse:3.396343 
+#> [57]	train-rmse:0.864401	test-rmse:3.394349 
+#> [58]	train-rmse:0.845182	test-rmse:3.403125 
+#> [59]	train-rmse:0.836448	test-rmse:3.400948 
+#> [60]	train-rmse:0.820609	test-rmse:3.404693 
+#> [61]	train-rmse:0.800922	test-rmse:3.401149 
+#> [62]	train-rmse:0.782807	test-rmse:3.398375 
+#> [63]	train-rmse:0.763460	test-rmse:3.392056 
+#> [64]	train-rmse:0.752839	test-rmse:3.403859 
+#> [65]	train-rmse:0.745040	test-rmse:3.398278 
+#> [66]	train-rmse:0.738352	test-rmse:3.407817 
+#> [67]	train-rmse:0.728654	test-rmse:3.412509 
+#> [68]	train-rmse:0.718183	test-rmse:3.410390 
+#> [69]	train-rmse:0.708034	test-rmse:3.409943 
+#> [70]	train-rmse:0.691025	test-rmse:3.409508 
+#> [1]	train-rmse:16.949845	test-rmse:17.824195 
+#> [2]	train-rmse:12.341275	test-rmse:13.165814 
+#> [3]	train-rmse:9.089034	test-rmse:10.017984 
+#> [4]	train-rmse:6.861677	test-rmse:7.900584 
+#> [5]	train-rmse:5.303419	test-rmse:6.384306 
+#> [6]	train-rmse:4.259769	test-rmse:5.392201 
+#> [7]	train-rmse:3.576851	test-rmse:4.763239 
+#> [8]	train-rmse:3.067836	test-rmse:4.400579 
+#> [9]	train-rmse:2.758527	test-rmse:4.167037 
+#> [10]	train-rmse:2.537287	test-rmse:4.075754 
+#> [11]	train-rmse:2.385793	test-rmse:4.035144 
+#> [12]	train-rmse:2.275513	test-rmse:3.953069 
+#> [13]	train-rmse:2.200654	test-rmse:3.912271 
+#> [14]	train-rmse:2.080634	test-rmse:3.865646 
+#> [15]	train-rmse:2.031579	test-rmse:3.864741 
+#> [16]	train-rmse:1.952998	test-rmse:3.852482 
+#> [17]	train-rmse:1.925618	test-rmse:3.874928 
+#> [18]	train-rmse:1.880780	test-rmse:3.859902 
+#> [19]	train-rmse:1.842236	test-rmse:3.840464 
+#> [20]	train-rmse:1.801217	test-rmse:3.860147 
+#> [21]	train-rmse:1.734936	test-rmse:3.875298 
+#> [22]	train-rmse:1.693691	test-rmse:3.847974 
+#> [23]	train-rmse:1.664794	test-rmse:3.830507 
+#> [24]	train-rmse:1.632001	test-rmse:3.840560 
+#> [25]	train-rmse:1.585405	test-rmse:3.813598 
+#> [26]	train-rmse:1.562326	test-rmse:3.813233 
+#> [27]	train-rmse:1.513265	test-rmse:3.817980 
+#> [28]	train-rmse:1.496845	test-rmse:3.816506 
+#> [29]	train-rmse:1.482189	test-rmse:3.831948 
+#> [30]	train-rmse:1.463350	test-rmse:3.821553 
+#> [31]	train-rmse:1.447672	test-rmse:3.823210 
+#> [32]	train-rmse:1.436055	test-rmse:3.821823 
+#> [33]	train-rmse:1.409757	test-rmse:3.811259 
+#> [34]	train-rmse:1.369539	test-rmse:3.807964 
+#> [35]	train-rmse:1.343920	test-rmse:3.805067 
+#> [36]	train-rmse:1.314949	test-rmse:3.817181 
+#> [37]	train-rmse:1.293520	test-rmse:3.817634 
+#> [38]	train-rmse:1.270368	test-rmse:3.808399 
+#> [39]	train-rmse:1.249667	test-rmse:3.813187 
+#> [40]	train-rmse:1.236692	test-rmse:3.811879 
+#> [41]	train-rmse:1.213191	test-rmse:3.798800 
+#> [42]	train-rmse:1.176563	test-rmse:3.798468 
+#> [43]	train-rmse:1.165220	test-rmse:3.800355 
+#> [44]	train-rmse:1.135637	test-rmse:3.807197 
+#> [45]	train-rmse:1.115599	test-rmse:3.788496 
+#> [46]	train-rmse:1.103269	test-rmse:3.792169 
+#> [47]	train-rmse:1.091085	test-rmse:3.784152 
+#> [48]	train-rmse:1.062291	test-rmse:3.779102 
+#> [49]	train-rmse:1.037378	test-rmse:3.759805 
+#> [50]	train-rmse:1.010207	test-rmse:3.756861 
+#> [51]	train-rmse:0.994277	test-rmse:3.751901 
+#> [52]	train-rmse:0.976165	test-rmse:3.748819 
+#> [53]	train-rmse:0.953688	test-rmse:3.742070 
+#> [54]	train-rmse:0.934867	test-rmse:3.747525 
+#> [55]	train-rmse:0.918004	test-rmse:3.745348 
+#> [56]	train-rmse:0.906836	test-rmse:3.749111 
+#> [57]	train-rmse:0.890291	test-rmse:3.746518 
+#> [58]	train-rmse:0.879625	test-rmse:3.747108 
+#> [59]	train-rmse:0.864893	test-rmse:3.742562 
+#> [60]	train-rmse:0.844640	test-rmse:3.739284 
+#> [61]	train-rmse:0.840344	test-rmse:3.736408 
+#> [62]	train-rmse:0.828862	test-rmse:3.729288 
+#> [63]	train-rmse:0.814817	test-rmse:3.730951 
+#> [64]	train-rmse:0.808629	test-rmse:3.725393 
+#> [65]	train-rmse:0.802357	test-rmse:3.725300 
+#> [66]	train-rmse:0.785755	test-rmse:3.723347 
+#> [67]	train-rmse:0.778525	test-rmse:3.717697 
+#> [68]	train-rmse:0.767660	test-rmse:3.720729 
+#> [69]	train-rmse:0.758042	test-rmse:3.722188 
+#> [70]	train-rmse:0.751187	test-rmse:3.714882 
+#> [1]	train-rmse:17.164234	test-rmse:17.290856 
+#> [2]	train-rmse:12.385317	test-rmse:12.873364 
+#> [3]	train-rmse:9.038469	test-rmse:9.814048 
+#> [4]	train-rmse:6.712088	test-rmse:7.904425 
+#> [5]	train-rmse:5.123116	test-rmse:6.569116 
+#> [6]	train-rmse:4.057769	test-rmse:5.819921 
+#> [7]	train-rmse:3.311019	test-rmse:5.398898 
+#> [8]	train-rmse:2.833277	test-rmse:5.063300 
+#> [9]	train-rmse:2.526343	test-rmse:4.910978 
+#> [10]	train-rmse:2.330799	test-rmse:4.824775 
+#> [11]	train-rmse:2.190479	test-rmse:4.778139 
+#> [12]	train-rmse:2.039613	test-rmse:4.722453 
+#> [13]	train-rmse:1.937872	test-rmse:4.606422 
+#> [14]	train-rmse:1.879678	test-rmse:4.581573 
+#> [15]	train-rmse:1.825661	test-rmse:4.561776 
+#> [16]	train-rmse:1.759723	test-rmse:4.534257 
+#> [17]	train-rmse:1.710874	test-rmse:4.524862 
+#> [18]	train-rmse:1.664751	test-rmse:4.508217 
+#> [19]	train-rmse:1.626281	test-rmse:4.503706 
+#> [20]	train-rmse:1.597528	test-rmse:4.489805 
+#> [21]	train-rmse:1.566941	test-rmse:4.483998 
+#> [22]	train-rmse:1.531071	test-rmse:4.464565 
+#> [23]	train-rmse:1.487685	test-rmse:4.456293 
+#> [24]	train-rmse:1.449060	test-rmse:4.454694 
+#> [25]	train-rmse:1.413143	test-rmse:4.465825 
+#> [26]	train-rmse:1.382532	test-rmse:4.457578 
+#> [27]	train-rmse:1.340500	test-rmse:4.452180 
+#> [28]	train-rmse:1.314598	test-rmse:4.453048 
+#> [29]	train-rmse:1.299256	test-rmse:4.453786 
+#> [30]	train-rmse:1.271586	test-rmse:4.434573 
+#> [31]	train-rmse:1.229094	test-rmse:4.418154 
+#> [32]	train-rmse:1.197729	test-rmse:4.394206 
+#> [33]	train-rmse:1.184765	test-rmse:4.397141 
+#> [34]	train-rmse:1.166993	test-rmse:4.383526 
+#> [35]	train-rmse:1.152211	test-rmse:4.381627 
+#> [36]	train-rmse:1.141174	test-rmse:4.381599 
+#> [37]	train-rmse:1.112470	test-rmse:4.372176 
+#> [38]	train-rmse:1.097799	test-rmse:4.376624 
+#> [39]	train-rmse:1.067566	test-rmse:4.378681 
+#> [40]	train-rmse:1.053726	test-rmse:4.372034 
+#> [41]	train-rmse:1.034273	test-rmse:4.369001 
+#> [42]	train-rmse:1.011066	test-rmse:4.363326 
+#> [43]	train-rmse:0.985568	test-rmse:4.371523 
+#> [44]	train-rmse:0.967149	test-rmse:4.371314 
+#> [45]	train-rmse:0.951092	test-rmse:4.372927 
+#> [46]	train-rmse:0.945378	test-rmse:4.373406 
+#> [47]	train-rmse:0.931181	test-rmse:4.370639 
+#> [48]	train-rmse:0.919773	test-rmse:4.368897 
+#> [49]	train-rmse:0.898064	test-rmse:4.364811 
+#> [50]	train-rmse:0.886152	test-rmse:4.364254 
+#> [51]	train-rmse:0.867474	test-rmse:4.369778 
+#> [52]	train-rmse:0.860538	test-rmse:4.361710 
+#> [53]	train-rmse:0.855384	test-rmse:4.357094 
+#> [54]	train-rmse:0.844501	test-rmse:4.357192 
+#> [55]	train-rmse:0.828474	test-rmse:4.347019 
+#> [56]	train-rmse:0.805482	test-rmse:4.339889 
+#> [57]	train-rmse:0.796325	test-rmse:4.339752 
+#> [58]	train-rmse:0.783212	test-rmse:4.338486 
+#> [59]	train-rmse:0.774764	test-rmse:4.337017 
+#> [60]	train-rmse:0.754201	test-rmse:4.343769 
+#> [61]	train-rmse:0.748837	test-rmse:4.343565 
+#> [62]	train-rmse:0.734607	test-rmse:4.341011 
+#> [63]	train-rmse:0.719883	test-rmse:4.342027 
+#> [64]	train-rmse:0.711308	test-rmse:4.341379 
+#> [65]	train-rmse:0.697173	test-rmse:4.335417 
+#> [66]	train-rmse:0.681067	test-rmse:4.336891 
+#> [67]	train-rmse:0.675150	test-rmse:4.334851 
+#> [68]	train-rmse:0.664202	test-rmse:4.336332 
+#> [69]	train-rmse:0.653607	test-rmse:4.336920 
+#> [70]	train-rmse:0.646397	test-rmse:4.327037 
+#> [1]	train-rmse:17.339362	test-rmse:16.886611 
+#> [2]	train-rmse:12.586488	test-rmse:12.335260 
+#> [3]	train-rmse:9.224821	test-rmse:9.145505 
+#> [4]	train-rmse:6.890770	test-rmse:7.107080 
+#> [5]	train-rmse:5.279757	test-rmse:5.951127 
+#> [6]	train-rmse:4.172018	test-rmse:5.249710 
+#> [7]	train-rmse:3.427074	test-rmse:4.850307 
+#> [8]	train-rmse:2.963032	test-rmse:4.625386 
+#> [9]	train-rmse:2.662795	test-rmse:4.498435 
+#> [10]	train-rmse:2.442344	test-rmse:4.363990 
+#> [11]	train-rmse:2.308797	test-rmse:4.349434 
+#> [12]	train-rmse:2.185629	test-rmse:4.349068 
+#> [13]	train-rmse:2.084013	test-rmse:4.316079 
+#> [14]	train-rmse:2.019330	test-rmse:4.297881 
+#> [15]	train-rmse:1.966460	test-rmse:4.297906 
+#> [16]	train-rmse:1.929337	test-rmse:4.293474 
+#> [17]	train-rmse:1.893997	test-rmse:4.273471 
+#> [18]	train-rmse:1.852781	test-rmse:4.273586 
+#> [19]	train-rmse:1.800863	test-rmse:4.273792 
+#> [20]	train-rmse:1.749531	test-rmse:4.262150 
+#> [21]	train-rmse:1.722285	test-rmse:4.259934 
+#> [22]	train-rmse:1.648740	test-rmse:4.265721 
+#> [23]	train-rmse:1.614853	test-rmse:4.250797 
+#> [24]	train-rmse:1.587401	test-rmse:4.249821 
+#> [25]	train-rmse:1.549045	test-rmse:4.246630 
+#> [26]	train-rmse:1.525117	test-rmse:4.224750 
+#> [27]	train-rmse:1.489872	test-rmse:4.221634 
+#> [28]	train-rmse:1.472498	test-rmse:4.218214 
+#> [29]	train-rmse:1.428341	test-rmse:4.228701 
+#> [30]	train-rmse:1.409449	test-rmse:4.228808 
+#> [31]	train-rmse:1.348274	test-rmse:4.225690 
+#> [32]	train-rmse:1.326855	test-rmse:4.216593 
+#> [33]	train-rmse:1.305855	test-rmse:4.216675 
+#> [34]	train-rmse:1.290848	test-rmse:4.212561 
+#> [35]	train-rmse:1.279023	test-rmse:4.215831 
+#> [36]	train-rmse:1.266642	test-rmse:4.217184 
+#> [37]	train-rmse:1.250990	test-rmse:4.218370 
+#> [38]	train-rmse:1.234323	test-rmse:4.219821 
+#> [39]	train-rmse:1.221149	test-rmse:4.224593 
+#> [40]	train-rmse:1.212641	test-rmse:4.227159 
+#> [41]	train-rmse:1.188258	test-rmse:4.228749 
+#> [42]	train-rmse:1.152960	test-rmse:4.223627 
+#> [43]	train-rmse:1.132255	test-rmse:4.227086 
+#> [44]	train-rmse:1.106895	test-rmse:4.225276 
+#> [45]	train-rmse:1.096884	test-rmse:4.214814 
+#> [46]	train-rmse:1.084345	test-rmse:4.218354 
+#> [47]	train-rmse:1.058253	test-rmse:4.217997 
+#> [48]	train-rmse:1.029234	test-rmse:4.218360 
+#> [49]	train-rmse:1.002912	test-rmse:4.218650 
+#> [50]	train-rmse:0.988225	test-rmse:4.207876 
+#> [51]	train-rmse:0.974329	test-rmse:4.206019 
+#> [52]	train-rmse:0.961530	test-rmse:4.213996 
+#> [53]	train-rmse:0.953320	test-rmse:4.212837 
+#> [54]	train-rmse:0.943970	test-rmse:4.218621 
+#> [55]	train-rmse:0.936817	test-rmse:4.221017 
+#> [56]	train-rmse:0.927453	test-rmse:4.219435 
+#> [57]	train-rmse:0.921098	test-rmse:4.225236 
+#> [58]	train-rmse:0.904326	test-rmse:4.219251 
+#> [59]	train-rmse:0.890045	test-rmse:4.223911 
+#> [60]	train-rmse:0.881177	test-rmse:4.227973 
+#> [61]	train-rmse:0.870725	test-rmse:4.235689 
+#> [62]	train-rmse:0.847676	test-rmse:4.243785 
+#> [63]	train-rmse:0.839300	test-rmse:4.245725 
+#> [64]	train-rmse:0.820093	test-rmse:4.249943 
+#> [65]	train-rmse:0.812403	test-rmse:4.243110 
+#> [66]	train-rmse:0.804941	test-rmse:4.240816 
+#> [67]	train-rmse:0.789119	test-rmse:4.244490 
+#> [68]	train-rmse:0.778546	test-rmse:4.248261 
+#> [69]	train-rmse:0.768634	test-rmse:4.253473 
+#> [70]	train-rmse:0.753906	test-rmse:4.255495 
+#> [1]	train-rmse:17.043464	test-rmse:17.270172 
+#> [2]	train-rmse:12.361571	test-rmse:12.583885 
+#> [3]	train-rmse:9.066605	test-rmse:9.319331 
+#> [4]	train-rmse:6.774027	test-rmse:7.262226 
+#> [5]	train-rmse:5.211588	test-rmse:5.923800 
+#> [6]	train-rmse:4.099974	test-rmse:5.122749 
+#> [7]	train-rmse:3.398566	test-rmse:4.580629 
+#> [8]	train-rmse:2.931773	test-rmse:4.301766 
+#> [9]	train-rmse:2.582530	test-rmse:4.112700 
+#> [10]	train-rmse:2.355689	test-rmse:3.955240 
+#> [11]	train-rmse:2.214995	test-rmse:3.847516 
+#> [12]	train-rmse:2.099497	test-rmse:3.745548 
+#> [13]	train-rmse:2.035166	test-rmse:3.738093 
+#> [14]	train-rmse:1.990925	test-rmse:3.708766 
+#> [15]	train-rmse:1.946326	test-rmse:3.659753 
+#> [16]	train-rmse:1.920013	test-rmse:3.660893 
+#> [17]	train-rmse:1.866716	test-rmse:3.627870 
+#> [18]	train-rmse:1.803806	test-rmse:3.578629 
+#> [19]	train-rmse:1.736163	test-rmse:3.574666 
+#> [20]	train-rmse:1.714589	test-rmse:3.559812 
+#> [21]	train-rmse:1.681649	test-rmse:3.542513 
+#> [22]	train-rmse:1.656912	test-rmse:3.531143 
+#> [23]	train-rmse:1.622786	test-rmse:3.529608 
+#> [24]	train-rmse:1.600940	test-rmse:3.519877 
+#> [25]	train-rmse:1.566961	test-rmse:3.510495 
+#> [26]	train-rmse:1.547053	test-rmse:3.501320 
+#> [27]	train-rmse:1.531756	test-rmse:3.500481 
+#> [28]	train-rmse:1.485721	test-rmse:3.460774 
+#> [29]	train-rmse:1.462208	test-rmse:3.464586 
+#> [30]	train-rmse:1.435784	test-rmse:3.436003 
+#> [31]	train-rmse:1.422993	test-rmse:3.423357 
+#> [32]	train-rmse:1.396143	test-rmse:3.423470 
+#> [33]	train-rmse:1.382470	test-rmse:3.419188 
+#> [34]	train-rmse:1.364982	test-rmse:3.422158 
+#> [35]	train-rmse:1.354400	test-rmse:3.425399 
+#> [36]	train-rmse:1.349015	test-rmse:3.425106 
+#> [37]	train-rmse:1.331291	test-rmse:3.417051 
+#> [38]	train-rmse:1.322026	test-rmse:3.414100 
+#> [39]	train-rmse:1.301484	test-rmse:3.407506 
+#> [40]	train-rmse:1.287670	test-rmse:3.409145 
+#> [41]	train-rmse:1.273148	test-rmse:3.408364 
+#> [42]	train-rmse:1.243073	test-rmse:3.414236 
+#> [43]	train-rmse:1.217938	test-rmse:3.411057 
+#> [44]	train-rmse:1.204210	test-rmse:3.418863 
+#> [45]	train-rmse:1.199341	test-rmse:3.411529 
+#> [46]	train-rmse:1.174599	test-rmse:3.378846 
+#> [47]	train-rmse:1.163850	test-rmse:3.382828 
+#> [48]	train-rmse:1.119012	test-rmse:3.382510 
+#> [49]	train-rmse:1.088558	test-rmse:3.381638 
+#> [50]	train-rmse:1.081114	test-rmse:3.382802 
+#> [51]	train-rmse:1.064135	test-rmse:3.381489 
+#> [52]	train-rmse:1.043606	test-rmse:3.398191 
+#> [53]	train-rmse:1.029898	test-rmse:3.387862 
+#> [54]	train-rmse:1.014860	test-rmse:3.381437 
+#> [55]	train-rmse:0.986339	test-rmse:3.373278 
+#> [56]	train-rmse:0.981199	test-rmse:3.367442 
+#> [57]	train-rmse:0.968102	test-rmse:3.368859 
+#> [58]	train-rmse:0.959230	test-rmse:3.364833 
+#> [59]	train-rmse:0.951625	test-rmse:3.361161 
+#> [60]	train-rmse:0.942096	test-rmse:3.359646 
+#> [61]	train-rmse:0.929283	test-rmse:3.348098 
+#> [62]	train-rmse:0.921466	test-rmse:3.347140 
+#> [63]	train-rmse:0.902562	test-rmse:3.349948 
+#> [64]	train-rmse:0.895032	test-rmse:3.351796 
+#> [65]	train-rmse:0.873948	test-rmse:3.367141 
+#> [66]	train-rmse:0.867975	test-rmse:3.363937 
+#> [67]	train-rmse:0.861314	test-rmse:3.372426 
+#> [68]	train-rmse:0.843317	test-rmse:3.368465 
+#> [69]	train-rmse:0.837294	test-rmse:3.365844 
+#> [70]	train-rmse:0.831373	test-rmse:3.364705 
+#> [1]	train-rmse:17.456190	test-rmse:16.653549 
+#> [2]	train-rmse:12.648194	test-rmse:12.092145 
+#> [3]	train-rmse:9.313788	test-rmse:9.082147 
+#> [4]	train-rmse:6.970995	test-rmse:7.073219 
+#> [5]	train-rmse:5.380071	test-rmse:5.699679 
+#> [6]	train-rmse:4.270889	test-rmse:4.754919 
+#> [7]	train-rmse:3.515352	test-rmse:4.246503 
+#> [8]	train-rmse:3.029775	test-rmse:3.914680 
+#> [9]	train-rmse:2.697642	test-rmse:3.754900 
+#> [10]	train-rmse:2.504079	test-rmse:3.652176 
+#> [11]	train-rmse:2.343365	test-rmse:3.606815 
+#> [12]	train-rmse:2.220072	test-rmse:3.558213 
+#> [13]	train-rmse:2.124556	test-rmse:3.502181 
+#> [14]	train-rmse:2.072974	test-rmse:3.465366 
+#> [15]	train-rmse:2.000467	test-rmse:3.433915 
+#> [16]	train-rmse:1.924200	test-rmse:3.384735 
+#> [17]	train-rmse:1.856506	test-rmse:3.363236 
+#> [18]	train-rmse:1.816794	test-rmse:3.357258 
+#> [19]	train-rmse:1.750301	test-rmse:3.319879 
+#> [20]	train-rmse:1.723350	test-rmse:3.289218 
+#> [21]	train-rmse:1.700047	test-rmse:3.265925 
+#> [22]	train-rmse:1.653667	test-rmse:3.256395 
+#> [23]	train-rmse:1.628537	test-rmse:3.256971 
+#> [24]	train-rmse:1.602954	test-rmse:3.249408 
+#> [25]	train-rmse:1.570623	test-rmse:3.248375 
+#> [26]	train-rmse:1.556067	test-rmse:3.246089 
+#> [27]	train-rmse:1.530178	test-rmse:3.247561 
+#> [28]	train-rmse:1.504508	test-rmse:3.226086 
+#> [29]	train-rmse:1.451478	test-rmse:3.204355 
+#> [30]	train-rmse:1.442616	test-rmse:3.207756 
+#> [31]	train-rmse:1.379040	test-rmse:3.207266 
+#> [32]	train-rmse:1.361567	test-rmse:3.212331 
+#> [33]	train-rmse:1.330051	test-rmse:3.209703 
+#> [34]	train-rmse:1.309706	test-rmse:3.208598 
+#> [35]	train-rmse:1.300922	test-rmse:3.210971 
+#> [36]	train-rmse:1.291950	test-rmse:3.213551 
+#> [37]	train-rmse:1.265668	test-rmse:3.217192 
+#> [38]	train-rmse:1.242499	test-rmse:3.210560 
+#> [39]	train-rmse:1.234691	test-rmse:3.209650 
+#> [40]	train-rmse:1.203055	test-rmse:3.220415 
+#> [41]	train-rmse:1.196558	test-rmse:3.214507 
+#> [42]	train-rmse:1.183184	test-rmse:3.203664 
+#> [43]	train-rmse:1.162531	test-rmse:3.211341 
+#> [44]	train-rmse:1.144301	test-rmse:3.200769 
+#> [45]	train-rmse:1.127309	test-rmse:3.210206 
+#> [46]	train-rmse:1.104384	test-rmse:3.196201 
+#> [47]	train-rmse:1.093444	test-rmse:3.200203 
+#> [48]	train-rmse:1.084574	test-rmse:3.194495 
+#> [49]	train-rmse:1.065494	test-rmse:3.199787 
+#> [50]	train-rmse:1.047072	test-rmse:3.183444 
+#> [51]	train-rmse:1.034626	test-rmse:3.183327 
+#> [52]	train-rmse:1.012602	test-rmse:3.176554 
+#> [53]	train-rmse:0.990191	test-rmse:3.176441 
+#> [54]	train-rmse:0.981658	test-rmse:3.171199 
+#> [55]	train-rmse:0.971126	test-rmse:3.163631 
+#> [56]	train-rmse:0.956953	test-rmse:3.168607 
+#> [57]	train-rmse:0.946457	test-rmse:3.174608 
+#> [58]	train-rmse:0.938780	test-rmse:3.175984 
+#> [59]	train-rmse:0.931616	test-rmse:3.169231 
+#> [60]	train-rmse:0.922506	test-rmse:3.166960 
+#> [61]	train-rmse:0.913599	test-rmse:3.160929 
+#> [62]	train-rmse:0.902772	test-rmse:3.155219 
+#> [63]	train-rmse:0.890311	test-rmse:3.152159 
+#> [64]	train-rmse:0.880465	test-rmse:3.152945 
+#> [65]	train-rmse:0.871798	test-rmse:3.151441 
+#> [66]	train-rmse:0.859197	test-rmse:3.153839 
+#> [67]	train-rmse:0.846615	test-rmse:3.156859 
+#> [68]	train-rmse:0.831658	test-rmse:3.157734 
+#> [69]	train-rmse:0.824605	test-rmse:3.156717 
+#> [70]	train-rmse:0.804884	test-rmse:3.162866 
+#> [1]	train-rmse:17.485217	test-rmse:16.537413 
+#> [2]	train-rmse:12.660004	test-rmse:11.973589 
+#> [3]	train-rmse:9.300846	test-rmse:8.862548 
+#> [4]	train-rmse:6.987644	test-rmse:6.763105 
+#> [5]	train-rmse:5.339208	test-rmse:5.351333 
+#> [6]	train-rmse:4.226457	test-rmse:4.455682 
+#> [7]	train-rmse:3.502347	test-rmse:3.927905 
+#> [8]	train-rmse:3.019808	test-rmse:3.673145 
+#> [9]	train-rmse:2.685198	test-rmse:3.550330 
+#> [10]	train-rmse:2.471760	test-rmse:3.448850 
+#> [11]	train-rmse:2.301642	test-rmse:3.351629 
+#> [12]	train-rmse:2.180760	test-rmse:3.323814 
+#> [13]	train-rmse:2.106010	test-rmse:3.271801 
+#> [14]	train-rmse:2.035941	test-rmse:3.256801 
+#> [15]	train-rmse:1.951739	test-rmse:3.261532 
+#> [16]	train-rmse:1.884756	test-rmse:3.243790 
+#> [17]	train-rmse:1.851105	test-rmse:3.235069 
+#> [18]	train-rmse:1.807456	test-rmse:3.204093 
+#> [19]	train-rmse:1.770250	test-rmse:3.183853 
+#> [20]	train-rmse:1.708237	test-rmse:3.175278 
+#> [21]	train-rmse:1.657705	test-rmse:3.158464 
+#> [22]	train-rmse:1.626835	test-rmse:3.152306 
+#> [23]	train-rmse:1.590751	test-rmse:3.154191 
+#> [24]	train-rmse:1.563488	test-rmse:3.151662 
+#> [25]	train-rmse:1.528616	test-rmse:3.149880 
+#> [26]	train-rmse:1.491629	test-rmse:3.143521 
+#> [27]	train-rmse:1.476580	test-rmse:3.132445 
+#> [28]	train-rmse:1.432317	test-rmse:3.117654 
+#> [29]	train-rmse:1.412865	test-rmse:3.097791 
+#> [30]	train-rmse:1.378458	test-rmse:3.103508 
+#> [31]	train-rmse:1.332700	test-rmse:3.105340 
+#> [32]	train-rmse:1.291118	test-rmse:3.082222 
+#> [33]	train-rmse:1.263577	test-rmse:3.082855 
+#> [34]	train-rmse:1.237787	test-rmse:3.076044 
+#> [35]	train-rmse:1.228565	test-rmse:3.071678 
+#> [36]	train-rmse:1.221586	test-rmse:3.067981 
+#> [37]	train-rmse:1.202036	test-rmse:3.076470 
+#> [38]	train-rmse:1.182295	test-rmse:3.077216 
+#> [39]	train-rmse:1.174065	test-rmse:3.069785 
+#> [40]	train-rmse:1.143644	test-rmse:3.075048 
+#> [41]	train-rmse:1.118070	test-rmse:3.086533 
+#> [42]	train-rmse:1.083684	test-rmse:3.076990 
+#> [43]	train-rmse:1.067657	test-rmse:3.085092 
+#> [44]	train-rmse:1.056737	test-rmse:3.075374 
+#> [45]	train-rmse:1.042070	test-rmse:3.074781 
+#> [46]	train-rmse:1.034100	test-rmse:3.069572 
+#> [47]	train-rmse:1.018872	test-rmse:3.060232 
+#> [48]	train-rmse:1.009841	test-rmse:3.057160 
+#> [49]	train-rmse:0.988343	test-rmse:3.040026 
+#> [50]	train-rmse:0.969062	test-rmse:3.043817 
+#> [51]	train-rmse:0.948150	test-rmse:3.044994 
+#> [52]	train-rmse:0.931555	test-rmse:3.055855 
+#> [53]	train-rmse:0.927358	test-rmse:3.052031 
+#> [54]	train-rmse:0.919497	test-rmse:3.048521 
+#> [55]	train-rmse:0.903379	test-rmse:3.048413 
+#> [56]	train-rmse:0.891003	test-rmse:3.043118 
+#> [57]	train-rmse:0.878901	test-rmse:3.054984 
+#> [58]	train-rmse:0.868691	test-rmse:3.054022 
+#> [59]	train-rmse:0.855001	test-rmse:3.048966 
+#> [60]	train-rmse:0.834860	test-rmse:3.035608 
+#> [61]	train-rmse:0.816049	test-rmse:3.037272 
+#> [62]	train-rmse:0.798031	test-rmse:3.025575 
+#> [63]	train-rmse:0.783671	test-rmse:3.025780 
+#> [64]	train-rmse:0.772990	test-rmse:3.024913 
+#> [65]	train-rmse:0.760798	test-rmse:3.019602 
+#> [66]	train-rmse:0.743240	test-rmse:3.011554 
+#> [67]	train-rmse:0.733533	test-rmse:3.008570 
+#> [68]	train-rmse:0.721323	test-rmse:3.005192 
+#> [69]	train-rmse:0.704381	test-rmse:3.005989 
+#> [70]	train-rmse:0.701263	test-rmse:3.002740 
+#> [1]	train-rmse:17.111532	test-rmse:17.435272 
+#> [2]	train-rmse:12.387211	test-rmse:13.025047 
+#> [3]	train-rmse:9.085726	test-rmse:9.873093 
+#> [4]	train-rmse:6.789982	test-rmse:7.752298 
+#> [5]	train-rmse:5.207629	test-rmse:6.384945 
+#> [6]	train-rmse:4.115838	test-rmse:5.447950 
+#> [7]	train-rmse:3.366020	test-rmse:4.894496 
+#> [8]	train-rmse:2.879771	test-rmse:4.580277 
+#> [9]	train-rmse:2.569030	test-rmse:4.453151 
+#> [10]	train-rmse:2.325202	test-rmse:4.457078 
+#> [11]	train-rmse:2.191495	test-rmse:4.411079 
+#> [12]	train-rmse:2.052944	test-rmse:4.384738 
+#> [13]	train-rmse:1.977015	test-rmse:4.345249 
+#> [14]	train-rmse:1.924209	test-rmse:4.342288 
+#> [15]	train-rmse:1.831577	test-rmse:4.261086 
+#> [16]	train-rmse:1.796415	test-rmse:4.231911 
+#> [17]	train-rmse:1.754201	test-rmse:4.226254 
+#> [18]	train-rmse:1.701770	test-rmse:4.220641 
+#> [19]	train-rmse:1.634846	test-rmse:4.220300 
+#> [20]	train-rmse:1.616856	test-rmse:4.206086 
+#> [21]	train-rmse:1.572590	test-rmse:4.177235 
+#> [22]	train-rmse:1.546168	test-rmse:4.169682 
+#> [23]	train-rmse:1.504574	test-rmse:4.170857 
+#> [24]	train-rmse:1.482746	test-rmse:4.172313 
+#> [25]	train-rmse:1.430754	test-rmse:4.178851 
+#> [26]	train-rmse:1.404922	test-rmse:4.172277 
+#> [27]	train-rmse:1.374729	test-rmse:4.174905 
+#> [28]	train-rmse:1.323425	test-rmse:4.161761 
+#> [29]	train-rmse:1.307501	test-rmse:4.154302 
+#> [30]	train-rmse:1.282739	test-rmse:4.150683 
+#> [31]	train-rmse:1.251377	test-rmse:4.131608 
+#> [32]	train-rmse:1.221794	test-rmse:4.143298 
+#> [33]	train-rmse:1.185037	test-rmse:4.148625 
+#> [34]	train-rmse:1.150993	test-rmse:4.156402 
+#> [35]	train-rmse:1.119772	test-rmse:4.160789 
+#> [36]	train-rmse:1.090457	test-rmse:4.160090 
+#> [37]	train-rmse:1.060700	test-rmse:4.162218 
+#> [38]	train-rmse:1.044813	test-rmse:4.165447 
+#> [39]	train-rmse:1.032574	test-rmse:4.157378 
+#> [40]	train-rmse:1.013405	test-rmse:4.153388 
+#> [41]	train-rmse:1.006148	test-rmse:4.142999 
+#> [42]	train-rmse:1.000142	test-rmse:4.140634 
+#> [43]	train-rmse:0.976399	test-rmse:4.131345 
+#> [44]	train-rmse:0.963216	test-rmse:4.132121 
+#> [45]	train-rmse:0.943239	test-rmse:4.130291 
+#> [46]	train-rmse:0.933755	test-rmse:4.129046 
+#> [47]	train-rmse:0.923550	test-rmse:4.116899 
+#> [48]	train-rmse:0.901284	test-rmse:4.114111 
+#> [49]	train-rmse:0.884423	test-rmse:4.106702 
+#> [50]	train-rmse:0.870152	test-rmse:4.107586 
+#> [51]	train-rmse:0.859978	test-rmse:4.108229 
+#> [52]	train-rmse:0.840108	test-rmse:4.108760 
+#> [53]	train-rmse:0.816931	test-rmse:4.108813 
+#> [54]	train-rmse:0.811576	test-rmse:4.109076 
+#> [55]	train-rmse:0.800264	test-rmse:4.109824 
+#> [56]	train-rmse:0.781994	test-rmse:4.102288 
+#> [57]	train-rmse:0.775396	test-rmse:4.101467 
+#> [58]	train-rmse:0.767829	test-rmse:4.104483 
+#> [59]	train-rmse:0.760129	test-rmse:4.106617 
+#> [60]	train-rmse:0.754196	test-rmse:4.106342 
+#> [61]	train-rmse:0.749437	test-rmse:4.105491 
+#> [62]	train-rmse:0.731089	test-rmse:4.104831 
+#> [63]	train-rmse:0.715924	test-rmse:4.100628 
+#> [64]	train-rmse:0.704701	test-rmse:4.105410 
+#> [65]	train-rmse:0.693998	test-rmse:4.100563 
+#> [66]	train-rmse:0.683421	test-rmse:4.099929 
+#> [67]	train-rmse:0.674604	test-rmse:4.101201 
+#> [68]	train-rmse:0.667805	test-rmse:4.101812 
+#> [69]	train-rmse:0.654981	test-rmse:4.102751 
+#> [70]	train-rmse:0.647825	test-rmse:4.100728 
+#> [1]	train-rmse:16.923413	test-rmse:17.858287 
+#> [2]	train-rmse:12.250960	test-rmse:13.245702 
+#> [3]	train-rmse:9.008995	test-rmse:10.269762 
+#> [4]	train-rmse:6.790111	test-rmse:8.118332 
+#> [5]	train-rmse:5.263897	test-rmse:6.737373 
+#> [6]	train-rmse:4.226298	test-rmse:5.910818 
+#> [7]	train-rmse:3.513853	test-rmse:5.386048 
+#> [8]	train-rmse:3.060588	test-rmse:4.971588 
+#> [9]	train-rmse:2.704180	test-rmse:4.667367 
+#> [10]	train-rmse:2.500957	test-rmse:4.520007 
+#> [11]	train-rmse:2.360276	test-rmse:4.424577 
+#> [12]	train-rmse:2.255008	test-rmse:4.268448 
+#> [13]	train-rmse:2.150293	test-rmse:4.239951 
+#> [14]	train-rmse:2.050543	test-rmse:4.181015 
+#> [15]	train-rmse:2.003452	test-rmse:4.137171 
+#> [16]	train-rmse:1.924608	test-rmse:4.095233 
+#> [17]	train-rmse:1.861110	test-rmse:4.081775 
+#> [18]	train-rmse:1.794015	test-rmse:4.070671 
+#> [19]	train-rmse:1.750976	test-rmse:3.980266 
+#> [20]	train-rmse:1.704884	test-rmse:3.943720 
+#> [21]	train-rmse:1.633313	test-rmse:3.872674 
+#> [22]	train-rmse:1.600509	test-rmse:3.859818 
+#> [23]	train-rmse:1.575060	test-rmse:3.850316 
+#> [24]	train-rmse:1.549222	test-rmse:3.848650 
+#> [25]	train-rmse:1.512176	test-rmse:3.804888 
+#> [26]	train-rmse:1.490101	test-rmse:3.806708 
+#> [27]	train-rmse:1.437855	test-rmse:3.796689 
+#> [28]	train-rmse:1.413658	test-rmse:3.800822 
+#> [29]	train-rmse:1.391086	test-rmse:3.784102 
+#> [30]	train-rmse:1.368214	test-rmse:3.751162 
+#> [31]	train-rmse:1.341678	test-rmse:3.765602 
+#> [32]	train-rmse:1.324352	test-rmse:3.766968 
+#> [33]	train-rmse:1.267682	test-rmse:3.733680 
+#> [34]	train-rmse:1.231068	test-rmse:3.735550 
+#> [35]	train-rmse:1.211650	test-rmse:3.737077 
+#> [36]	train-rmse:1.179801	test-rmse:3.718929 
+#> [37]	train-rmse:1.145159	test-rmse:3.727204 
+#> [38]	train-rmse:1.128239	test-rmse:3.711813 
+#> [39]	train-rmse:1.103570	test-rmse:3.699716 
+#> [40]	train-rmse:1.085133	test-rmse:3.701658 
+#> [41]	train-rmse:1.073124	test-rmse:3.702788 
+#> [42]	train-rmse:1.062533	test-rmse:3.699433 
+#> [43]	train-rmse:1.045937	test-rmse:3.693495 
+#> [44]	train-rmse:1.022968	test-rmse:3.688230 
+#> [45]	train-rmse:1.012610	test-rmse:3.700308 
+#> [46]	train-rmse:1.002660	test-rmse:3.698268 
+#> [47]	train-rmse:0.995678	test-rmse:3.708165 
+#> [48]	train-rmse:0.987307	test-rmse:3.690949 
+#> [49]	train-rmse:0.976949	test-rmse:3.690472 
+#> [50]	train-rmse:0.969292	test-rmse:3.701235 
+#> [51]	train-rmse:0.951285	test-rmse:3.692314 
+#> [52]	train-rmse:0.929873	test-rmse:3.662860 
+#> [53]	train-rmse:0.918629	test-rmse:3.656849 
+#> [54]	train-rmse:0.895356	test-rmse:3.640781 
+#> [55]	train-rmse:0.881782	test-rmse:3.643711 
+#> [56]	train-rmse:0.866274	test-rmse:3.652540 
+#> [57]	train-rmse:0.856896	test-rmse:3.650975 
+#> [58]	train-rmse:0.842923	test-rmse:3.640053 
+#> [59]	train-rmse:0.834285	test-rmse:3.638969 
+#> [60]	train-rmse:0.829124	test-rmse:3.643577 
+#> [61]	train-rmse:0.818701	test-rmse:3.631377 
+#> [62]	train-rmse:0.793543	test-rmse:3.628659 
+#> [63]	train-rmse:0.780059	test-rmse:3.628344 
+#> [64]	train-rmse:0.766899	test-rmse:3.633353 
+#> [65]	train-rmse:0.756453	test-rmse:3.630871 
+#> [66]	train-rmse:0.734865	test-rmse:3.627766 
+#> [67]	train-rmse:0.730521	test-rmse:3.624072 
+#> [68]	train-rmse:0.712303	test-rmse:3.613017 
+#> [69]	train-rmse:0.706751	test-rmse:3.618362 
+#> [70]	train-rmse:0.691661	test-rmse:3.615868 
+#> [1]	train-rmse:17.094472	test-rmse:17.443979 
+#> [2]	train-rmse:12.370325	test-rmse:12.648890 
+#> [3]	train-rmse:9.136447	test-rmse:9.424303 
+#> [4]	train-rmse:6.815337	test-rmse:7.274856 
+#> [5]	train-rmse:5.243661	test-rmse:5.833762 
+#> [6]	train-rmse:4.178753	test-rmse:4.908622 
+#> [7]	train-rmse:3.467034	test-rmse:4.275468 
+#> [8]	train-rmse:3.008385	test-rmse:3.939571 
+#> [9]	train-rmse:2.675041	test-rmse:3.773246 
+#> [10]	train-rmse:2.474950	test-rmse:3.632611 
+#> [11]	train-rmse:2.307720	test-rmse:3.533710 
+#> [12]	train-rmse:2.177433	test-rmse:3.477157 
+#> [13]	train-rmse:2.079583	test-rmse:3.439424 
+#> [14]	train-rmse:1.998522	test-rmse:3.388455 
+#> [15]	train-rmse:1.900939	test-rmse:3.346838 
+#> [16]	train-rmse:1.821591	test-rmse:3.344501 
+#> [17]	train-rmse:1.778242	test-rmse:3.331574 
+#> [18]	train-rmse:1.716799	test-rmse:3.347789 
+#> [19]	train-rmse:1.676291	test-rmse:3.338689 
+#> [20]	train-rmse:1.632078	test-rmse:3.342672 
+#> [21]	train-rmse:1.610130	test-rmse:3.323012 
+#> [22]	train-rmse:1.591450	test-rmse:3.319949 
+#> [23]	train-rmse:1.551755	test-rmse:3.299841 
+#> [24]	train-rmse:1.536861	test-rmse:3.301777 
+#> [25]	train-rmse:1.481012	test-rmse:3.276894 
+#> [26]	train-rmse:1.454397	test-rmse:3.269283 
+#> [27]	train-rmse:1.415888	test-rmse:3.254819 
+#> [28]	train-rmse:1.384320	test-rmse:3.249840 
+#> [29]	train-rmse:1.368003	test-rmse:3.243054 
+#> [30]	train-rmse:1.344136	test-rmse:3.254499 
+#> [31]	train-rmse:1.329390	test-rmse:3.257611 
+#> [32]	train-rmse:1.301899	test-rmse:3.254902 
+#> [33]	train-rmse:1.285813	test-rmse:3.253238 
+#> [34]	train-rmse:1.275745	test-rmse:3.243495 
+#> [35]	train-rmse:1.267246	test-rmse:3.239862 
+#> [36]	train-rmse:1.244695	test-rmse:3.241509 
+#> [37]	train-rmse:1.233288	test-rmse:3.246018 
+#> [38]	train-rmse:1.223915	test-rmse:3.244156 
+#> [39]	train-rmse:1.211425	test-rmse:3.244399 
+#> [40]	train-rmse:1.180329	test-rmse:3.242740 
+#> [41]	train-rmse:1.171058	test-rmse:3.241273 
+#> [42]	train-rmse:1.161724	test-rmse:3.237195 
+#> [43]	train-rmse:1.156259	test-rmse:3.238887 
+#> [44]	train-rmse:1.134589	test-rmse:3.234876 
+#> [45]	train-rmse:1.111284	test-rmse:3.224325 
+#> [46]	train-rmse:1.084095	test-rmse:3.223480 
+#> [47]	train-rmse:1.067216	test-rmse:3.226552 
+#> [48]	train-rmse:1.059544	test-rmse:3.227267 
+#> [49]	train-rmse:1.052601	test-rmse:3.232803 
+#> [50]	train-rmse:1.029946	test-rmse:3.229616 
+#> [51]	train-rmse:1.007692	test-rmse:3.233152 
+#> [52]	train-rmse:0.989256	test-rmse:3.236416 
+#> [53]	train-rmse:0.964192	test-rmse:3.234155 
+#> [54]	train-rmse:0.947695	test-rmse:3.242226 
+#> [55]	train-rmse:0.926670	test-rmse:3.237352 
+#> [56]	train-rmse:0.905204	test-rmse:3.235260 
+#> [57]	train-rmse:0.890484	test-rmse:3.230032 
+#> [58]	train-rmse:0.881130	test-rmse:3.232472 
+#> [59]	train-rmse:0.865016	test-rmse:3.228469 
+#> [60]	train-rmse:0.842762	test-rmse:3.229937 
+#> [61]	train-rmse:0.828306	test-rmse:3.236761 
+#> [62]	train-rmse:0.810322	test-rmse:3.237922 
+#> [63]	train-rmse:0.793606	test-rmse:3.239330 
+#> [64]	train-rmse:0.784651	test-rmse:3.244624 
+#> [65]	train-rmse:0.765355	test-rmse:3.251084 
+#> [66]	train-rmse:0.754189	test-rmse:3.247930 
+#> [67]	train-rmse:0.738733	test-rmse:3.249863 
+#> [68]	train-rmse:0.729666	test-rmse:3.248329 
+#> [69]	train-rmse:0.714781	test-rmse:3.248858 
+#> [70]	train-rmse:0.705361	test-rmse:3.250069 
+#> [1]	train-rmse:17.170011	test-rmse:17.171257 
+#> [2]	train-rmse:12.426524	test-rmse:12.525679 
+#> [3]	train-rmse:9.117093	test-rmse:9.459849 
+#> [4]	train-rmse:6.793125	test-rmse:7.351778 
+#> [5]	train-rmse:5.236309	test-rmse:5.996796 
+#> [6]	train-rmse:4.151535	test-rmse:5.057847 
+#> [7]	train-rmse:3.447785	test-rmse:4.453109 
+#> [8]	train-rmse:2.964770	test-rmse:4.025576 
+#> [9]	train-rmse:2.648792	test-rmse:3.819552 
+#> [10]	train-rmse:2.440856	test-rmse:3.740400 
+#> [11]	train-rmse:2.284757	test-rmse:3.673686 
+#> [12]	train-rmse:2.147940	test-rmse:3.634061 
+#> [13]	train-rmse:2.056752	test-rmse:3.567147 
+#> [14]	train-rmse:1.988819	test-rmse:3.519069 
+#> [15]	train-rmse:1.910203	test-rmse:3.509014 
+#> [16]	train-rmse:1.855831	test-rmse:3.488891 
+#> [17]	train-rmse:1.825984	test-rmse:3.455567 
+#> [18]	train-rmse:1.784249	test-rmse:3.450392 
+#> [19]	train-rmse:1.742281	test-rmse:3.429652 
+#> [20]	train-rmse:1.683531	test-rmse:3.424123 
+#> [21]	train-rmse:1.644295	test-rmse:3.415885 
+#> [22]	train-rmse:1.620427	test-rmse:3.397409 
+#> [23]	train-rmse:1.591121	test-rmse:3.396034 
+#> [24]	train-rmse:1.557370	test-rmse:3.359075 
+#> [25]	train-rmse:1.517061	test-rmse:3.363934 
+#> [26]	train-rmse:1.476960	test-rmse:3.358385 
+#> [27]	train-rmse:1.459281	test-rmse:3.353978 
+#> [28]	train-rmse:1.434989	test-rmse:3.373883 
+#> [29]	train-rmse:1.417344	test-rmse:3.367324 
+#> [30]	train-rmse:1.391160	test-rmse:3.361120 
+#> [31]	train-rmse:1.371772	test-rmse:3.367616 
+#> [32]	train-rmse:1.337820	test-rmse:3.368026 
+#> [33]	train-rmse:1.319915	test-rmse:3.360235 
+#> [34]	train-rmse:1.296343	test-rmse:3.350689 
+#> [35]	train-rmse:1.263589	test-rmse:3.361618 
+#> [36]	train-rmse:1.244863	test-rmse:3.366146 
+#> [37]	train-rmse:1.194421	test-rmse:3.335086 
+#> [38]	train-rmse:1.184094	test-rmse:3.334097 
+#> [39]	train-rmse:1.156357	test-rmse:3.328963 
+#> [40]	train-rmse:1.144884	test-rmse:3.326506 
+#> [41]	train-rmse:1.117081	test-rmse:3.340203 
+#> [42]	train-rmse:1.106197	test-rmse:3.341041 
+#> [43]	train-rmse:1.100150	test-rmse:3.342239 
+#> [44]	train-rmse:1.077481	test-rmse:3.347784 
+#> [45]	train-rmse:1.046810	test-rmse:3.338964 
+#> [46]	train-rmse:1.034026	test-rmse:3.351019 
+#> [47]	train-rmse:1.023361	test-rmse:3.342007 
+#> [48]	train-rmse:0.994702	test-rmse:3.341222 
+#> [49]	train-rmse:0.989948	test-rmse:3.337105 
+#> [50]	train-rmse:0.975026	test-rmse:3.336172 
+#> [51]	train-rmse:0.952664	test-rmse:3.331605 
+#> [52]	train-rmse:0.945468	test-rmse:3.334575 
+#> [53]	train-rmse:0.922853	test-rmse:3.341329 
+#> [54]	train-rmse:0.909634	test-rmse:3.337151 
+#> [55]	train-rmse:0.903042	test-rmse:3.333116 
+#> [56]	train-rmse:0.884904	test-rmse:3.326880 
+#> [57]	train-rmse:0.874922	test-rmse:3.320552 
+#> [58]	train-rmse:0.868196	test-rmse:3.319108 
+#> [59]	train-rmse:0.848900	test-rmse:3.319444 
+#> [60]	train-rmse:0.841934	test-rmse:3.326078 
+#> [61]	train-rmse:0.838304	test-rmse:3.326217 
+#> [62]	train-rmse:0.822154	test-rmse:3.318379 
+#> [63]	train-rmse:0.807249	test-rmse:3.313129 
+#> [64]	train-rmse:0.797583	test-rmse:3.309362 
+#> [65]	train-rmse:0.782169	test-rmse:3.302684 
+#> [66]	train-rmse:0.770329	test-rmse:3.298346 
+#> [67]	train-rmse:0.765190	test-rmse:3.305168 
+#> [68]	train-rmse:0.758894	test-rmse:3.307550 
+#> [69]	train-rmse:0.745356	test-rmse:3.311324 
+#> [70]	train-rmse:0.739772	test-rmse:3.313405 
+#> [1]	train-rmse:16.582907	test-rmse:18.207723 
+#> [2]	train-rmse:12.001622	test-rmse:13.722996 
+#> [3]	train-rmse:8.787949	test-rmse:10.474234 
+#> [4]	train-rmse:6.600602	test-rmse:8.351502 
+#> [5]	train-rmse:5.044425	test-rmse:6.781755 
+#> [6]	train-rmse:3.998929	test-rmse:5.842432 
+#> [7]	train-rmse:3.313856	test-rmse:5.326463 
+#> [8]	train-rmse:2.880562	test-rmse:5.021548 
+#> [9]	train-rmse:2.574312	test-rmse:4.744890 
+#> [10]	train-rmse:2.372165	test-rmse:4.600522 
+#> [11]	train-rmse:2.222040	test-rmse:4.535886 
+#> [12]	train-rmse:2.115739	test-rmse:4.437634 
+#> [13]	train-rmse:2.042316	test-rmse:4.430661 
+#> [14]	train-rmse:1.938443	test-rmse:4.418263 
+#> [15]	train-rmse:1.876714	test-rmse:4.404265 
+#> [16]	train-rmse:1.823690	test-rmse:4.384746 
+#> [17]	train-rmse:1.757006	test-rmse:4.377393 
+#> [18]	train-rmse:1.708880	test-rmse:4.372659 
+#> [19]	train-rmse:1.670362	test-rmse:4.356115 
+#> [20]	train-rmse:1.624955	test-rmse:4.323082 
+#> [21]	train-rmse:1.586701	test-rmse:4.314782 
+#> [22]	train-rmse:1.563975	test-rmse:4.308469 
+#> [23]	train-rmse:1.528573	test-rmse:4.300380 
+#> [24]	train-rmse:1.513181	test-rmse:4.301769 
+#> [25]	train-rmse:1.456300	test-rmse:4.268720 
+#> [26]	train-rmse:1.399742	test-rmse:4.257959 
+#> [27]	train-rmse:1.361863	test-rmse:4.220169 
+#> [28]	train-rmse:1.345355	test-rmse:4.214260 
+#> [29]	train-rmse:1.308177	test-rmse:4.189072 
+#> [30]	train-rmse:1.283864	test-rmse:4.176219 
+#> [31]	train-rmse:1.259614	test-rmse:4.195716 
+#> [32]	train-rmse:1.222292	test-rmse:4.186206 
+#> [33]	train-rmse:1.204266	test-rmse:4.187286 
+#> [34]	train-rmse:1.173770	test-rmse:4.192971 
+#> [35]	train-rmse:1.146007	test-rmse:4.190610 
+#> [36]	train-rmse:1.135612	test-rmse:4.191723 
+#> [37]	train-rmse:1.116079	test-rmse:4.191155 
+#> [38]	train-rmse:1.101917	test-rmse:4.190144 
+#> [39]	train-rmse:1.066302	test-rmse:4.181161 
+#> [40]	train-rmse:1.045433	test-rmse:4.181066 
+#> [41]	train-rmse:1.021536	test-rmse:4.182448 
+#> [42]	train-rmse:1.012055	test-rmse:4.172824 
+#> [43]	train-rmse:0.998246	test-rmse:4.164631 
+#> [44]	train-rmse:0.981645	test-rmse:4.157344 
+#> [45]	train-rmse:0.969975	test-rmse:4.158212 
+#> [46]	train-rmse:0.962992	test-rmse:4.159398 
+#> [47]	train-rmse:0.938172	test-rmse:4.162487 
+#> [48]	train-rmse:0.909808	test-rmse:4.149913 
+#> [49]	train-rmse:0.888373	test-rmse:4.146672 
+#> [50]	train-rmse:0.883702	test-rmse:4.145806 
+#> [51]	train-rmse:0.878323	test-rmse:4.147840 
+#> [52]	train-rmse:0.865686	test-rmse:4.147482 
+#> [53]	train-rmse:0.856467	test-rmse:4.141376 
+#> [54]	train-rmse:0.851313	test-rmse:4.140475 
+#> [55]	train-rmse:0.824926	test-rmse:4.125626 
+#> [56]	train-rmse:0.807213	test-rmse:4.130817 
+#> [57]	train-rmse:0.795934	test-rmse:4.133379 
+#> [58]	train-rmse:0.782519	test-rmse:4.129859 
+#> [59]	train-rmse:0.767906	test-rmse:4.130241 
+#> [60]	train-rmse:0.756362	test-rmse:4.126689 
+#> [61]	train-rmse:0.750580	test-rmse:4.125184 
+#> [62]	train-rmse:0.739081	test-rmse:4.125837 
+#> [63]	train-rmse:0.734751	test-rmse:4.124346 
+#> [64]	train-rmse:0.727189	test-rmse:4.116006 
+#> [65]	train-rmse:0.719912	test-rmse:4.119719 
+#> [66]	train-rmse:0.711155	test-rmse:4.123465 
+#> [67]	train-rmse:0.692546	test-rmse:4.119317 
+#> [68]	train-rmse:0.681082	test-rmse:4.113232 
+#> [69]	train-rmse:0.677283	test-rmse:4.110573 
+#> [70]	train-rmse:0.661992	test-rmse:4.113574
+#> [1] 3.449206
 warnings() # no warnings for individual XGBoost function
 ```

@@ -14,7 +14,7 @@ Download the data set, and open it in your system. For example,
 
 ```{r Open the Pima Indians data set}
 
-diabetes <- read.csv('/Users/russellconte/diabetes.csv')
+diabetes <- read.csv('/Users/russconte/diabetes.csv')
 head(diabetes)
 ```
 

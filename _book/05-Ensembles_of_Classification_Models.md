@@ -43,15 +43,12 @@ For this solution we will also add a mean duration by model to the finished repo
 Since we have our basic outline, and we know where we want to end, we are ready to begin.
 
 
-``` r
+```r
 
 # Load libraries
 library(randomForest)
 #> randomForest 4.7-1.1
 #> Type rfNews() to see new features/changes/bug fixes.
-```
-
-``` r
 library(tidyverse)
 #> ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──
 #> ✔ dplyr     1.1.4     ✔ readr     2.1.5
@@ -65,9 +62,6 @@ library(tidyverse)
 #> ✖ dplyr::lag()      masks stats::lag()
 #> ✖ ggplot2::margin() masks randomForest::margin()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 library(tree)
 
 # Set initial values to 0
@@ -514,25 +508,22 @@ return(results)
 
 classification_1(data = ISLR::Carseats,colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
 #>                      Model  Accuracy    Duration
-#> 1          Ensemble_Bag_RF 1.0000000 0.130465031
-#> 2             Ensemble_C50 1.0000000 0.007788897
-#> 3              Ensemble_RF 0.9846154 0.019177198
-#> 4             Ensemble_SVM 0.8769231 0.006022215
-#> 5     Bagged_Random_Forest 0.6729560 0.095813036
-#> 6                   Ranger 0.6540881 0.736639977
-#> 7                  XGBoost 0.6415094 6.993471861
-#> 8          Ensemble_Ranger 0.5692308 0.034466028
-#> 9                      C50 0.5345912 0.420025110
-#> 10 Support_Vector_Machines 0.5220126 0.013696194
-```
-
-``` r
+#> 1          Ensemble_Bag_RF 1.0000000 0.141160011
+#> 2             Ensemble_C50 1.0000000 0.007802963
+#> 3              Ensemble_RF 0.9558824 0.017611980
+#> 4             Ensemble_SVM 0.7647059 0.006072044
+#> 5                  XGBoost 0.6689655 8.002203941
+#> 6                   Ranger 0.6551724 0.820406914
+#> 7     Bagged_Random_Forest 0.6413793 0.111821890
+#> 8  Support_Vector_Machines 0.5793103 0.015836954
+#> 9                      C50 0.5517241 0.493202925
+#> 10         Ensemble_Ranger 0.4264706 0.036972046
 
 warnings()
 ```
 
 
-``` r
+```r
 
 df1 <- Ensembles::dry_beans_small
 #> Registered S3 method overwritten by 'tsibble':
@@ -541,24 +532,18 @@ df1 <- Ensembles::dry_beans_small
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
 #>   +.gg   ggplot2
-```
-
-``` r
 
 classification_1(data = df1, colnum = 17, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
 #>                      Model  Accuracy    Duration
-#> 1          Ensemble_Bag_RF 1.0000000  0.12236214
-#> 2             Ensemble_C50 1.0000000  0.01281404
-#> 3                   Ranger 0.9236641  0.08070183
-#> 4                  XGBoost 0.9236641 23.26443696
-#> 5     Bagged_Random_Forest 0.9122137  0.16021895
-#> 6                      C50 0.8511450  0.02710509
-#> 7  Support_Vector_Machines 0.8473282  0.02061820
-#> 8             Ensemble_SVM 0.7722772  0.01609302
-#> 9              Ensemble_RF 0.7128713  0.15743709
-#> 10         Ensemble_Ranger 0.1683168  0.04702497
-```
-
-``` r
+#> 1          Ensemble_Bag_RF 1.0000000  0.13550806
+#> 2             Ensemble_C50 1.0000000  0.01427794
+#> 3     Bagged_Random_Forest 0.9407666  0.16405606
+#> 4                  XGBoost 0.9337979 23.16261911
+#> 5                   Ranger 0.9198606  0.05157804
+#> 6  Support_Vector_Machines 0.9163763  0.01886702
+#> 7                      C50 0.8815331  0.02872300
+#> 8             Ensemble_SVM 0.8141593  0.01312304
+#> 9              Ensemble_RF 0.7699115  0.17488503
+#> 10         Ensemble_Ranger 0.1858407  0.05227113
 warnings()
 ```

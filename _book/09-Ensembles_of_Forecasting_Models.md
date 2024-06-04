@@ -3,7 +3,7 @@
 Once you know how to make the 27 individual time series forecasting models, the ensemble simply puts all of those 27 models together.
 
 
-``` r
+```r
 
 library(fpp3)
 #> ── Attaching packages ────────────────────────── fpp3 0.5 ──
@@ -20,9 +20,6 @@ library(fpp3)
 #> ✖ dplyr::lag()         masks stats::lag()
 #> ✖ tsibble::setdiff()   masks base::setdiff()
 #> ✖ tsibble::union()     masks base::union()
-```
-
-``` r
 
 forecasting <- function(time_series_data, train_amount, number, time_interval = c("Q", "M", "W")) {
 
@@ -133,11 +130,8 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #> Warning in sqrt(diag(best$var.coef)): NaNs produced
 #>     .model     Date     .mean
-#> 1 Ensemble 2024 May  9937.501
-#> 2 Ensemble 2024 Jun 11192.887
-#> 3 Ensemble 2024 Jul  2437.582
-```
-
-``` r
+#> 1 Ensemble 2024 May 9824.6234
+#> 2 Ensemble 2024 Jun 8429.0936
+#> 3 Ensemble 2024 Jul -119.0388
 warnings()
 ```

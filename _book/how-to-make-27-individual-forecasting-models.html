@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -104,7 +104,7 @@
 <h3>
 <span class="header-section-number">9.1.1</span> Arima 1<a class="anchor" aria-label="anchor" href="#arima-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb229"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── Attaching packages ────────────────────────── fpp3 0.5 ──</span></span>
@@ -120,9 +120,8 @@
 <span><span class="co">#&gt; ✖ tsibble::interval()  masks lubridate::interval()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()         masks stats::lag()</span></span>
 <span><span class="co">#&gt; ✖ tsibble::setdiff()   masks base::setdiff()</span></span>
-<span><span class="co">#&gt; ✖ tsibble::union()     masks base::union()</span></span></code></pre></div>
-<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; ✖ tsibble::union()     masks base::union()</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span></span>
 <span><span class="co"># Set up function:</span></span>
@@ -195,15 +194,14 @@
 <span><span class="co">#&gt;         .model    Error     Date     .mean</span></span>
 <span><span class="co">#&gt; 1 Arima1_model 58.39161 2024 May  740.0623</span></span>
 <span><span class="co">#&gt; 2 Arima1_model 58.39161 2024 Jun 1029.3480</span></span>
-<span><span class="co">#&gt; 3 Arima1_model 58.39161 2024 Jul  586.4908</span></span></code></pre></div>
-<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Arima1_model 58.39161 2024 Jul  586.4908</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="arima-2" class="section level3" number="9.1.2">
 <h3>
 <span class="header-section-number">9.1.2</span> Arima 2<a class="anchor" aria-label="anchor" href="#arima-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
@@ -276,15 +274,14 @@
 <span><span class="co">#&gt;         .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Arima2_model 54.98322 2024 May 623.5714</span></span>
 <span><span class="co">#&gt; 2 Arima2_model 54.98322 2024 Jun 912.8571</span></span>
-<span><span class="co">#&gt; 3 Arima2_model 54.98322 2024 Jul 470.0000</span></span></code></pre></div>
-<div class="sourceCode" id="cb233"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Arima2_model 54.98322 2024 Jul 470.0000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="arima3" class="section level3" number="9.1.3">
 <h3>
 <span class="header-section-number">9.1.3</span> Arima3<a class="anchor" aria-label="anchor" href="#arima3"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -351,15 +348,14 @@
 <span><span class="co">#&gt;         .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Arima3_model 46.96308 2024 May 196.6640</span></span>
 <span><span class="co">#&gt; 2 Arima3_model 46.96308 2024 Jun 197.5579</span></span>
-<span><span class="co">#&gt; 3 Arima3_model 46.96308 2024 Jul 198.4518</span></span></code></pre></div>
-<div class="sourceCode" id="cb235"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Arima3_model 46.96308 2024 Jul 198.4518</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="arima4" class="section level3" number="9.1.4">
 <h3>
 <span class="header-section-number">9.1.4</span> Arima4<a class="anchor" aria-label="anchor" href="#arima4"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
@@ -427,15 +423,14 @@
 <span><span class="co">#&gt;         .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Arima4_model 46.96308 2024 May 196.6640</span></span>
 <span><span class="co">#&gt; 2 Arima4_model 46.96308 2024 Jun 197.5579</span></span>
-<span><span class="co">#&gt; 3 Arima4_model 46.96308 2024 Jul 198.4518</span></span></code></pre></div>
-<div class="sourceCode" id="cb237"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Arima4_model 46.96308 2024 Jul 198.4518</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="deterministic" class="section level3" number="9.1.5">
 <h3>
 <span class="header-section-number">9.1.5</span> Deterministic<a class="anchor" aria-label="anchor" href="#deterministic"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -502,15 +497,14 @@
 <span><span class="co">#&gt;                .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Deterministic_model 42.86143 2024 May 146.3409</span></span>
 <span><span class="co">#&gt; 2 Deterministic_model 42.86143 2024 Jun 146.3409</span></span>
-<span><span class="co">#&gt; 3 Deterministic_model 42.86143 2024 Jul 146.3409</span></span></code></pre></div>
-<div class="sourceCode" id="cb239"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Deterministic_model 42.86143 2024 Jul 146.3409</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="drift" class="section level3" number="9.1.6">
 <h3>
 <span class="header-section-number">9.1.6</span> Drift<a class="anchor" aria-label="anchor" href="#drift"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -582,15 +576,14 @@
 <span><span class="co">#&gt;      .mean</span></span>
 <span><span class="co">#&gt; 1 287.3684</span></span>
 <span><span class="co">#&gt; 2 191.3684</span></span>
-<span><span class="co">#&gt; 3 193.3684</span></span></code></pre></div>
-<div class="sourceCode" id="cb241"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 193.3684</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="ets1" class="section level3" number="9.1.7">
 <h3>
 <span class="header-section-number">9.1.7</span> ETS1<a class="anchor" aria-label="anchor" href="#ets1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -657,15 +650,14 @@
 <span><span class="co">#&gt;       .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 ETS1_model 42.98491 2024 May 189.8662</span></span>
 <span><span class="co">#&gt; 2 ETS1_model 42.98491 2024 Jun 189.8662</span></span>
-<span><span class="co">#&gt; 3 ETS1_model 42.98491 2024 Jul 189.8662</span></span></code></pre></div>
-<div class="sourceCode" id="cb243"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 ETS1_model 42.98491 2024 Jul 189.8662</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="ets2" class="section level3" number="9.1.8">
 <h3>
 <span class="header-section-number">9.1.8</span> ETS2<a class="anchor" aria-label="anchor" href="#ets2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -732,15 +724,14 @@
 <span><span class="co">#&gt;       .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 ETS2_model 42.98491 2024 May 189.8662</span></span>
 <span><span class="co">#&gt; 2 ETS2_model 42.98491 2024 Jun 189.8662</span></span>
-<span><span class="co">#&gt; 3 ETS2_model 42.98491 2024 Jul 189.8662</span></span></code></pre></div>
-<div class="sourceCode" id="cb245"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 ETS2_model 42.98491 2024 Jul 189.8662</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="ets3" class="section level3" number="9.1.9">
 <h3>
 <span class="header-section-number">9.1.9</span> ETS3<a class="anchor" aria-label="anchor" href="#ets3"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -807,15 +798,14 @@
 <span><span class="co">#&gt;       .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 ETS3_model 42.98491 2024 May 189.8662</span></span>
 <span><span class="co">#&gt; 2 ETS3_model 42.98491 2024 Jun 189.8662</span></span>
-<span><span class="co">#&gt; 3 ETS3_model 42.98491 2024 Jul 189.8662</span></span></code></pre></div>
-<div class="sourceCode" id="cb247"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 ETS3_model 42.98491 2024 Jul 189.8662</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="ets4" class="section level3" number="9.1.10">
 <h3>
 <span class="header-section-number">9.1.10</span> ETS4<a class="anchor" aria-label="anchor" href="#ets4"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb248"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -882,15 +872,14 @@
 <span><span class="co">#&gt;       .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 ETS4_model 42.98491 2024 May 189.8662</span></span>
 <span><span class="co">#&gt; 2 ETS4_model 42.98491 2024 Jun 189.8662</span></span>
-<span><span class="co">#&gt; 3 ETS4_model 42.98491 2024 Jul 189.8662</span></span></code></pre></div>
-<div class="sourceCode" id="cb249"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 ETS4_model 42.98491 2024 Jul 189.8662</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="holt-winters-additive" class="section level3" number="9.1.11">
 <h3>
 <span class="header-section-number">9.1.11</span> Holt-Winters Additive<a class="anchor" aria-label="anchor" href="#holt-winters-additive"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb250"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -957,15 +946,14 @@
 <span><span class="co">#&gt;                        .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Holt_Winters_Additive_model 52.74689 2024 May 467.2980</span></span>
 <span><span class="co">#&gt; 2 Holt_Winters_Additive_model 52.74689 2024 Jun 802.6268</span></span>
-<span><span class="co">#&gt; 3 Holt_Winters_Additive_model 52.74689 2024 Jul 229.5501</span></span></code></pre></div>
-<div class="sourceCode" id="cb251"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Holt_Winters_Additive_model 52.74689 2024 Jul 229.5501</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="holt-winters-damped" class="section level3" number="9.1.12">
 <h3>
 <span class="header-section-number">9.1.12</span> Holt-Winters Damped<a class="anchor" aria-label="anchor" href="#holt-winters-damped"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb252"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1032,15 +1020,14 @@
 <span><span class="co">#&gt;                      .model    Error     Date     .mean</span></span>
 <span><span class="co">#&gt; 1 Holt_Winters_Damped_model 481.2281 2024 May 137.36755</span></span>
 <span><span class="co">#&gt; 2 Holt_Winters_Damped_model 481.2281 2024 Jun 116.40494</span></span>
-<span><span class="co">#&gt; 3 Holt_Winters_Damped_model 481.2281 2024 Jul  97.76673</span></span></code></pre></div>
-<div class="sourceCode" id="cb253"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Holt_Winters_Damped_model 481.2281 2024 Jul  97.76673</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="holt-winters-multiplicative" class="section level3" number="9.1.13">
 <h3>
 <span class="header-section-number">9.1.13</span> Holt-Winters Multiplicative<a class="anchor" aria-label="anchor" href="#holt-winters-multiplicative"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb254"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1111,15 +1098,14 @@
 <span><span class="co">#&gt;      .mean</span></span>
 <span><span class="co">#&gt; 1 122.6052</span></span>
 <span><span class="co">#&gt; 2 128.6342</span></span>
-<span><span class="co">#&gt; 3 108.2321</span></span></code></pre></div>
-<div class="sourceCode" id="cb255"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 108.2321</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="linear-1" class="section level3" number="9.1.14">
 <h3>
 <span class="header-section-number">9.1.14</span> Linear 1<a class="anchor" aria-label="anchor" href="#linear-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb256"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1186,15 +1172,14 @@
 <span><span class="co">#&gt;          .model    Error     Date     .mean</span></span>
 <span><span class="co">#&gt; 1 Linear1_model 481.2281 2024 May 137.36755</span></span>
 <span><span class="co">#&gt; 2 Linear1_model 481.2281 2024 Jun 116.40494</span></span>
-<span><span class="co">#&gt; 3 Linear1_model 481.2281 2024 Jul  97.76673</span></span></code></pre></div>
-<div class="sourceCode" id="cb257"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Linear1_model 481.2281 2024 Jul  97.76673</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="linear-2" class="section level3" number="9.1.15">
 <h3>
 <span class="header-section-number">9.1.15</span> Linear 2<a class="anchor" aria-label="anchor" href="#linear-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb258"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1261,15 +1246,14 @@
 <span><span class="co">#&gt;          .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Linear2_model 120.6944 2024 May 146.3409</span></span>
 <span><span class="co">#&gt; 2 Linear2_model 120.6944 2024 Jun 146.3409</span></span>
-<span><span class="co">#&gt; 3 Linear2_model 120.6944 2024 Jul 146.3409</span></span></code></pre></div>
-<div class="sourceCode" id="cb259"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Linear2_model 120.6944 2024 Jul 146.3409</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="linear-3" class="section level3" number="9.1.16">
 <h3>
 <span class="header-section-number">9.1.16</span> Linear 3<a class="anchor" aria-label="anchor" href="#linear-3"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb260"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1336,15 +1320,14 @@
 <span><span class="co">#&gt;          .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Linear2_model 120.6944 2024 May 146.3409</span></span>
 <span><span class="co">#&gt; 2 Linear2_model 120.6944 2024 Jun 146.3409</span></span>
-<span><span class="co">#&gt; 3 Linear2_model 120.6944 2024 Jul 146.3409</span></span></code></pre></div>
-<div class="sourceCode" id="cb261"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Linear2_model 120.6944 2024 Jul 146.3409</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="linear-4" class="section level3" number="9.1.17">
 <h3>
 <span class="header-section-number">9.1.17</span> Linear 4<a class="anchor" aria-label="anchor" href="#linear-4"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb262"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1411,15 +1394,14 @@
 <span><span class="co">#&gt;          .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Linear4_model 87.83978 2024 May 313.7312</span></span>
 <span><span class="co">#&gt; 2 Linear4_model 87.83978 2024 Jun 317.4928</span></span>
-<span><span class="co">#&gt; 3 Linear4_model 87.83978 2024 Jul 321.2543</span></span></code></pre></div>
-<div class="sourceCode" id="cb263"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Linear4_model 87.83978 2024 Jul 321.2543</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="mean" class="section level3" number="9.1.18">
 <h3>
 <span class="header-section-number">9.1.18</span> Mean<a class="anchor" aria-label="anchor" href="#mean"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb264"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1486,15 +1468,14 @@
 <span><span class="co">#&gt;       .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Mean_model 120.6944 2024 May 146.3409</span></span>
 <span><span class="co">#&gt; 2 Mean_model 120.6944 2024 Jun 146.3409</span></span>
-<span><span class="co">#&gt; 3 Mean_model 120.6944 2024 Jul 146.3409</span></span></code></pre></div>
-<div class="sourceCode" id="cb265"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Mean_model 120.6944 2024 Jul 146.3409</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="naive" class="section level3" number="9.1.19">
 <h3>
 <span class="header-section-number">9.1.19</span> Naive<a class="anchor" aria-label="anchor" href="#naive"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb266"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1561,15 +1542,14 @@
 <span><span class="co">#&gt;        .model    Error     Date .mean</span></span>
 <span><span class="co">#&gt; 1 Naive_model 52.38957 2024 May   175</span></span>
 <span><span class="co">#&gt; 2 Naive_model 52.38957 2024 Jun   175</span></span>
-<span><span class="co">#&gt; 3 Naive_model 52.38957 2024 Jul   175</span></span></code></pre></div>
-<div class="sourceCode" id="cb267"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 Naive_model 52.38957 2024 Jul   175</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="neuralnet-1" class="section level3" number="9.1.20">
 <h3>
 <span class="header-section-number">9.1.20</span> Neuralnet 1<a class="anchor" aria-label="anchor" href="#neuralnet-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb268"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1634,17 +1614,16 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             .model    Error     Date      .mean</span></span>
-<span><span class="co">#&gt; 1 Neuralnet1_model 80.01379 2024 May  254.58940</span></span>
-<span><span class="co">#&gt; 2 Neuralnet1_model 80.01379 2024 Jun   31.16869</span></span>
-<span><span class="co">#&gt; 3 Neuralnet1_model 80.01379 2024 Jul -149.61350</span></span></code></pre></div>
-<div class="sourceCode" id="cb269"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Neuralnet1_model 21.67796 2024 May   227.2104</span></span>
+<span><span class="co">#&gt; 2 Neuralnet1_model 21.67796 2024 Jun  -245.7613</span></span>
+<span><span class="co">#&gt; 3 Neuralnet1_model 21.67796 2024 Jul -1212.2786</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="neuralnet-2" class="section level3" number="9.1.21">
 <h3>
 <span class="header-section-number">9.1.21</span> Neuralnet 2<a class="anchor" aria-label="anchor" href="#neuralnet-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb270"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1709,17 +1688,16 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             .model    Error     Date      .mean</span></span>
-<span><span class="co">#&gt; 1 Neuralnet2_model 53.91726 2024 May   234.1566</span></span>
-<span><span class="co">#&gt; 2 Neuralnet2_model 53.91726 2024 Jun -1894.7670</span></span>
-<span><span class="co">#&gt; 3 Neuralnet2_model 53.91726 2024 Jul -4940.7453</span></span></code></pre></div>
-<div class="sourceCode" id="cb271"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Neuralnet2_model 51.42435 2024 May   246.7653</span></span>
+<span><span class="co">#&gt; 2 Neuralnet2_model 51.42435 2024 Jun -1056.4116</span></span>
+<span><span class="co">#&gt; 3 Neuralnet2_model 51.42435 2024 Jul -5376.7290</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="neuralnet-3" class="section level3" number="9.1.22">
 <h3>
 <span class="header-section-number">9.1.22</span> Neuralnet 3<a class="anchor" aria-label="anchor" href="#neuralnet-3"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1784,17 +1762,16 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             .model    Error     Date    .mean</span></span>
-<span><span class="co">#&gt; 1 Neuralnet3_model 32.00607 2024 May 277.4085</span></span>
-<span><span class="co">#&gt; 2 Neuralnet3_model 32.00607 2024 Jun 425.5440</span></span>
-<span><span class="co">#&gt; 3 Neuralnet3_model 32.00607 2024 Jul 249.4818</span></span></code></pre></div>
-<div class="sourceCode" id="cb273"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Neuralnet3_model 25.75467 2024 May 284.6480</span></span>
+<span><span class="co">#&gt; 2 Neuralnet3_model 25.75467 2024 Jun 313.0187</span></span>
+<span><span class="co">#&gt; 3 Neuralnet3_model 25.75467 2024 Jul 219.7550</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="neuralnet-4" class="section level3" number="9.1.23">
 <h3>
 <span class="header-section-number">9.1.23</span> Neuralnet 4<a class="anchor" aria-label="anchor" href="#neuralnet-4"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb274"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1859,17 +1836,16 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             .model    Error     Date     .mean</span></span>
-<span><span class="co">#&gt; 1 Neuralnet3_model 47.50821 2024 May 263.52302</span></span>
-<span><span class="co">#&gt; 2 Neuralnet3_model 47.50821 2024 Jun 240.83646</span></span>
-<span><span class="co">#&gt; 3 Neuralnet3_model 47.50821 2024 Jul -38.30823</span></span></code></pre></div>
-<div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Neuralnet3_model 34.71215 2024 May 301.21197</span></span>
+<span><span class="co">#&gt; 2 Neuralnet3_model 34.71215 2024 Jun 278.81890</span></span>
+<span><span class="co">#&gt; 3 Neuralnet3_model 34.71215 2024 Jul  91.52135</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="prophet-additive" class="section level3" number="9.1.24">
 <h3>
 <span class="header-section-number">9.1.24</span> Prophet Additive<a class="anchor" aria-label="anchor" href="#prophet-additive"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb276"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -1933,18 +1909,17 @@
 <span><span class="va">time_series_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'https://raw.githubusercontent.com/InfiniteCuriosity/forecasting_jobs/main/Total_Nonfarm.csv'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   .model   Error     Date    .mean</span></span>
-<span><span class="co">#&gt; 1 Prophet_Additive_model 98.6034 2024 May 2686.376</span></span>
-<span><span class="co">#&gt; 2 Prophet_Additive_model 98.6034 2024 Jun 3176.369</span></span>
-<span><span class="co">#&gt; 3 Prophet_Additive_model 98.6034 2024 Jul 1016.474</span></span></code></pre></div>
-<div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt;                   .model    Error     Date    .mean</span></span>
+<span><span class="co">#&gt; 1 Prophet_Additive_model 99.30282 2024 May 2650.549</span></span>
+<span><span class="co">#&gt; 2 Prophet_Additive_model 99.30282 2024 Jun 3159.724</span></span>
+<span><span class="co">#&gt; 3 Prophet_Additive_model 99.30282 2024 Jul 1010.568</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="prophet-multiplicative" class="section level3" number="9.1.25">
 <h3>
 <span class="header-section-number">9.1.25</span> Prophet Multiplicative<a class="anchor" aria-label="anchor" href="#prophet-multiplicative"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb278"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -2009,17 +1984,16 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                         .model    Error     Date     .mean</span></span>
-<span><span class="co">#&gt; 1 Prophet_Multiplicative_model 75.97023 2024 May -37.12521</span></span>
-<span><span class="co">#&gt; 2 Prophet_Multiplicative_model 75.97023 2024 Jun -65.45028</span></span>
-<span><span class="co">#&gt; 3 Prophet_Multiplicative_model 75.97023 2024 Jul -30.47203</span></span></code></pre></div>
-<div class="sourceCode" id="cb279"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Prophet_Multiplicative_model 76.28555 2024 May -32.68779</span></span>
+<span><span class="co">#&gt; 2 Prophet_Multiplicative_model 76.28555 2024 Jun -63.67985</span></span>
+<span><span class="co">#&gt; 3 Prophet_Multiplicative_model 76.28555 2024 Jul -35.34949</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="seasonal-naive" class="section level3" number="9.1.26">
 <h3>
 <span class="header-section-number">9.1.26</span> Seasonal Naive<a class="anchor" aria-label="anchor" href="#seasonal-naive"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -2086,15 +2060,14 @@
 <span><span class="co">#&gt;         .model    Error     Date .mean</span></span>
 <span><span class="co">#&gt; 1 SNaive_model 98.94106 2024 May   281</span></span>
 <span><span class="co">#&gt; 2 SNaive_model 98.94106 2024 Jun   185</span></span>
-<span><span class="co">#&gt; 3 SNaive_model 98.94106 2024 Jul   187</span></span></code></pre></div>
-<div class="sourceCode" id="cb281"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 SNaive_model 98.94106 2024 Jul   187</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="stochastic" class="section level3" number="9.1.27">
 <h3>
 <span class="header-section-number">9.1.27</span> Stochastic<a class="anchor" aria-label="anchor" href="#stochastic"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb282"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set up the function:</span></span>
@@ -2161,10 +2134,9 @@
 <span><span class="co">#&gt;             .model    Error     Date    .mean</span></span>
 <span><span class="co">#&gt; 1 Stochastic_model 42.98025 2024 May 239.7312</span></span>
 <span><span class="co">#&gt; 2 Stochastic_model 42.98025 2024 Jun 256.0506</span></span>
-<span><span class="co">#&gt; 3 Stochastic_model 42.98025 2024 Jul 241.0237</span></span></code></pre></div>
-<div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 3 Stochastic_model 42.98025 2024 Jul 241.0237</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">summary_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 
 </div>
@@ -2225,7 +2197,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

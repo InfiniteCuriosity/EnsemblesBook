@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -315,9 +315,8 @@ a couple of times, to make sure you are very familiar with the steps.</strong></
 <span><span class="co">#&gt; 3    17.8 392.83  4.03 34.7</span></span>
 <span><span class="co">#&gt; 4    18.7 394.63  2.94 33.4</span></span>
 <span><span class="co">#&gt; 5    18.7 396.90  5.33 36.2</span></span>
-<span><span class="co">#&gt; 6    18.7 394.12  5.21 28.7</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6    18.7 394.12  5.21 28.7</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         crim zn indus chas   nox    rm   age    dis rad tax</span></span>
 <span><span class="co">#&gt; 401 25.04610  0  18.1    0 0.693 5.987 100.0 1.5888  24 666</span></span>
 <span><span class="co">#&gt; 402 14.23620  0  18.1    0 0.693 6.343 100.0 1.5741  24 666</span></span>
@@ -335,7 +334,7 @@ a couple of times, to make sure you are very familiar with the steps.</strong></
 <p>Create a linear model by fitting the linear model on the training data,
 and make predictions on the Boston Housing test data. Measure the
 accuracy of the predictions against the actual values.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Boston_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span> <span class="co"># Fit the model to the training data</span></span>
 <span><span class="va">Boston_lm_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">Boston_lm</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span></span>
 <span></span>
@@ -344,7 +343,7 @@ accuracy of the predictions against the actual values.</p>
 <span><span class="co">#&gt;       401       402       403       404       405       406 </span></span>
 <span><span class="co">#&gt; 12.618507 19.785728 20.919370 13.014507  6.946392  5.123039</span></span></code></pre></div>
 <p>Calculate the error for the model</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Boston_linear_RMSE</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">medv</span>, predicted <span class="op">=</span> <span class="va">Boston_lm_predictions</span><span class="op">)</span></span>
 <span><span class="va">Boston_linear_RMSE</span></span>
 <span><span class="co">#&gt; [1] 6.108005</span></span></code></pre></div>
@@ -353,7 +352,7 @@ the tree method.</p>
 <p>Create a model using trees by fitting the tree model on the training
 data, and making predictions on the Boston Housing test data. Measure
 the accuracy of the predictions against the actual values.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Boston_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span> <span class="co"># Fit the model to the training data</span></span>
 <span><span class="va">Boston_tree_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">Boston_tree</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span></span>
 <span></span>
@@ -362,7 +361,7 @@ the accuracy of the predictions against the actual values.</p>
 <span><span class="co">#&gt;      401      402      403      404      405      406 </span></span>
 <span><span class="co">#&gt; 13.30769 13.30769 13.30769 13.30769 13.30769 13.30769</span></span></code></pre></div>
 <p>Calculate the error rate for the tree model:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Boston_tree_RMSE</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">medv</span>, predicted <span class="op">=</span> <span class="va">Boston_tree_predictions</span><span class="op">)</span></span>
 <span><span class="va">Boston_tree_RMSE</span></span>
 <span><span class="co">#&gt; [1] 5.478017</span></span></code></pre></div>
@@ -379,7 +378,7 @@ predictions, and one will be the tree predictions. We’ll make a third
 column, the true values.</p>
 <p>Make a new column for the true values—these are the true values in the
 Boston Housing test data set</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  <span class="st">'linear'</span> <span class="op">=</span> <span class="va">Boston_lm_predictions</span>,</span>
 <span>  <span class="st">'tree'</span> <span class="op">=</span> <span class="va">Boston_tree_predictions</span>,</span>
@@ -394,16 +393,15 @@ Boston Housing test data set</p>
 <span><span class="co">#&gt; 403 20.919370 13.30769 12.1</span></span>
 <span><span class="co">#&gt; 404 13.014507 13.30769  8.3</span></span>
 <span><span class="co">#&gt; 405  6.946392 13.30769  8.5</span></span>
-<span><span class="co">#&gt; 406  5.123039 13.30769  5.0</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 406  5.123039 13.30769  5.0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 105   3</span></span></code></pre></div>
 <p>Once we have the new ensemble data set, it’s simply another data set. No
 different in many ways from any other data set (except how it was made).</p>
 <p>Break the ensemble data set into train (60%) and test (40%) sections.
 There is nothing special about the 60/40 split here, you may use any
 numbers you wish.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble_train</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">60</span>, <span class="op">]</span></span>
 <span><span class="va">ensemble_test</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="fl">61</span><span class="op">:</span><span class="fl">105</span>, <span class="op">]</span></span>
 <span></span>
@@ -414,9 +412,8 @@ numbers you wish.</p>
 <span><span class="co">#&gt; 403 20.919370 13.30769 12.1</span></span>
 <span><span class="co">#&gt; 404 13.014507 13.30769  8.3</span></span>
 <span><span class="co">#&gt; 405  6.946392 13.30769  8.5</span></span>
-<span><span class="co">#&gt; 406  5.123039 13.30769  5.0</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ensemble_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 406  5.123039 13.30769  5.0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ensemble_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       linear     tree    y</span></span>
 <span><span class="co">#&gt; 461 23.88984 13.30769 16.4</span></span>
 <span><span class="co">#&gt; 462 23.29129 13.30769 17.7</span></span>
@@ -427,7 +424,7 @@ numbers you wish.</p>
 <p>Fit a linear model to the ensemble training data. Make predictions using
 the testing data, and measure the accuracy of the predictions against
 the test data. Notice how similar this is to our linear and tree models.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fit the model to the training data</span></span>
 <span><span class="va">ensemble_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
 <span></span>
@@ -441,7 +438,7 @@ the test data. Notice how similar this is to our linear and tree models.</p>
 <span><span class="va">ensemble_lm_rmse</span></span>
 <span><span class="co">#&gt; [1] 4.826962</span></span></code></pre></div>
 <p>Summarize the results.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  <span class="st">'Model'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Linear'</span>, <span class="st">'Tree'</span>, <span class="st">'Ensemble'</span><span class="op">)</span>,</span>
 <span>  <span class="st">'Error'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Boston_linear_RMSE</span>, <span class="va">Boston_tree_RMSE</span>, <span class="va">ensemble_lm_rmse</span><span class="op">)</span></span>
@@ -459,7 +456,7 @@ lowest error rate of all the models.</p>
 <h3>
 <span class="header-section-number">2.6.1</span> Try it yourself: Make an ensemble where the ensemble is made using trees instead of linear models.<a class="anchor" aria-label="anchor" href="#try-it-yourself-make-an-ensemble-where-the-ensemble-is-made-using-trees-instead-of-linear-models."><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fit the model to the training data</span></span>
 <span><span class="va">ensemble_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
 <span></span>
@@ -469,9 +466,8 @@ lowest error rate of all the models.</p>
 <span><span class="co"># Let's look at the predictions</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ensemble_tree_predict</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      461      462      463      464      465      466 </span></span>
-<span><span class="co">#&gt; 14.80000 14.80000 18.94286 18.94286 18.94286 18.94286</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; 14.80000 14.80000 18.94286 18.94286 18.94286 18.94286</span></span>
+<span></span>
 <span><span class="co"># Calculate the error rate</span></span>
 <span><span class="va">ensemble_tree_rmse</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="va">ensemble_tree_predict</span><span class="op">)</span></span>
 <span></span>
@@ -479,7 +475,7 @@ lowest error rate of all the models.</p>
 <span><span class="co">#&gt; [1] 5.322011</span></span></code></pre></div>
 <p>How does this compare to our three other results? Let’s update the
 results table</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  <span class="st">'Model'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Linear'</span>, <span class="st">'Tree'</span>, <span class="st">'Ensemble_Linear'</span>, <span class="st">'Ensemble_Tree'</span><span class="op">)</span>,</span>
 <span>  <span class="st">'Error'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Boston_linear_RMSE</span>, <span class="va">Boston_tree_RMSE</span>, <span class="va">ensemble_lm_rmse</span>, <span class="va">ensemble_tree_rmse</span><span class="op">)</span></span>
@@ -519,7 +515,7 @@ achieving the best possible result.</p>
 <h2>
 <span class="header-section-number">2.8</span> Principle: Randomizing the data before the analysis will make the results more general (and is very easy to do!)<a class="anchor" aria-label="anchor" href="#principle-randomizing-the-data-before-the-analysis-will-make-the-results-more-general-and-is-very-easy-to-do"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># Randomize the rows before the analysis</span></span></code></pre></div>
 </div>
 <div id="try-it-yourself-repeat-the-previous-analysis-but-randomize-the-rows-before-the-analysis.-otherwise-keep-the-process-the-same.-share-your-results-on-social-media." class="section level2" number="2.9">
@@ -532,7 +528,7 @@ first.</p>
 <p>• Break the data into train and test sets</p>
 <p>• Fit the model to the training set</p>
 <p>• Make predictions and calculate error from the model on the test set</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span> <span class="co"># Randomize the rows before the analysis</span></span>
 <span></span>
 <span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">400</span>, <span class="op">]</span></span>
@@ -547,9 +543,9 @@ first.</p>
 <span><span class="co"># Let's have a quick look at the linear model predictions:</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Boston_lm_predictions</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       389        24        13       490       298       497 </span></span>
-<span><span class="co">#&gt;  7.209131 13.299431 20.369236  8.253998 18.854953 14.074187</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;      240      332      137      454      334      270 </span></span>
+<span><span class="co">#&gt; 28.61158 19.88467 15.96199 22.47862 22.24022 24.87986</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Boston_linear_rmse</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">medv</span>, predicted <span class="op">=</span> <span class="va">Boston_lm_predictions</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">Boston_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -559,16 +555,16 @@ first.</p>
 <span><span class="co"># Let's have a quick look at the tree model predictions:</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Boston_tree_predictions</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      389       24       13      490      298      497 </span></span>
-<span><span class="co">#&gt; 12.00606 16.90755 16.90755 16.90755 16.90755 16.90755</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;      240      332      137      454      334      270 </span></span>
+<span><span class="co">#&gt; 27.91087 21.99000 16.96486 22.52000 21.99000 21.99000</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span> <span class="st">'linear'</span> <span class="op">=</span> <span class="va">Boston_lm_predictions</span>, <span class="st">'tree'</span> <span class="op">=</span> <span class="va">Boston_tree_predictions</span>, <span class="st">'y_ensemble'</span> <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">medv</span> <span class="op">)</span></span>
 <span></span>
 <span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span> <span class="co"># Randomizes the rows of the ensemble</span></span>
 <span></span>
 <span><span class="va">ensemble_train</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">60</span>, <span class="op">]</span></span>
 <span><span class="va">ensemble_test</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="fl">61</span><span class="op">:</span><span class="fl">105</span>, <span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Predictions for the ensemble linear model</span></span>
@@ -589,16 +585,16 @@ first.</p>
 <span></span>
 <span><span class="va">results</span></span>
 <span><span class="co">#&gt; $Linear</span></span>
-<span><span class="co">#&gt; [1] 4.536668</span></span>
+<span><span class="co">#&gt; [1] 5.773528</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Trees</span></span>
-<span><span class="co">#&gt; [1] 4.012755</span></span>
+<span><span class="co">#&gt; [1] 5.217239</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Ensembles_Linear</span></span>
-<span><span class="co">#&gt; [1] 3.714215</span></span>
+<span><span class="co">#&gt; [1] 3.496981</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Ensemble_Tree</span></span>
-<span><span class="co">#&gt; [1] 5.286599</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 5.648841</span></span></code></pre></div>
 <p>The fact that our results are a bit different from our first ensemble is
 useful. This gives us another solid principle to use in our analysis
 methods:</p>
@@ -609,7 +605,7 @@ methods:</p>
 </h2>
 <p>Just watch: Repeat the results 100 times, return the mean of the results
 (hint: It’s two small changes)</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
 <span><span class="co"># First the linear model with randomized data</span></span>
@@ -687,9 +683,8 @@ methods:</p>
 <span></span>
 <span><span class="va">results</span></span>
 <span><span class="co">#&gt;     Linear    Trees Ensembles_Linear Ensemble_Tree</span></span>
-<span><span class="co">#&gt; 1 4.798849 4.627021         4.078829      5.040039</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># No warnings!</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 4.882039 4.644311         4.165575      5.139567</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># No warnings!</span></span></code></pre></div>
 <div class="float">
 <img src="_book/images/automate_as_much_as_possible.jpg" alt="Automate as much as possible"><div class="figcaption">Automate as much as
 possible</div>
@@ -722,7 +717,7 @@ help address errors in your code:</p>
 <p>Absolutely! We will simply add the code at the end of this section that
 saves the four trained models (linear, tree, ensemble_linear and
 ensemble_tree), as follows:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mfrasco/Metrics">Metrics</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
@@ -803,19 +798,18 @@ ensemble_tree), as follows:</p>
 <span></span>
 <span><span class="va">results</span></span>
 <span><span class="co">#&gt; $Linear</span></span>
-<span><span class="co">#&gt; [1] 4.830464</span></span>
+<span><span class="co">#&gt; [1] 4.921173</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Trees</span></span>
-<span><span class="co">#&gt; [1] 4.712343</span></span>
+<span><span class="co">#&gt; [1] 4.755993</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Ensembles_Linear</span></span>
-<span><span class="co">#&gt; [1] 4.151828</span></span>
+<span><span class="co">#&gt; [1] 4.284075</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Ensemble_Tree</span></span>
-<span><span class="co">#&gt; [1] 5.236029</span></span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; [1] 5.211208</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">Boston_lm</span> <span class="op">&lt;-</span> <span class="va">Boston_lm</span></span>
 <span><span class="va">Boston_tree</span> <span class="op">&lt;-</span> <span class="va">Boston_tree</span></span>
@@ -1028,7 +1022,7 @@ closer to that section of the book.</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

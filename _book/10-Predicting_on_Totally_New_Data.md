@@ -3,7 +3,7 @@
 Let's start with a simple ensemble of cubist, gam and linear models:
 
 
-``` r
+```r
 library(tree) # Allows us to use tree models
 library(MASS) # For the Boston Housing data set library(Metrics)
 library(reactable) # For the final report - looks amazing!
@@ -19,9 +19,6 @@ library(tidyverse)
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ✖ dplyr::select() masks MASS::select()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 
 # Set initial values to 0
 linear_train_RMSE <- 0
@@ -103,7 +100,7 @@ results <- results %>% arrange(Error_Rate)
 } # Closing brace for numresamples
 
 if (do_you_have_new_data == "Y") {
-  new_data <- read.csv('/Users/russellconte/NewBoston.csv', header = TRUE, sep = ',')
+  new_data <- read.csv('/Users/russconte/NewBoston.csv', header = TRUE, sep = ',')
 
   y <- 0
   colnames(new_data)[colnum] <- "y"
@@ -162,9 +159,6 @@ numerical_1(data = Ensembles::Boston_Housing, colnum = 14, train_amount = 0.60, 
 #> [[1]]
 #> 
 #> [[2]]
-```
-
-``` r
 
 # Note these results show up in the Viewer.
 ```

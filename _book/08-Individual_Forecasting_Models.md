@@ -51,7 +51,7 @@ I have the data stored on my Github repository, and w will be accessing that dat
 ### Arima 1
 
 
-``` r
+```r
 
 library(fpp3)
 #> ── Attaching packages ────────────────────────── fpp3 0.5 ──
@@ -68,9 +68,6 @@ library(fpp3)
 #> ✖ dplyr::lag()         masks stats::lag()
 #> ✖ tsibble::setdiff()   masks base::setdiff()
 #> ✖ tsibble::union()     masks base::union()
-```
-
-``` r
 
 # Set initial values to 0
 
@@ -145,16 +142,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Arima1_model 58.39161 2024 May  740.0623
 #> 2 Arima1_model 58.39161 2024 Jun 1029.3480
 #> 3 Arima1_model 58.39161 2024 Jul  586.4908
-```
-
-``` r
 warnings()
 ```
 
 ### Arima 2
 
 
-``` r
+```r
 
 library(fpp3)
 
@@ -228,16 +222,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Arima2_model 54.98322 2024 May 623.5714
 #> 2 Arima2_model 54.98322 2024 Jun 912.8571
 #> 3 Arima2_model 54.98322 2024 Jul 470.0000
-```
-
-``` r
 warnings()
 ```
 
 ### Arima3
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -305,16 +296,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Arima3_model 46.96308 2024 May 196.6640
 #> 2 Arima3_model 46.96308 2024 Jun 197.5579
 #> 3 Arima3_model 46.96308 2024 Jul 198.4518
-```
-
-``` r
 warnings()
 ```
 
 ### Arima4
 
 
-``` r
+```r
 
 library(fpp3)
 
@@ -383,16 +371,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Arima4_model 46.96308 2024 May 196.6640
 #> 2 Arima4_model 46.96308 2024 Jun 197.5579
 #> 3 Arima4_model 46.96308 2024 Jul 198.4518
-```
-
-``` r
 warnings()
 ```
 
 ### Deterministic
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -460,16 +445,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Deterministic_model 42.86143 2024 May 146.3409
 #> 2 Deterministic_model 42.86143 2024 Jun 146.3409
 #> 3 Deterministic_model 42.86143 2024 Jul 146.3409
-```
-
-``` r
 warnings()
 ```
 
 ### Drift
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -542,16 +524,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 287.3684
 #> 2 191.3684
 #> 3 193.3684
-```
-
-``` r
 warnings()
 ```
 
 ### ETS1
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -619,16 +598,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 ETS1_model 42.98491 2024 May 189.8662
 #> 2 ETS1_model 42.98491 2024 Jun 189.8662
 #> 3 ETS1_model 42.98491 2024 Jul 189.8662
-```
-
-``` r
 warnings()
 ```
 
 ### ETS2
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -696,16 +672,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 ETS2_model 42.98491 2024 May 189.8662
 #> 2 ETS2_model 42.98491 2024 Jun 189.8662
 #> 3 ETS2_model 42.98491 2024 Jul 189.8662
-```
-
-``` r
 warnings()
 ```
 
 ### ETS3
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -773,16 +746,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 ETS3_model 42.98491 2024 May 189.8662
 #> 2 ETS3_model 42.98491 2024 Jun 189.8662
 #> 3 ETS3_model 42.98491 2024 Jul 189.8662
-```
-
-``` r
 warnings()
 ```
 
 ### ETS4
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -850,16 +820,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 ETS4_model 42.98491 2024 May 189.8662
 #> 2 ETS4_model 42.98491 2024 Jun 189.8662
 #> 3 ETS4_model 42.98491 2024 Jul 189.8662
-```
-
-``` r
 warnings()
 ```
 
 ### Holt-Winters Additive
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -927,16 +894,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Holt_Winters_Additive_model 52.74689 2024 May 467.2980
 #> 2 Holt_Winters_Additive_model 52.74689 2024 Jun 802.6268
 #> 3 Holt_Winters_Additive_model 52.74689 2024 Jul 229.5501
-```
-
-``` r
 warnings()
 ```
 
 ### Holt-Winters Damped
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1004,16 +968,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Holt_Winters_Damped_model 481.2281 2024 May 137.36755
 #> 2 Holt_Winters_Damped_model 481.2281 2024 Jun 116.40494
 #> 3 Holt_Winters_Damped_model 481.2281 2024 Jul  97.76673
-```
-
-``` r
 warnings()
 ```
 
 ### Holt-Winters Multiplicative
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1085,16 +1046,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 122.6052
 #> 2 128.6342
 #> 3 108.2321
-```
-
-``` r
 warnings()
 ```
 
 ### Linear 1
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1162,16 +1120,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Linear1_model 481.2281 2024 May 137.36755
 #> 2 Linear1_model 481.2281 2024 Jun 116.40494
 #> 3 Linear1_model 481.2281 2024 Jul  97.76673
-```
-
-``` r
 warnings()
 ```
 
 ### Linear 2
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1239,16 +1194,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Linear2_model 120.6944 2024 May 146.3409
 #> 2 Linear2_model 120.6944 2024 Jun 146.3409
 #> 3 Linear2_model 120.6944 2024 Jul 146.3409
-```
-
-``` r
 warnings()
 ```
 
 ### Linear 3
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1316,16 +1268,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Linear2_model 120.6944 2024 May 146.3409
 #> 2 Linear2_model 120.6944 2024 Jun 146.3409
 #> 3 Linear2_model 120.6944 2024 Jul 146.3409
-```
-
-``` r
 warnings()
 ```
 
 ### Linear 4
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1393,16 +1342,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Linear4_model 87.83978 2024 May 313.7312
 #> 2 Linear4_model 87.83978 2024 Jun 317.4928
 #> 3 Linear4_model 87.83978 2024 Jul 321.2543
-```
-
-``` r
 warnings()
 ```
 
 ### Mean
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1470,16 +1416,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Mean_model 120.6944 2024 May 146.3409
 #> 2 Mean_model 120.6944 2024 Jun 146.3409
 #> 3 Mean_model 120.6944 2024 Jul 146.3409
-```
-
-``` r
 warnings()
 ```
 
 ### Naive
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1547,16 +1490,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Naive_model 52.38957 2024 May   175
 #> 2 Naive_model 52.38957 2024 Jun   175
 #> 3 Naive_model 52.38957 2024 Jul   175
-```
-
-``` r
 warnings()
 ```
 
 ### Neuralnet 1
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1621,19 +1561,16 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #>             .model    Error     Date      .mean
-#> 1 Neuralnet1_model 80.01379 2024 May  254.58940
-#> 2 Neuralnet1_model 80.01379 2024 Jun   31.16869
-#> 3 Neuralnet1_model 80.01379 2024 Jul -149.61350
-```
-
-``` r
+#> 1 Neuralnet1_model 21.67796 2024 May   227.2104
+#> 2 Neuralnet1_model 21.67796 2024 Jun  -245.7613
+#> 3 Neuralnet1_model 21.67796 2024 Jul -1212.2786
 warnings()
 ```
 
 ### Neuralnet 2
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1698,19 +1635,16 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #>             .model    Error     Date      .mean
-#> 1 Neuralnet2_model 53.91726 2024 May   234.1566
-#> 2 Neuralnet2_model 53.91726 2024 Jun -1894.7670
-#> 3 Neuralnet2_model 53.91726 2024 Jul -4940.7453
-```
-
-``` r
+#> 1 Neuralnet2_model 51.42435 2024 May   246.7653
+#> 2 Neuralnet2_model 51.42435 2024 Jun -1056.4116
+#> 3 Neuralnet2_model 51.42435 2024 Jul -5376.7290
 warnings()
 ```
 
 ### Neuralnet 3
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1775,19 +1709,16 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #>             .model    Error     Date    .mean
-#> 1 Neuralnet3_model 32.00607 2024 May 277.4085
-#> 2 Neuralnet3_model 32.00607 2024 Jun 425.5440
-#> 3 Neuralnet3_model 32.00607 2024 Jul 249.4818
-```
-
-``` r
+#> 1 Neuralnet3_model 25.75467 2024 May 284.6480
+#> 2 Neuralnet3_model 25.75467 2024 Jun 313.0187
+#> 3 Neuralnet3_model 25.75467 2024 Jul 219.7550
 warnings()
 ```
 
 ### Neuralnet 4
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1852,19 +1783,16 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #>             .model    Error     Date     .mean
-#> 1 Neuralnet3_model 47.50821 2024 May 263.52302
-#> 2 Neuralnet3_model 47.50821 2024 Jun 240.83646
-#> 3 Neuralnet3_model 47.50821 2024 Jul -38.30823
-```
-
-``` r
+#> 1 Neuralnet3_model 34.71215 2024 May 301.21197
+#> 2 Neuralnet3_model 34.71215 2024 Jun 278.81890
+#> 3 Neuralnet3_model 34.71215 2024 Jul  91.52135
 warnings()
 ```
 
 ### Prophet Additive
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -1928,20 +1856,17 @@ forecasting <- function(time_series_data, train_amount, number, time_interval = 
 time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosity/forecasting_jobs/main/Total_Nonfarm.csv')
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
-#>                   .model   Error     Date    .mean
-#> 1 Prophet_Additive_model 98.6034 2024 May 2686.376
-#> 2 Prophet_Additive_model 98.6034 2024 Jun 3176.369
-#> 3 Prophet_Additive_model 98.6034 2024 Jul 1016.474
-```
-
-``` r
+#>                   .model    Error     Date    .mean
+#> 1 Prophet_Additive_model 99.30282 2024 May 2650.549
+#> 2 Prophet_Additive_model 99.30282 2024 Jun 3159.724
+#> 3 Prophet_Additive_model 99.30282 2024 Jul 1010.568
 warnings()
 ```
 
 ### Prophet Multiplicative
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -2006,19 +1931,16 @@ time_series_data <- read.csv('https://raw.githubusercontent.com/InfiniteCuriosit
 
 forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3, time_interval = "M")
 #>                         .model    Error     Date     .mean
-#> 1 Prophet_Multiplicative_model 75.97023 2024 May -37.12521
-#> 2 Prophet_Multiplicative_model 75.97023 2024 Jun -65.45028
-#> 3 Prophet_Multiplicative_model 75.97023 2024 Jul -30.47203
-```
-
-``` r
+#> 1 Prophet_Multiplicative_model 76.28555 2024 May -32.68779
+#> 2 Prophet_Multiplicative_model 76.28555 2024 Jun -63.67985
+#> 3 Prophet_Multiplicative_model 76.28555 2024 Jul -35.34949
 warnings()
 ```
 
 ### Seasonal Naive
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -2086,16 +2008,13 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 SNaive_model 98.94106 2024 May   281
 #> 2 SNaive_model 98.94106 2024 Jun   185
 #> 3 SNaive_model 98.94106 2024 Jul   187
-```
-
-``` r
 warnings()
 ```
 
 ### Stochastic
 
 
-``` r
+```r
 library(fpp3)
 
 # Set up the function:
@@ -2163,14 +2082,11 @@ forecasting(time_series_data = time_series_data, train_amount = 0.60, number = 3
 #> 1 Stochastic_model 42.98025 2024 May 239.7312
 #> 2 Stochastic_model 42.98025 2024 Jun 256.0506
 #> 3 Stochastic_model 42.98025 2024 Jul 241.0237
-```
-
-``` r
 warnings()
 
 ```
 
 
-``` r
+```r
 summary_table <- data.frame()
 ```

@@ -35,7 +35,7 @@ higher accuracy.
 Let's see how this works with an extremely simple ensemble.
 
 
-``` r
+```r
 library(tree) # Allows us to use tree models
 library(MASS) # For the Boston Housing data set library(Metrics)
 library(tidyverse)
@@ -50,9 +50,6 @@ library(tidyverse)
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ✖ dplyr::select() masks MASS::select()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 
 # Set initial values to 0
 linear_train_RMSE <- 0
@@ -139,13 +136,10 @@ return(list(results))
 numerical_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
 #> [[1]]
 #>             Model Error_Rate
-#> 1 Ensemble_Linear   4.192134
-#> 2   Ensemble_tree   4.638131
-#> 3          Linear   4.924980
-#> 4            Tree   4.972398
-```
-
-``` r
+#> 1 Ensemble_Linear   4.127265
+#> 2            Tree   4.750828
+#> 3   Ensemble_tree   4.812045
+#> 4          Linear   4.865660
 
 warnings()
 ```
@@ -206,7 +200,7 @@ this yourself, and checking every 5-10 lines to make sure there are no
 errors.
 
 
-``` r
+```r
 
 #Load packages we will need
 
@@ -220,16 +214,10 @@ library(arm) # Allows us to run bayesglm
 #> Loading required package: lme4
 #> 
 #> arm (Version 1.14-4, built: 2024-4-1)
-#> Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
-```
-
-``` r
+#> Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
 library(brnn) # Allows us to run brnn
 #> Loading required package: Formula
 #> Loading required package: truncnorm
-```
-
-``` r
 library(e1071) # Allows us to run several tuned model, such as linear and KNN
 library(randomForest) # Allows us to run random forest models
 #> randomForest 4.7-1.1
@@ -242,16 +230,13 @@ library(randomForest) # Allows us to run random forest models
 #> The following object is masked from 'package:ggplot2':
 #> 
 #>     margin
-```
-
-``` r
 library(tree) # Allows us to run tree models
 ```
 
 ### A few other packages we will need to keep everything running smoothly
 
 
-``` r
+```r
 library(tidyverse) # Amazing set of tools for data science
 library(MASS) # Gives us the Boston Housing data set
 library(Metrics) # Allows us to calculate accuracy or error rates
@@ -260,7 +245,7 @@ library(Metrics) # Allows us to calculate accuracy or error rates
 ### Build the function that will build the individual and ensemble models
 
 
-``` r
+```r
 
 numerical <- function(data, colnum, numresamples, train_amount, test_amount){
 
@@ -568,62 +553,8 @@ return(summary_results)
 numerical(data = MASS::Boston, colnum = 14, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015132 
-#> gamma= 30.6984 	 alpha= 5.0235 	 beta= 17385.46
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7039239 
-#> gamma= 14.9316 	 alpha= 2.2491 	 beta= 6725.389
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015669 
-#> gamma= 30.9741 	 alpha= 5.0722 	 beta= 14041.05
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7040551 
-#> gamma= 12.0505 	 alpha= 2.0858 	 beta= 6248.904
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7015669 
-#> gamma= 30.887 	 alpha= 4.8933 	 beta= 21306.08
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7042691 
-#> gamma= 13.69 	 alpha= 1.9643 	 beta= 7017.744
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 32 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7016138 
-#> gamma= 31.5899 	 alpha= 4.9545 	 beta= 14862.09
+#> Scaling factor= 0.7015569 
+#> gamma= 31.1545 	 alpha= 5.1034 	 beta= 14788.74
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
@@ -634,14 +565,14 @@ numerical(data = MASS::Boston, colnum = 14, numresamples = 5, train_amount = 0.6
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7042319 
-#> gamma= 15.1336 	 alpha= 2.0335 	 beta= 8709.426
+#> gamma= 14.5179 	 alpha= 2.1332 	 beta= 7029.778
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
 #> Number of parameters (weights and biases) to estimate: 32 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7015371 
-#> gamma= 28.7443 	 alpha= 2.6834 	 beta= 18766.47
+#> Scaling factor= 0.7015619 
+#> gamma= 31.0596 	 alpha= 4.216 	 beta= 30890.58
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
@@ -651,26 +582,77 @@ numerical(data = MASS::Boston, colnum = 14, numresamples = 5, train_amount = 0.6
 #> Using 100 trees...
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7044249 
-#> gamma= 13.7672 	 alpha= 2.3035 	 beta= 5504.11
+#> Scaling factor= 0.7036303 
+#> gamma= 13.6581 	 alpha= 2.1458 	 beta= 6053.645
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7015874 
+#> gamma= 31.4948 	 alpha= 5.4893 	 beta= 14943
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7041593 
+#> gamma= 13.4907 	 alpha= 1.8086 	 beta= 6770.96
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7016085 
+#> gamma= 31.1358 	 alpha= 5.6648 	 beta= 16396.45
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7037423 
+#> gamma= 13.7725 	 alpha= 1.7388 	 beta= 11998.36
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 32 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7017105 
+#> gamma= 30.4814 	 alpha= 4.7672 	 beta= 16756.22
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7036577 
+#> gamma= 12.6686 	 alpha= 1.8284 	 beta= 8985.648
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
 #>                        Model     Error
-#> 1          Ensemble_BayesGLM 0.1290663
-#> 2                   BayesRNN 0.1395422
-#> 3          Ensemble_BayesRNN 0.2036452
-#> 4     Ensemble_Random_Forest 0.9760099
-#> 5  Ensemble_Gradient_Boosted 1.9456769
-#> 6              Random_Forest 2.2685383
-#> 7             Ensemble_Trees 2.7199243
-#> 8           Gradient_Boosted 3.8926026
-#> 9                   BayesGLM 5.1940651
-#> 10                    Linear 5.3414045
-#> 11                     Trees 5.3419496
-```
-
-``` r
+#> 1          Ensemble_BayesGLM 0.1379912
+#> 2                   BayesRNN 0.1507615
+#> 3          Ensemble_BayesRNN 0.1855423
+#> 4     Ensemble_Random_Forest 0.9268246
+#> 5              Random_Forest 1.7842346
+#> 6             Ensemble_Trees 2.0855036
+#> 7  Ensemble_Gradient_Boosted 2.2402316
+#> 8           Gradient_Boosted 3.5698647
+#> 9                      Trees 4.8366919
+#> 10                  BayesGLM 4.9877972
+#> 11                    Linear 5.1775478
 
 warnings()
 ```
@@ -680,283 +662,13 @@ totally different data set, all you need to do is put the information
 into the function, and everything runs. Check this out:
 
 
-``` r
+```r
 
 numerical(data = ISLR::Auto[, 1:ncol(ISLR::Auto)-1], colnum = 1, numresamples = 25, train_amount = 0.50, test_amount = 0.50)
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7024181 
-#> gamma= 17.8754 	 alpha= 2.1148 	 beta= 28311.91
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7052367 
-#> gamma= 11.3463 	 alpha= 2.1466 	 beta= 4183.872
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023708 
-#> gamma= 17.8849 	 alpha= 2.8721 	 beta= 13923.37
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7050725 
-#> gamma= 13.5256 	 alpha= 2.5551 	 beta= 5748.537
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025055 
-#> gamma= 17.435 	 alpha= 2.9693 	 beta= 14578.96
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.705473 
-#> gamma= 13.7312 	 alpha= 2.9181 	 beta= 4183.115
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024799 
-#> gamma= 18.1091 	 alpha= 2.8086 	 beta= 27836.69
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7055993 
-#> gamma= 13.4459 	 alpha= 2.769 	 beta= 5106.886
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024181 
-#> gamma= 19.4595 	 alpha= 3.5149 	 beta= 10268.65
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7048689 
-#> gamma= 12.8728 	 alpha= 2.2178 	 beta= 7297.72
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025317 
-#> gamma= 18.427 	 alpha= 3.0993 	 beta= 19500.47
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7047266 
-#> gamma= 13.2094 	 alpha= 2.2656 	 beta= 5097.726
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024181 
-#> gamma= 18.5107 	 alpha= 2.5087 	 beta= 25206.34
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7052939 
-#> gamma= 11.5393 	 alpha= 2.6027 	 beta= 4324.023
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023479 
-#> gamma= 17.9654 	 alpha= 3.0229 	 beta= 10051.06
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.705412 
-#> gamma= 11.2896 	 alpha= 1.9528 	 beta= 4490.733
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023143 
-#> gamma= 17.542 	 alpha= 2.4203 	 beta= 17709.26
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7048689 
-#> gamma= 12.0062 	 alpha= 2.2044 	 beta= 4532.527
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025719 
-#> gamma= 19.0704 	 alpha= 3.2064 	 beta= 9272.78
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7051261 
-#> gamma= 12.3612 	 alpha= 2.4379 	 beta= 6027.653
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023593 
-#> gamma= 19.3023 	 alpha= 3.7549 	 beta= 9427.73
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7047266 
-#> gamma= 12.0255 	 alpha= 2.324 	 beta= 5254.673
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024799 
-#> gamma= 18.8087 	 alpha= 3.1382 	 beta= 17642.63
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7045924 
-#> gamma= 13.4718 	 alpha= 2.4994 	 beta= 4805.303
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023593 
-#> gamma= 18.9825 	 alpha= 2.808 	 beta= 11395.42
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7057316 
-#> gamma= 11.8978 	 alpha= 2.7329 	 beta= 3679.377
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025449 
-#> gamma= 17.7812 	 alpha= 2.7909 	 beta= 10098.7
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.705412 
-#> gamma= 10.1428 	 alpha= 1.2125 	 beta= 4973.896
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025449 
-#> gamma= 18.794 	 alpha= 3.3928 	 beta= 9205.054
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7049182 
-#> gamma= 14.2765 	 alpha= 2.1772 	 beta= 4674.874
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025584 
-#> gamma= 18.7658 	 alpha= 3.225 	 beta= 9332.669
+#> Scaling factor= 0.7026564 
+#> gamma= 17.0741 	 alpha= 2.6627 	 beta= 8713.611
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
@@ -967,158 +679,14 @@ numerical(data = ISLR::Auto[, 1:ncol(ISLR::Auto)-1], colnum = 1, numresamples = 
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7048205 
-#> gamma= 13.8588 	 alpha= 2.1879 	 beta= 6368.032
+#> gamma= 11.5889 	 alpha= 2.0474 	 beta= 4629.483
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
-#> Scaling factor= 0.7026858 
-#> gamma= 19.1712 	 alpha= 3.6412 	 beta= 8742.606
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7045924 
-#> gamma= 13.6159 	 alpha= 1.8263 	 beta= 5741.086
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024061 
-#> gamma= 18.6625 	 alpha= 3.2693 	 beta= 15446.81
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7051261 
-#> gamma= 12.8168 	 alpha= 2.2118 	 beta= 4232.279
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025185 
-#> gamma= 18.7258 	 alpha= 3.3314 	 beta= 8802.803
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7058703 
-#> gamma= 13.0608 	 alpha= 2.5011 	 beta= 5631.919
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024799 
-#> gamma= 18.1967 	 alpha= 2.4819 	 beta= 10940.86
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7042319 
-#> gamma= 12.74 	 alpha= 2.16 	 beta= 8684.951
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7023593 
-#> gamma= 18.1476 	 alpha= 3.3654 	 beta= 12255.74
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.70502 
-#> gamma= 13.0133 	 alpha= 2.3955 	 beta= 5689.636
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024181 
-#> gamma= 18.6778 	 alpha= 3.3321 	 beta= 21537.02
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7058703 
-#> gamma= 11.6379 	 alpha= 2.4931 	 beta= 4076.327
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7024548 
-#> gamma= 18.5762 	 alpha= 2.6635 	 beta= 11997.62
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7051808 
-#> gamma= 12.5477 	 alpha= 2.418 	 beta= 4228.324
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.702671 
-#> gamma= 18.7659 	 alpha= 2.5637 	 beta= 9836.966
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7048689 
-#> gamma= 12.4908 	 alpha= 2.0804 	 beta= 5926.432
-#> Using 100 trees...
-#> 
-#> Using 100 trees...
-#> Number of parameters (weights and biases) to estimate: 20 
-#> Nguyen-Widrow method
-#> Scaling factor= 0.7025584 
-#> gamma= 18.9006 	 alpha= 2.7887 	 beta= 16108.82
+#> Scaling factor= 0.7025856 
+#> gamma= 18.5517 	 alpha= 2.648 	 beta= 28556.25
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
@@ -1129,22 +697,436 @@ numerical(data = ISLR::Auto[, 1:ncol(ISLR::Auto)-1], colnum = 1, numresamples = 
 #> Number of parameters (weights and biases) to estimate: 20 
 #> Nguyen-Widrow method
 #> Scaling factor= 0.7050725 
-#> gamma= 14.0494 	 alpha= 2.931 	 beta= 4645.783
+#> gamma= 13.0326 	 alpha= 2.8908 	 beta= 4353.741
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023942 
+#> gamma= 19.3003 	 alpha= 3.4712 	 beta= 10171.52
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7048689 
+#> gamma= 12.1648 	 alpha= 2.5587 	 beta= 4977.586
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023593 
+#> gamma= 19.5728 	 alpha= 3.8344 	 beta= 9479.29
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7055993 
+#> gamma= 13.403 	 alpha= 2.3741 	 beta= 4139.822
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023708 
+#> gamma= 19.2389 	 alpha= 3.4001 	 beta= 11594.67
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7058001 
+#> gamma= 14.2831 	 alpha= 1.8106 	 beta= 6708.337
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024673 
+#> gamma= 18.8419 	 alpha= 2.8555 	 beta= 11166.83
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7052367 
+#> gamma= 13.9749 	 alpha= 2.3209 	 beta= 4007.501
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7026276 
+#> gamma= 18.6506 	 alpha= 3.2347 	 beta= 9230.53
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7045071 
+#> gamma= 13.6663 	 alpha= 2.3144 	 beta= 5343.38
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023254 
+#> gamma= 19.1902 	 alpha= 3.5465 	 beta= 9493.475
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7068673 
+#> gamma= 11.9701 	 alpha= 2.4945 	 beta= 3145.46
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7026135 
+#> gamma= 18.831 	 alpha= 3.0418 	 beta= 11733.43
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7050725 
+#> gamma= 13.0237 	 alpha= 2.2562 	 beta= 5798.846
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024061 
+#> gamma= 18.7375 	 alpha= 3.5705 	 beta= 10077.21
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7050725 
+#> gamma= 12.8282 	 alpha= 2.2718 	 beta= 4613.55
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7026135 
+#> gamma= 19.3209 	 alpha= 3.5508 	 beta= 8750.865
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7049686 
+#> gamma= 12.9429 	 alpha= 2.1176 	 beta= 5934.885
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024425 
+#> gamma= 18.7662 	 alpha= 2.9538 	 beta= 22385.57
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7051261 
+#> gamma= 12.0317 	 alpha= 2.2065 	 beta= 5723.925
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024061 
+#> gamma= 18.5628 	 alpha= 1.7018 	 beta= 84334.34
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7049686 
+#> gamma= 12.1488 	 alpha= 2.1287 	 beta= 4850.201
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7025449 
+#> gamma= 19.4594 	 alpha= 3.7409 	 beta= 9004.504
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7045493 
+#> gamma= 12.953 	 alpha= 2.0884 	 beta= 5940.986
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024181 
+#> gamma= 19.0158 	 alpha= 3.2166 	 beta= 13737.31
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7051261 
+#> gamma= 15.683 	 alpha= 2.2925 	 beta= 9456.172
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023593 
+#> gamma= 18.689 	 alpha= 2.4452 	 beta= 9383.395
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.705473 
+#> gamma= 12.9215 	 alpha= 1.0122 	 beta= 4870.5
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7025055 
+#> gamma= 19.0227 	 alpha= 3.4188 	 beta= 9603.117
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7052367 
+#> gamma= 13.1365 	 alpha= 2.3345 	 beta= 4404.568
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7024799 
+#> gamma= 18.5332 	 alpha= 3.4972 	 beta= 11495.23
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7055993 
+#> gamma= 12.307 	 alpha= 1.39 	 beta= 78137.77
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7025055 
+#> gamma= 18.427 	 alpha= 2.1005 	 beta= 32867.57
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7052367 
+#> gamma= 12.2244 	 alpha= 2.6623 	 beta= 4237.805
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7026564 
+#> gamma= 18.691 	 alpha= 2.8504 	 beta= 17454.78
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.704124 
+#> gamma= 13.4225 	 alpha= 3.0357 	 beta= 5413.544
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7025584 
+#> gamma= 18.9272 	 alpha= 3.1235 	 beta= 9202.181
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7051261 
+#> gamma= 12.8962 	 alpha= 2.4382 	 beta= 4970.101
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7023708 
+#> gamma= 18.9841 	 alpha= 3.0874 	 beta= 9927.468
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7051261 
+#> gamma= 12.1086 	 alpha= 2.2211 	 beta= 5083.125
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7027941 
+#> gamma= 19.3697 	 alpha= 3.8956 	 beta= 7783.408
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.704124 
+#> gamma= 13.9015 	 alpha= 2.4818 	 beta= 5403.593
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7025449 
+#> gamma= 13.3282 	 alpha= 0.9683 	 beta= 9062.74
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7043456 
+#> gamma= 14.4531 	 alpha= 2.326 	 beta= 8345.213
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7021989 
+#> gamma= 18.0495 	 alpha= 3.4913 	 beta= 10339.51
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> 
+#> Using 100 trees...
+#> Number of parameters (weights and biases) to estimate: 20 
+#> Nguyen-Widrow method
+#> Scaling factor= 0.7057316 
+#> gamma= 12.4934 	 alpha= 2.3563 	 beta= 4167.19
 #> Using 100 trees...
 #> 
 #> Using 100 trees...
 #>                        Model     Error
-#> 1          Ensemble_BayesGLM 0.1050296
-#> 2                   BayesRNN 0.1188054
-#> 3          Ensemble_BayesRNN 0.2071283
-#> 4     Ensemble_Random_Forest 0.8589843
-#> 5              Random_Forest 1.5462773
-#> 6             Ensemble_Trees 1.5752658
-#> 7  Ensemble_Gradient_Boosted 1.5775952
-#> 8           Gradient_Boosted 2.8410555
-#> 9                   BayesGLM 3.3874456
-#> 10                     Trees 3.5410364
-#> 11                    Linear 3.5660828
+#> 1          Ensemble_BayesGLM 0.1270331
+#> 2                   BayesRNN 0.1411679
+#> 3          Ensemble_BayesRNN 0.1906438
+#> 4     Ensemble_Random_Forest 0.9333546
+#> 5              Random_Forest 1.6440270
+#> 6  Ensemble_Gradient_Boosted 1.7233343
+#> 7             Ensemble_Trees 1.7852984
+#> 8           Gradient_Boosted 2.9255353
+#> 9                   BayesGLM 3.4321977
+#> 10                    Linear 3.6335479
+#> 11                     Trees 3.6335709
 ```
 
 ## One of your own: Add a model to the individual models, and a model to the ensemble of models

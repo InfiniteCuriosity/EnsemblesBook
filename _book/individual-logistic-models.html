@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -75,9 +75,9 @@
 <p>In logistic modeling those values are converted to 1 or 0 (if they are not converted already). Let’s start by getting the Pima Indians data set from the Kaggle web site:</p>
 <p><a href="https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database" class="uri">https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database</a></p>
 <p>Download the data set, and open it in your system. For example,</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">diabetes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'/Users/russellconte/diabetes.csv'</span><span class="op">)</span></span>
+<span><span class="va">diabetes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'/Users/russconte/diabetes.csv'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">diabetes</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Pregnancies Glucose BloodPressure SkinThickness Insulin</span></span>
 <span><span class="co">#&gt; 1           6     148            72            35       0</span></span>
@@ -107,7 +107,7 @@
 <p>Test on a different data set</p>
 </blockquote>
 <p>For this set of examples we are also going to add the results of the ROC curve, so the ROC curve is printed automatically.</p>
-<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
@@ -120,18 +120,16 @@
 <span><span class="co">#&gt; ── Conflicts ────────────────────── tidyverse_conflicts() ──</span></span>
 <span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
-<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Type 'citation("pROC")' for a citation.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'pROC'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     cov, smooth, var</span></span></code></pre></div>
-<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     cov, smooth, var</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span></span>
 <span><span class="va">glm_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -201,11 +199,10 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/Our%20first%20logistic%20model-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.7575758</code></pre>
-<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.7979798
+
+# Check for any errors
+warnings()</a></code></pre>
 <p>The results are consistent with similar results using Generalized Linear Models for this data set.</p>
 <div id="how-to-use-non-glm-models-in-logistic-analysis" class="section level3" number="7.0.1">
 <h3>
@@ -225,7 +222,7 @@
 <h3>
 <span class="header-section-number">7.0.3</span> Adaboost<a class="anchor" aria-label="anchor" href="#adaboost"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -239,9 +236,8 @@
 <span><span class="co">#&gt;     lift</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     ppr</span></span></code></pre></div>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt;     ppr</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -305,22 +301,25 @@
 <span></span>
 <span><span class="co"># Test the function</span></span>
 <span><span class="fu">adaboost_1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">diabetes</span>, colnum <span class="op">=</span> <span class="fl">9</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in rgl.init(initValue, onlyNULL): RGL: unable to</span></span>
+<span><span class="co">#&gt; open X11 display</span></span>
+<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL =</span></span>
+<span><span class="co">#&gt; TRUE'.</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/ADABoost%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.734375</code></pre>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.715655
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="bayesglm-1" class="section level3" number="7.0.4">
 <h3>
 <span class="header-section-number">7.0.4</span> BayesGLM<a class="anchor" aria-label="anchor" href="#bayesglm-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span></span>
@@ -339,9 +338,8 @@
 <span><span class="co">#&gt; Loading required package: lme4</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; arm (Version 1.14-4, built: 2024-4-1)</span></span>
-<span><span class="co">#&gt; Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook</span></span></code></pre></div>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -411,17 +409,16 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/BayesGLM%20model%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.7272727</code></pre>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.7639344
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="c50" class="section level3" number="7.0.5">
 <h3>
 <span class="header-section-number">7.0.5</span> C50<a class="anchor" aria-label="anchor" href="#c50"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://topepo.github.io/C5.0/">C50</a></span><span class="op">)</span></span>
@@ -494,23 +491,21 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/C50%20models%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 1</code></pre>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 1
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="cubist-1" class="section level3" number="7.0.6">
 <h3>
 <span class="header-section-number">7.0.6</span> Cubist<a class="anchor" aria-label="anchor" href="#cubist-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://topepo.github.io/Cubist//">Cubist</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: lattice</span></span></code></pre></div>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: lattice</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -578,24 +573,22 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/Cubist%20model%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 1</code></pre>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 1
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="gradient-boosted-1" class="section level3" number="7.0.7">
 <h3>
 <span class="header-section-number">7.0.7</span> Gradient Boosted<a class="anchor" aria-label="anchor" href="#gradient-boosted-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gbm-developers/gbm">gbm</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loaded gbm 2.1.9</span></span>
-<span><span class="co">#&gt; This version of gbm is no longer under development. Consider transitioning to gbm3, https://github.com/gbm-developers/gbm3</span></span></code></pre></div>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; This version of gbm is no longer under development. Consider transitioning to gbm3, https://github.com/gbm-developers/gbm3</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -666,17 +659,16 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/Gradient%20Boosted%20model%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.759375</code></pre>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.7227414
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="random-forest-2" class="section level3" number="7.0.8">
 <h3>
 <span class="header-section-number">7.0.8</span> Random Forest<a class="anchor" aria-label="anchor" href="#random-forest-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></span>
@@ -689,9 +681,8 @@
 <span><span class="co">#&gt;     combine</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     margin</span></span></code></pre></div>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt;     margin</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -760,17 +751,16 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/Random%20Forest%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 1</code></pre>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 1
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="support-vector-machines-2" class="section level3" number="7.0.9">
 <h3>
 <span class="header-section-number">7.0.9</span> Support Vector Machines<a class="anchor" aria-label="anchor" href="#support-vector-machines-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span>
@@ -841,17 +831,16 @@
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/Support%20Vector%20Machines%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.7378049</code></pre>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.754902
+
+# Check for any errors
+warnings()</a></code></pre>
 </div>
 <div id="xgboost-2" class="section level3" number="7.0.10">
 <h3>
 <span class="header-section-number">7.0.10</span> XGBoost<a class="anchor" aria-label="anchor" href="#xgboost-2"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span></span>
@@ -859,9 +848,8 @@
 <span><span class="co">#&gt; Attaching package: 'xgboost'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     slice</span></span></code></pre></div>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt;     slice</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
@@ -942,86 +930,85 @@
 <span></span>
 <span><span class="co"># Test the function</span></span>
 <span><span class="fu">xgb_1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">diabetes</span>, colnum <span class="op">=</span> <span class="fl">9</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  train-rmse:0.440691 test-rmse:0.468826 </span></span>
-<span><span class="co">#&gt; [2]  train-rmse:0.401963 test-rmse:0.444282 </span></span>
-<span><span class="co">#&gt; [3]  train-rmse:0.377513 test-rmse:0.431343 </span></span>
-<span><span class="co">#&gt; [4]  train-rmse:0.360344 test-rmse:0.422402 </span></span>
-<span><span class="co">#&gt; [5]  train-rmse:0.347503 test-rmse:0.419174 </span></span>
-<span><span class="co">#&gt; [6]  train-rmse:0.337063 test-rmse:0.417823 </span></span>
-<span><span class="co">#&gt; [7]  train-rmse:0.331359 test-rmse:0.416086 </span></span>
-<span><span class="co">#&gt; [8]  train-rmse:0.324571 test-rmse:0.416389 </span></span>
-<span><span class="co">#&gt; [9]  train-rmse:0.319701 test-rmse:0.415202 </span></span>
-<span><span class="co">#&gt; [10] train-rmse:0.317618 test-rmse:0.416348 </span></span>
-<span><span class="co">#&gt; [11] train-rmse:0.314221 test-rmse:0.415195 </span></span>
-<span><span class="co">#&gt; [12] train-rmse:0.308243 test-rmse:0.415841 </span></span>
-<span><span class="co">#&gt; [13] train-rmse:0.305834 test-rmse:0.414648 </span></span>
-<span><span class="co">#&gt; [14] train-rmse:0.299743 test-rmse:0.412698 </span></span>
-<span><span class="co">#&gt; [15] train-rmse:0.297681 test-rmse:0.411570 </span></span>
-<span><span class="co">#&gt; [16] train-rmse:0.295436 test-rmse:0.412985 </span></span>
-<span><span class="co">#&gt; [17] train-rmse:0.293643 test-rmse:0.411905 </span></span>
-<span><span class="co">#&gt; [18] train-rmse:0.291810 test-rmse:0.410634 </span></span>
-<span><span class="co">#&gt; [19] train-rmse:0.289988 test-rmse:0.410275 </span></span>
-<span><span class="co">#&gt; [20] train-rmse:0.287036 test-rmse:0.409675 </span></span>
-<span><span class="co">#&gt; [21] train-rmse:0.282526 test-rmse:0.408400 </span></span>
-<span><span class="co">#&gt; [22] train-rmse:0.280909 test-rmse:0.407913 </span></span>
-<span><span class="co">#&gt; [23] train-rmse:0.279729 test-rmse:0.407869 </span></span>
-<span><span class="co">#&gt; [24] train-rmse:0.277645 test-rmse:0.408945 </span></span>
-<span><span class="co">#&gt; [25] train-rmse:0.276890 test-rmse:0.409450 </span></span>
-<span><span class="co">#&gt; [26] train-rmse:0.273924 test-rmse:0.410037 </span></span>
-<span><span class="co">#&gt; [27] train-rmse:0.272506 test-rmse:0.409242 </span></span>
-<span><span class="co">#&gt; [28] train-rmse:0.270840 test-rmse:0.408662 </span></span>
-<span><span class="co">#&gt; [29] train-rmse:0.265381 test-rmse:0.409974 </span></span>
-<span><span class="co">#&gt; [30] train-rmse:0.260491 test-rmse:0.410605 </span></span>
-<span><span class="co">#&gt; [31] train-rmse:0.259413 test-rmse:0.411127 </span></span>
-<span><span class="co">#&gt; [32] train-rmse:0.258426 test-rmse:0.410396 </span></span>
-<span><span class="co">#&gt; [33] train-rmse:0.255586 test-rmse:0.412012 </span></span>
-<span><span class="co">#&gt; [34] train-rmse:0.251211 test-rmse:0.413926 </span></span>
-<span><span class="co">#&gt; [35] train-rmse:0.248288 test-rmse:0.414990 </span></span>
-<span><span class="co">#&gt; [36] train-rmse:0.244570 test-rmse:0.414701 </span></span>
-<span><span class="co">#&gt; [37] train-rmse:0.241985 test-rmse:0.414301 </span></span>
-<span><span class="co">#&gt; [38] train-rmse:0.241430 test-rmse:0.414539 </span></span>
-<span><span class="co">#&gt; [39] train-rmse:0.240695 test-rmse:0.414005 </span></span>
-<span><span class="co">#&gt; [40] train-rmse:0.240025 test-rmse:0.414341 </span></span>
-<span><span class="co">#&gt; [41] train-rmse:0.237113 test-rmse:0.415980 </span></span>
-<span><span class="co">#&gt; [42] train-rmse:0.234688 test-rmse:0.416899 </span></span>
-<span><span class="co">#&gt; [43] train-rmse:0.233183 test-rmse:0.416014 </span></span>
-<span><span class="co">#&gt; [44] train-rmse:0.230134 test-rmse:0.415525 </span></span>
-<span><span class="co">#&gt; [45] train-rmse:0.228345 test-rmse:0.417350 </span></span>
-<span><span class="co">#&gt; [46] train-rmse:0.226003 test-rmse:0.418268 </span></span>
-<span><span class="co">#&gt; [47] train-rmse:0.225099 test-rmse:0.418754 </span></span>
-<span><span class="co">#&gt; [48] train-rmse:0.223356 test-rmse:0.420382 </span></span>
-<span><span class="co">#&gt; [49] train-rmse:0.220902 test-rmse:0.420596 </span></span>
-<span><span class="co">#&gt; [50] train-rmse:0.220133 test-rmse:0.420513 </span></span>
-<span><span class="co">#&gt; [51] train-rmse:0.219022 test-rmse:0.419994 </span></span>
-<span><span class="co">#&gt; [52] train-rmse:0.218599 test-rmse:0.420128 </span></span>
-<span><span class="co">#&gt; [53] train-rmse:0.216922 test-rmse:0.420728 </span></span>
-<span><span class="co">#&gt; [54] train-rmse:0.216015 test-rmse:0.421179 </span></span>
-<span><span class="co">#&gt; [55] train-rmse:0.213153 test-rmse:0.421983 </span></span>
-<span><span class="co">#&gt; [56] train-rmse:0.210912 test-rmse:0.421714 </span></span>
-<span><span class="co">#&gt; [57] train-rmse:0.208177 test-rmse:0.422777 </span></span>
-<span><span class="co">#&gt; [58] train-rmse:0.206390 test-rmse:0.421708 </span></span>
-<span><span class="co">#&gt; [59] train-rmse:0.206141 test-rmse:0.422034 </span></span>
-<span><span class="co">#&gt; [60] train-rmse:0.204628 test-rmse:0.422521 </span></span>
-<span><span class="co">#&gt; [61] train-rmse:0.201648 test-rmse:0.423330 </span></span>
-<span><span class="co">#&gt; [62] train-rmse:0.199137 test-rmse:0.423374 </span></span>
-<span><span class="co">#&gt; [63] train-rmse:0.196867 test-rmse:0.424406 </span></span>
-<span><span class="co">#&gt; [64] train-rmse:0.193889 test-rmse:0.424663 </span></span>
-<span><span class="co">#&gt; [65] train-rmse:0.191601 test-rmse:0.425438 </span></span>
-<span><span class="co">#&gt; [66] train-rmse:0.189102 test-rmse:0.426845 </span></span>
-<span><span class="co">#&gt; [67] train-rmse:0.186894 test-rmse:0.427738 </span></span>
-<span><span class="co">#&gt; [68] train-rmse:0.184002 test-rmse:0.428882 </span></span>
-<span><span class="co">#&gt; [69] train-rmse:0.182116 test-rmse:0.428273 </span></span>
-<span><span class="co">#&gt; [70] train-rmse:0.180305 test-rmse:0.428459</span></span>
+<span><span class="co">#&gt; [1]  train-rmse:0.445408 test-rmse:0.451609 </span></span>
+<span><span class="co">#&gt; [2]  train-rmse:0.414125 test-rmse:0.424981 </span></span>
+<span><span class="co">#&gt; [3]  train-rmse:0.392889 test-rmse:0.412808 </span></span>
+<span><span class="co">#&gt; [4]  train-rmse:0.374376 test-rmse:0.400258 </span></span>
+<span><span class="co">#&gt; [5]  train-rmse:0.363075 test-rmse:0.397032 </span></span>
+<span><span class="co">#&gt; [6]  train-rmse:0.353474 test-rmse:0.393990 </span></span>
+<span><span class="co">#&gt; [7]  train-rmse:0.345974 test-rmse:0.392875 </span></span>
+<span><span class="co">#&gt; [8]  train-rmse:0.340500 test-rmse:0.390903 </span></span>
+<span><span class="co">#&gt; [9]  train-rmse:0.337987 test-rmse:0.389748 </span></span>
+<span><span class="co">#&gt; [10] train-rmse:0.334592 test-rmse:0.388716 </span></span>
+<span><span class="co">#&gt; [11] train-rmse:0.329688 test-rmse:0.389387 </span></span>
+<span><span class="co">#&gt; [12] train-rmse:0.326464 test-rmse:0.388277 </span></span>
+<span><span class="co">#&gt; [13] train-rmse:0.324965 test-rmse:0.388538 </span></span>
+<span><span class="co">#&gt; [14] train-rmse:0.322499 test-rmse:0.387743 </span></span>
+<span><span class="co">#&gt; [15] train-rmse:0.319469 test-rmse:0.387050 </span></span>
+<span><span class="co">#&gt; [16] train-rmse:0.313831 test-rmse:0.388981 </span></span>
+<span><span class="co">#&gt; [17] train-rmse:0.310254 test-rmse:0.390239 </span></span>
+<span><span class="co">#&gt; [18] train-rmse:0.306899 test-rmse:0.392204 </span></span>
+<span><span class="co">#&gt; [19] train-rmse:0.301659 test-rmse:0.393161 </span></span>
+<span><span class="co">#&gt; [20] train-rmse:0.299553 test-rmse:0.394776 </span></span>
+<span><span class="co">#&gt; [21] train-rmse:0.298237 test-rmse:0.394929 </span></span>
+<span><span class="co">#&gt; [22] train-rmse:0.296551 test-rmse:0.394339 </span></span>
+<span><span class="co">#&gt; [23] train-rmse:0.291534 test-rmse:0.395549 </span></span>
+<span><span class="co">#&gt; [24] train-rmse:0.289980 test-rmse:0.395576 </span></span>
+<span><span class="co">#&gt; [25] train-rmse:0.285314 test-rmse:0.397041 </span></span>
+<span><span class="co">#&gt; [26] train-rmse:0.279349 test-rmse:0.395518 </span></span>
+<span><span class="co">#&gt; [27] train-rmse:0.278130 test-rmse:0.394680 </span></span>
+<span><span class="co">#&gt; [28] train-rmse:0.272842 test-rmse:0.394815 </span></span>
+<span><span class="co">#&gt; [29] train-rmse:0.270642 test-rmse:0.395134 </span></span>
+<span><span class="co">#&gt; [30] train-rmse:0.267811 test-rmse:0.395081 </span></span>
+<span><span class="co">#&gt; [31] train-rmse:0.265555 test-rmse:0.395846 </span></span>
+<span><span class="co">#&gt; [32] train-rmse:0.261733 test-rmse:0.395215 </span></span>
+<span><span class="co">#&gt; [33] train-rmse:0.258715 test-rmse:0.396640 </span></span>
+<span><span class="co">#&gt; [34] train-rmse:0.255219 test-rmse:0.395239 </span></span>
+<span><span class="co">#&gt; [35] train-rmse:0.253350 test-rmse:0.395672 </span></span>
+<span><span class="co">#&gt; [36] train-rmse:0.252564 test-rmse:0.396012 </span></span>
+<span><span class="co">#&gt; [37] train-rmse:0.251803 test-rmse:0.396499 </span></span>
+<span><span class="co">#&gt; [38] train-rmse:0.248205 test-rmse:0.397349 </span></span>
+<span><span class="co">#&gt; [39] train-rmse:0.246352 test-rmse:0.396809 </span></span>
+<span><span class="co">#&gt; [40] train-rmse:0.244044 test-rmse:0.397549 </span></span>
+<span><span class="co">#&gt; [41] train-rmse:0.242269 test-rmse:0.396941 </span></span>
+<span><span class="co">#&gt; [42] train-rmse:0.240035 test-rmse:0.397491 </span></span>
+<span><span class="co">#&gt; [43] train-rmse:0.235618 test-rmse:0.398848 </span></span>
+<span><span class="co">#&gt; [44] train-rmse:0.233333 test-rmse:0.400615 </span></span>
+<span><span class="co">#&gt; [45] train-rmse:0.231688 test-rmse:0.401996 </span></span>
+<span><span class="co">#&gt; [46] train-rmse:0.229347 test-rmse:0.402715 </span></span>
+<span><span class="co">#&gt; [47] train-rmse:0.228402 test-rmse:0.402862 </span></span>
+<span><span class="co">#&gt; [48] train-rmse:0.227969 test-rmse:0.403321 </span></span>
+<span><span class="co">#&gt; [49] train-rmse:0.226776 test-rmse:0.403049 </span></span>
+<span><span class="co">#&gt; [50] train-rmse:0.223379 test-rmse:0.403438 </span></span>
+<span><span class="co">#&gt; [51] train-rmse:0.220481 test-rmse:0.402767 </span></span>
+<span><span class="co">#&gt; [52] train-rmse:0.217631 test-rmse:0.402707 </span></span>
+<span><span class="co">#&gt; [53] train-rmse:0.216376 test-rmse:0.403022 </span></span>
+<span><span class="co">#&gt; [54] train-rmse:0.212842 test-rmse:0.404942 </span></span>
+<span><span class="co">#&gt; [55] train-rmse:0.210298 test-rmse:0.405176 </span></span>
+<span><span class="co">#&gt; [56] train-rmse:0.208235 test-rmse:0.406070 </span></span>
+<span><span class="co">#&gt; [57] train-rmse:0.205781 test-rmse:0.405437 </span></span>
+<span><span class="co">#&gt; [58] train-rmse:0.203231 test-rmse:0.405864 </span></span>
+<span><span class="co">#&gt; [59] train-rmse:0.201519 test-rmse:0.407112 </span></span>
+<span><span class="co">#&gt; [60] train-rmse:0.200186 test-rmse:0.406963 </span></span>
+<span><span class="co">#&gt; [61] train-rmse:0.196523 test-rmse:0.408566 </span></span>
+<span><span class="co">#&gt; [62] train-rmse:0.195268 test-rmse:0.409664 </span></span>
+<span><span class="co">#&gt; [63] train-rmse:0.193201 test-rmse:0.410803 </span></span>
+<span><span class="co">#&gt; [64] train-rmse:0.191854 test-rmse:0.412022 </span></span>
+<span><span class="co">#&gt; [65] train-rmse:0.189905 test-rmse:0.412147 </span></span>
+<span><span class="co">#&gt; [66] train-rmse:0.187798 test-rmse:0.413002 </span></span>
+<span><span class="co">#&gt; [67] train-rmse:0.187329 test-rmse:0.412837 </span></span>
+<span><span class="co">#&gt; [68] train-rmse:0.186555 test-rmse:0.413153 </span></span>
+<span><span class="co">#&gt; [69] train-rmse:0.185096 test-rmse:0.413731 </span></span>
+<span><span class="co">#&gt; [70] train-rmse:0.182819 test-rmse:0.414756</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span></code></pre></div>
 <div class="inline-figure"><img src="06-Individual_Logistic_Models_files/figure-html/XGBoost%20model%20for%20logistic%20data-1.png" width="672"></div>
-<pre><code>#&gt; [1] 0.7475728</code></pre>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Check for any errors</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt; [1] 0.7804878
+
+# Check for any errors
+warnings()</a></code></pre>
 
 </div>
 </div>
@@ -1060,7 +1047,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

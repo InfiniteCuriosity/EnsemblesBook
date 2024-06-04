@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -95,14 +95,13 @@
 <p>Note that there is nothing special about using five models. Any number of models may be used, but this set will be a very good start.</p>
 <p>For this solution we will also add a mean duration by model to the finished report.</p>
 <p>Since we have our basic outline, and we know where we want to end, we are ready to begin.</p>
-<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; randomForest 4.7-1.1</span></span>
-<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span></code></pre></div>
-<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──</span></span>
 <span><span class="co">#&gt; ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
 <span><span class="co">#&gt; ✔ forcats   1.0.0     ✔ stringr   1.5.1</span></span>
@@ -114,9 +113,8 @@
 <span><span class="co">#&gt; ✖ dplyr::filter()   masks stats::filter()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()      masks stats::lag()</span></span>
 <span><span class="co">#&gt; ✖ ggplot2::margin() masks randomForest::margin()</span></span>
-<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
-<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">bag_rf_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -562,20 +560,19 @@
 <span></span>
 <span><span class="fu">classification_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>,colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      Model  Accuracy    Duration</span></span>
-<span><span class="co">#&gt; 1          Ensemble_Bag_RF 1.0000000 0.130465031</span></span>
-<span><span class="co">#&gt; 2             Ensemble_C50 1.0000000 0.007788897</span></span>
-<span><span class="co">#&gt; 3              Ensemble_RF 0.9846154 0.019177198</span></span>
-<span><span class="co">#&gt; 4             Ensemble_SVM 0.8769231 0.006022215</span></span>
-<span><span class="co">#&gt; 5     Bagged_Random_Forest 0.6729560 0.095813036</span></span>
-<span><span class="co">#&gt; 6                   Ranger 0.6540881 0.736639977</span></span>
-<span><span class="co">#&gt; 7                  XGBoost 0.6415094 6.993471861</span></span>
-<span><span class="co">#&gt; 8          Ensemble_Ranger 0.5692308 0.034466028</span></span>
-<span><span class="co">#&gt; 9                      C50 0.5345912 0.420025110</span></span>
-<span><span class="co">#&gt; 10 Support_Vector_Machines 0.5220126 0.013696194</span></span></code></pre></div>
-<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; 1          Ensemble_Bag_RF 1.0000000 0.141160011</span></span>
+<span><span class="co">#&gt; 2             Ensemble_C50 1.0000000 0.007802963</span></span>
+<span><span class="co">#&gt; 3              Ensemble_RF 0.9558824 0.017611980</span></span>
+<span><span class="co">#&gt; 4             Ensemble_SVM 0.7647059 0.006072044</span></span>
+<span><span class="co">#&gt; 5                  XGBoost 0.6689655 8.002203941</span></span>
+<span><span class="co">#&gt; 6                   Ranger 0.6551724 0.820406914</span></span>
+<span><span class="co">#&gt; 7     Bagged_Random_Forest 0.6413793 0.111821890</span></span>
+<span><span class="co">#&gt; 8  Support_Vector_Machines 0.5793103 0.015836954</span></span>
+<span><span class="co">#&gt; 9                      C50 0.5517241 0.493202925</span></span>
+<span><span class="co">#&gt; 10         Ensemble_Ranger 0.4264706 0.036972046</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu">Ensembles</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/Ensembles/man/dry_beans_small.html">dry_beans_small</a></span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
@@ -583,23 +580,21 @@
 <span><span class="co">#&gt;   format.interval inum</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'GGally':</span></span>
 <span><span class="co">#&gt;   method from   </span></span>
-<span><span class="co">#&gt;   +.gg   ggplot2</span></span></code></pre></div>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;   +.gg   ggplot2</span></span>
+<span></span>
 <span><span class="fu">classification_1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df1</span>, colnum <span class="op">=</span> <span class="fl">17</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      Model  Accuracy    Duration</span></span>
-<span><span class="co">#&gt; 1          Ensemble_Bag_RF 1.0000000  0.12236214</span></span>
-<span><span class="co">#&gt; 2             Ensemble_C50 1.0000000  0.01281404</span></span>
-<span><span class="co">#&gt; 3                   Ranger 0.9236641  0.08070183</span></span>
-<span><span class="co">#&gt; 4                  XGBoost 0.9236641 23.26443696</span></span>
-<span><span class="co">#&gt; 5     Bagged_Random_Forest 0.9122137  0.16021895</span></span>
-<span><span class="co">#&gt; 6                      C50 0.8511450  0.02710509</span></span>
-<span><span class="co">#&gt; 7  Support_Vector_Machines 0.8473282  0.02061820</span></span>
-<span><span class="co">#&gt; 8             Ensemble_SVM 0.7722772  0.01609302</span></span>
-<span><span class="co">#&gt; 9              Ensemble_RF 0.7128713  0.15743709</span></span>
-<span><span class="co">#&gt; 10         Ensemble_Ranger 0.1683168  0.04702497</span></span></code></pre></div>
-<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1          Ensemble_Bag_RF 1.0000000  0.13550806</span></span>
+<span><span class="co">#&gt; 2             Ensemble_C50 1.0000000  0.01427794</span></span>
+<span><span class="co">#&gt; 3     Bagged_Random_Forest 0.9407666  0.16405606</span></span>
+<span><span class="co">#&gt; 4                  XGBoost 0.9337979 23.16261911</span></span>
+<span><span class="co">#&gt; 5                   Ranger 0.9198606  0.05157804</span></span>
+<span><span class="co">#&gt; 6  Support_Vector_Machines 0.9163763  0.01886702</span></span>
+<span><span class="co">#&gt; 7                      C50 0.8815331  0.02872300</span></span>
+<span><span class="co">#&gt; 8             Ensemble_SVM 0.8141593  0.01312304</span></span>
+<span><span class="co">#&gt; 9              Ensemble_RF 0.7699115  0.17488503</span></span>
+<span><span class="co">#&gt; 10         Ensemble_Ranger 0.1858407  0.05227113</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 
 </div>
 </div>
@@ -627,7 +622,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

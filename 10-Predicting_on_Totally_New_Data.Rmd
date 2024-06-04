@@ -88,7 +88,7 @@ results <- results %>% arrange(Error_Rate)
 } # Closing brace for numresamples
 
 if (do_you_have_new_data == "Y") {
-  new_data <- read.csv('/Users/russellconte/NewBoston.csv', header = TRUE, sep = ',')
+  new_data <- read.csv('/Users/russconte/NewBoston.csv', header = TRUE, sep = ',')
 
   y <- 0
   colnames(new_data)[colnum] <- "y"

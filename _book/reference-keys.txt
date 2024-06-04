@@ -152,4 +152,4 @@ communicating-with-customers-and-vendors
 communicating-roi-and-other-results-of-data-science
 social-media-and-more
 final-comprhensive-project
-summary-and-charge-to-the-graduates-of-the-class
+building-your-own-no-code-solutions

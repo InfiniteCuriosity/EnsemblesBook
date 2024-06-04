@@ -1,7 +1,7 @@
 ---
 title: "Ensembles: From Beginner to Expert"
 author: "Russ Conte"
-date: "2024-06-03"
+date: "2024-06-04"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]

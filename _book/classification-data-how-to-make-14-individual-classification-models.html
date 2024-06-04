@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -89,7 +89,7 @@
 <span class="header-section-number">5.0.1</span> What is classification data?<a class="anchor" aria-label="anchor" href="#what-is-classification-data"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://en.wikipedia.org/wiki/Statistical_classification">Classification models</a> are a set of models to identify the class of a specific observation. For example, in the Carseats data set, the Shelve Location is an example of this data type:</p>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.statlearning.com">ISLR</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Carseats</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Sales CompPrice Income Advertising Population Price</span></span>
@@ -121,7 +121,7 @@
 <h3>
 <span class="header-section-number">5.0.2</span> Build our first classification model from the structure:<a class="anchor" aria-label="anchor" href="#build-our-first-classification-model-from-the-structure"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span></span>
@@ -155,7 +155,7 @@
 <span></span>
 <span><span class="co"># Check for errors</span></span></code></pre></div>
 <p>Now that we have the structure, let’s build the model:</p>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://topepo.github.io/C5.0/">C50</a></span><span class="op">)</span></span>
@@ -169,9 +169,8 @@
 <span><span class="co">#&gt; ── Conflicts ────────────────────── tidyverse_conflicts() ──</span></span>
 <span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
-<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0:</span></span>
 <span><span class="va">C50_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">C50_test_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -245,17 +244,17 @@
 <span><span class="fu">C50_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;              y_test</span></span>
 <span><span class="co">#&gt; C50_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;        Bad      8    0     10</span></span>
-<span><span class="co">#&gt;        Good     0   14      6</span></span>
-<span><span class="co">#&gt;        Medium  22    7     41</span></span>
-<span><span class="co">#&gt; [1] 0.5833333</span></span></code></pre></div>
+<span><span class="co">#&gt;        Bad     11    2     10</span></span>
+<span><span class="co">#&gt;        Good     1   12     10</span></span>
+<span><span class="co">#&gt;        Medium  15    8     39</span></span>
+<span><span class="co">#&gt; [1] 0.5740741</span></span></code></pre></div>
 <p>Now that we see how one individual classification model is made, let’s make 11 more (total of 12).</p>
 </div>
 <div id="adabag-for-classification-data" class="section level3" number="5.0.3">
 <h3>
 <span class="header-section-number">5.0.3</span> Adabag for classification data<a class="anchor" aria-label="anchor" href="#adabag-for-classification-data"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ipred</span><span class="op">)</span></span>
@@ -333,12 +332,11 @@
 <span><span class="fu">adabag_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 y_test</span></span>
 <span><span class="co">#&gt; adabag_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;           Bad     11    0      7</span></span>
-<span><span class="co">#&gt;           Good     0   13      2</span></span>
-<span><span class="co">#&gt;           Medium  15    8     44</span></span>
-<span><span class="co">#&gt; [1] 0.68</span></span></code></pre></div>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;           Bad     12    1      6</span></span>
+<span><span class="co">#&gt;           Good     0   11      5</span></span>
+<span><span class="co">#&gt;           Medium  14    9     44</span></span>
+<span><span class="co">#&gt; [1] 0.6568627</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -346,7 +344,7 @@
 <h3>
 <span class="header-section-number">5.0.4</span> Bagged Random Forest<a class="anchor" aria-label="anchor" href="#bagged-random-forest-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></span>
@@ -359,9 +357,8 @@
 <span><span class="co">#&gt;     combine</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     margin</span></span></code></pre></div>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     margin</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">bag_rf_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">bag_rf_test_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -435,12 +432,11 @@
 <span><span class="fu">bag_rf_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 y_test</span></span>
 <span><span class="co">#&gt; bag_rf_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;           Bad      9    1      6</span></span>
-<span><span class="co">#&gt;           Good     0   10      6</span></span>
-<span><span class="co">#&gt;           Medium  12    6     36</span></span>
-<span><span class="co">#&gt; [1] 0.6395349</span></span></code></pre></div>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;           Bad     11    0      2</span></span>
+<span><span class="co">#&gt;           Good     0   11      5</span></span>
+<span><span class="co">#&gt;           Medium  19    9     37</span></span>
+<span><span class="co">#&gt; [1] 0.6276596</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -448,7 +444,7 @@
 <h3>
 <span class="header-section-number">5.0.5</span> Linear model<a class="anchor" aria-label="anchor" href="#linear-model"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -459,9 +455,8 @@
 <span><span class="co">#&gt;     lift</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     ppr</span></span></code></pre></div>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     ppr</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">linear_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">linear_validation_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -536,12 +531,11 @@
 <span><span class="fu">linear1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 y_test</span></span>
 <span><span class="co">#&gt; linear_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;           Bad      9    0      0</span></span>
-<span><span class="co">#&gt;           Good     0    9      1</span></span>
-<span><span class="co">#&gt;           Medium  11    5     51</span></span>
-<span><span class="co">#&gt; [1] 0.8023256</span></span></code></pre></div>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;           Bad      5    0      0</span></span>
+<span><span class="co">#&gt;           Good     0   11      1</span></span>
+<span><span class="co">#&gt;           Medium  30    9     45</span></span>
+<span><span class="co">#&gt; [1] 0.6039604</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -549,7 +543,7 @@
 <h3>
 <span class="header-section-number">5.0.6</span> Naive Bayes model<a class="anchor" aria-label="anchor" href="#naive-bayes-model"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span>
@@ -627,12 +621,11 @@
 <span><span class="fu">n_bayes_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  y_test</span></span>
 <span><span class="co">#&gt; n_bayes_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;            Bad      8    1      6</span></span>
-<span><span class="co">#&gt;            Good     1    9      8</span></span>
-<span><span class="co">#&gt;            Medium  15   11     45</span></span>
-<span><span class="co">#&gt; [1] 0.5961538</span></span></code></pre></div>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;            Bad      5    0      3</span></span>
+<span><span class="co">#&gt;            Good     0    6      5</span></span>
+<span><span class="co">#&gt;            Medium  21   11     39</span></span>
+<span><span class="co">#&gt; [1] 0.5555556</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -640,7 +633,7 @@
 <h3>
 <span class="header-section-number">5.0.7</span> Partial Least Squares<a class="anchor" aria-label="anchor" href="#partial-least-squares-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -721,10 +714,9 @@
 <span><span class="co">#&gt; pls_test_predict Bad Good Medium</span></span>
 <span><span class="co">#&gt;           Bad      0    0      0</span></span>
 <span><span class="co">#&gt;           Good     0    0      0</span></span>
-<span><span class="co">#&gt;           Medium  17   19     46</span></span>
-<span><span class="co">#&gt; [1] 0.5609756</span></span></code></pre></div>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;           Medium  24   18     47</span></span>
+<span><span class="co">#&gt; [1] 0.5280899</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -732,7 +724,7 @@
 <h3>
 <span class="header-section-number">5.0.8</span> Penalized Discriminant Analysis Model<a class="anchor" aria-label="anchor" href="#penalized-discriminant-analysis-model"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -811,12 +803,11 @@
 <span><span class="fu">pda_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 y_test</span></span>
 <span><span class="co">#&gt; pda_test_predict Bad Good Medium</span></span>
-<span><span class="co">#&gt;           Bad     15    0      4</span></span>
-<span><span class="co">#&gt;           Good     0   12      6</span></span>
-<span><span class="co">#&gt;           Medium   4    3     49</span></span>
-<span><span class="co">#&gt; [1] 0.8172043</span></span></code></pre></div>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;           Bad     12    0      6</span></span>
+<span><span class="co">#&gt;           Good     0   17      4</span></span>
+<span><span class="co">#&gt;           Medium   7    2     42</span></span>
+<span><span class="co">#&gt; [1] 0.7888889</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -824,7 +815,7 @@
 <h3>
 <span class="header-section-number">5.0.9</span> Random Forest<a class="anchor" aria-label="anchor" href="#random-forest-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></span>
@@ -902,12 +893,11 @@
 <span><span class="fu">rf_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             y_test</span></span>
 <span><span class="co">#&gt; rf_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;       Bad      6    0      8</span></span>
-<span><span class="co">#&gt;       Good     1   18      3</span></span>
-<span><span class="co">#&gt;       Medium  16   12     56</span></span>
-<span><span class="co">#&gt; [1] 0.6666667</span></span></code></pre></div>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;       Bad      5    0      2</span></span>
+<span><span class="co">#&gt;       Good     1   12      0</span></span>
+<span><span class="co">#&gt;       Medium  24   10     41</span></span>
+<span><span class="co">#&gt; [1] 0.6105263</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -915,7 +905,7 @@
 <h3>
 <span class="header-section-number">5.0.10</span> Ranger<a class="anchor" aria-label="anchor" href="#ranger"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -994,12 +984,11 @@
 <span><span class="fu">ranger_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                    y_test</span></span>
 <span><span class="co">#&gt; ranger_test_predict Bad Good Medium</span></span>
-<span><span class="co">#&gt;              Bad      2    1      3</span></span>
-<span><span class="co">#&gt;              Good     1    8      3</span></span>
-<span><span class="co">#&gt;              Medium  16   18     43</span></span>
-<span><span class="co">#&gt; [1] 0.5578947</span></span></code></pre></div>
-<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;              Bad      8    0      2</span></span>
+<span><span class="co">#&gt;              Good     0    9      4</span></span>
+<span><span class="co">#&gt;              Medium  21   19     54</span></span>
+<span><span class="co">#&gt; [1] 0.6068376</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1007,7 +996,7 @@
 <h3>
 <span class="header-section-number">5.0.11</span> Regularized Discriminant Analysis<a class="anchor" aria-label="anchor" href="#regularized-discriminant-analysis"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://statistik.tu-dortmund.de">klaR</a></span><span class="op">)</span></span>
@@ -1016,9 +1005,8 @@
 <span><span class="co">#&gt; Attaching package: 'MASS'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     select</span></span></code></pre></div>
-<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     select</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">rda_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">rda_test_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -1094,10 +1082,9 @@
 <span><span class="co">#&gt;          Bad Good Medium</span></span>
 <span><span class="co">#&gt;   Bad      0    0      0</span></span>
 <span><span class="co">#&gt;   Good     0    0      0</span></span>
-<span><span class="co">#&gt;   Medium  16   22     55</span></span>
-<span><span class="co">#&gt; [1] 0.5913978</span></span></code></pre></div>
-<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;   Medium  19   20     48</span></span>
+<span><span class="co">#&gt; [1] 0.5517241</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1105,7 +1092,7 @@
 <h3>
 <span class="header-section-number">5.0.12</span> Rpart<a class="anchor" aria-label="anchor" href="#rpart-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://brian-j-smith.github.io/MachineShop/">MachineShop</a></span><span class="op">)</span></span>
@@ -1184,12 +1171,11 @@
 <span><span class="fu">rpart_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   y_test</span></span>
 <span><span class="co">#&gt; rpart_test_predict Bad Good Medium</span></span>
-<span><span class="co">#&gt;             Bad     11    1     11</span></span>
-<span><span class="co">#&gt;             Good     1   14      9</span></span>
-<span><span class="co">#&gt;             Medium  11    4     35</span></span>
-<span><span class="co">#&gt; [1] 0.6185567</span></span></code></pre></div>
-<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;             Bad     12    0      9</span></span>
+<span><span class="co">#&gt;             Good     0   13      6</span></span>
+<span><span class="co">#&gt;             Medium  12   17     38</span></span>
+<span><span class="co">#&gt; [1] 0.588785</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1197,7 +1183,7 @@
 <h3>
 <span class="header-section-number">5.0.13</span> Support Vector Machines<a class="anchor" aria-label="anchor" href="#support-vector-machines-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span></span>
@@ -1277,10 +1263,9 @@
 <span><span class="co">#&gt; svm_test_pred Bad Good Medium</span></span>
 <span><span class="co">#&gt;        Bad      0    0      0</span></span>
 <span><span class="co">#&gt;        Good     0    0      0</span></span>
-<span><span class="co">#&gt;        Medium  29   21     51</span></span>
-<span><span class="co">#&gt; [1] 0.5049505</span></span></code></pre></div>
-<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;        Medium  20   29     59</span></span>
+<span><span class="co">#&gt; [1] 0.5462963</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1288,7 +1273,7 @@
 <h3>
 <span class="header-section-number">5.0.14</span> Trees<a class="anchor" aria-label="anchor" href="#trees-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
@@ -1366,12 +1351,11 @@
 <span><span class="fu">tree_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               y_test</span></span>
 <span><span class="co">#&gt; tree_test_pred Bad Good Medium</span></span>
-<span><span class="co">#&gt;         Bad     10    0     11</span></span>
-<span><span class="co">#&gt;         Good     2   11      8</span></span>
-<span><span class="co">#&gt;         Medium   6    7     42</span></span>
-<span><span class="co">#&gt; [1] 0.6494845</span></span></code></pre></div>
-<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;         Bad      8    0     10</span></span>
+<span><span class="co">#&gt;         Good     0   10      6</span></span>
+<span><span class="co">#&gt;         Medium  15   13     44</span></span>
+<span><span class="co">#&gt; [1] 0.5849057</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1379,7 +1363,7 @@
 <h3>
 <span class="header-section-number">5.0.15</span> XGBoost<a class="anchor" aria-label="anchor" href="#xgboost-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span></span>
@@ -1387,9 +1371,8 @@
 <span><span class="co">#&gt; Attaching package: 'xgboost'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     slice</span></span></code></pre></div>
-<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;     slice</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">xgb_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">xgb_test_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -1522,12 +1505,11 @@
 <span><span class="fu">xgb_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Carseats.html">Carseats</a></span>, colnum <span class="op">=</span> <span class="fl">7</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         </span></span>
 <span><span class="co">#&gt;          Bad Good Medium</span></span>
-<span><span class="co">#&gt;   Bad      2    0      2</span></span>
-<span><span class="co">#&gt;   Good     0   12      4</span></span>
-<span><span class="co">#&gt;   Medium  24   11     40</span></span>
-<span><span class="co">#&gt; [1] 0.5684211</span></span></code></pre></div>
-<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt;   Bad      7    0      3</span></span>
+<span><span class="co">#&gt;   Good     1   10      5</span></span>
+<span><span class="co">#&gt;   Medium  20   15     42</span></span>
+<span><span class="co">#&gt; [1] 0.5728155</span></span>
+<span></span>
 <span><span class="co"># Check for errors</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1579,7 +1561,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

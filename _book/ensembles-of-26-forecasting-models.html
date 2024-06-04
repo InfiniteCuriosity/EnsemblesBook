@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -70,7 +70,7 @@
 <span class="header-section-number">10</span> Ensembles of 26 Forecasting Models<a class="anchor" aria-label="anchor" href="#ensembles-of-26-forecasting-models"><i class="fas fa-link"></i></a>
 </h1>
 <p>Once you know how to make the 27 individual time series forecasting models, the ensemble simply puts all of those 27 models together.</p>
-<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/robjhyndman/fpp3package">fpp3</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── Attaching packages ────────────────────────── fpp3 0.5 ──</span></span>
@@ -86,9 +86,8 @@
 <span><span class="co">#&gt; ✖ tsibble::interval()  masks lubridate::interval()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()         masks stats::lag()</span></span>
 <span><span class="co">#&gt; ✖ tsibble::setdiff()   masks base::setdiff()</span></span>
-<span><span class="co">#&gt; ✖ tsibble::union()     masks base::union()</span></span></code></pre></div>
-<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; ✖ tsibble::union()     masks base::union()</span></span>
+<span></span>
 <span><span class="va">forecasting</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time_series_data</span>, <span class="va">train_amount</span>, <span class="va">number</span>, <span class="va">time_interval</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Q"</span>, <span class="st">"M"</span>, <span class="st">"W"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
 <span><span class="co"># Determine if the data is quarterly, monthly or weekly from the input:</span></span>
@@ -198,11 +197,10 @@
 <span><span class="fu"><a href="https://rdrr.io/pkg/Ensembles/man/forecasting.html">forecasting</a></span><span class="op">(</span>time_series_data <span class="op">=</span> <span class="va">time_series_data</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, number <span class="op">=</span> <span class="fl">3</span>, time_interval <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in sqrt(diag(best$var.coef)): NaNs produced</span></span>
 <span><span class="co">#&gt;     .model     Date     .mean</span></span>
-<span><span class="co">#&gt; 1 Ensemble 2024 May  9937.501</span></span>
-<span><span class="co">#&gt; 2 Ensemble 2024 Jun 11192.887</span></span>
-<span><span class="co">#&gt; 3 Ensemble 2024 Jul  2437.582</span></span></code></pre></div>
-<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Ensemble 2024 May 9824.6234</span></span>
+<span><span class="co">#&gt; 2 Ensemble 2024 Jun 8429.0936</span></span>
+<span><span class="co">#&gt; 3 Ensemble 2024 Jul -119.0388</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 
 </div>
   <div class="chapter-nav">
@@ -227,7 +225,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

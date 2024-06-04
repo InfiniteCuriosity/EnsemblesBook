@@ -56,7 +56,7 @@
 <li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -87,7 +87,7 @@
 <img src="_book/images/LeBron_James_small.jpg" alt="Lebron James"><div class="figcaption">Lebron James</div>
 </div>
 <p>There is a LOT of data in sports and HR analytics (which are extremely similar in some ways). A lot of the data is set up as logistic data. For example, here is a data set of the performance of Lebron James. The main column of interest is “result”, which is either 1 or 0. Thus it perfectly fits our requirements for logistic analysis.</p>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://infinitecuriosity.github.io/Ensembles/">Ensembles</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: arm</span></span>
@@ -96,7 +96,7 @@
 <span><span class="co">#&gt; Loading required package: lme4</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; arm (Version 1.14-4, built: 2024-4-1)</span></span>
-<span><span class="co">#&gt; Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook</span></span>
+<span><span class="co">#&gt; Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook</span></span>
 <span><span class="co">#&gt; Loading required package: brnn</span></span>
 <span><span class="co">#&gt; Loading required package: Formula</span></span>
 <span><span class="co">#&gt; Loading required package: truncnorm</span></span>
@@ -336,9 +336,8 @@
 <span><span class="co">#&gt; Attaching package: 'xgboost'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     slice</span></span></code></pre></div>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lebron</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     slice</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lebron</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    top left  date qtr time_remaining result shot_type</span></span>
 <span><span class="co">#&gt; 1  310  203 19283   2            566      0         3</span></span>
 <span><span class="co">#&gt; 2  213  259 19283   2            518      0         2</span></span>
@@ -403,7 +402,7 @@
 <span><span class="co">#&gt; 19        9</span></span>
 <span><span class="co">#&gt; 20        9</span></span></code></pre></div>
 <p>Let’s look at the structure of the data:</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lebron</span> <span class="op">&lt;-</span> <span class="fu">Ensembles</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/Ensembles/man/lebron.html">lebron</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">Ensembles</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/Ensembles/man/lebron.html">lebron</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    1533 obs. of  12 variables:</span></span>
@@ -420,7 +419,7 @@
 <span><span class="co">#&gt;  $ opponent_team_score: int  2 5 7 19 23 25 27 27 29 32 ...</span></span>
 <span><span class="co">#&gt;  $ opponent           : num  9 9 9 9 9 9 9 9 9 9 ...</span></span></code></pre></div>
 <p>We see that all of these are numbers. It might be easier if “qtr” and “opponent” were changed to factors, so we’ll do that first.</p>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">lebron</span><span class="op">$</span><span class="va">qtr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">lebron</span><span class="op">$</span><span class="va">qtr</span><span class="op">)</span></span>
 <span><span class="va">lebron</span><span class="op">$</span><span class="va">opponent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">lebron</span><span class="op">$</span><span class="va">opponent</span><span class="op">)</span></span></code></pre></div>
@@ -436,7 +435,7 @@
 <p>XGBoost</p>
 <p>We will make an ensemble of the predictions from those five models, and then use that ensemble to model predictions for Lebron’s performance.</p>
 <p>We will also show the ROC curves for each of the results, and save all the trained models at the end.</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Load libraries - note these will work with individual and ensemble models</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span> <span class="co"># to use with BayesGLM</span></span>
@@ -469,9 +468,8 @@
 <span><span class="co">#&gt; ✖ xgboost::slice()        masks dplyr::slice()</span></span>
 <span><span class="co">#&gt; ✖ tidyr::unpack()         masks Matrix::unpack()</span></span>
 <span><span class="co">#&gt; ✖ purrr::when()           masks foreach::when()</span></span>
-<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span> <span class="co"># To print ROC curves</span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xrobin.github.io/pROC/">pROC</a></span><span class="op">)</span> <span class="co"># To print ROC curves</span></span>
 <span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">adaboost_train_accuracy</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -879,6 +877,10 @@
 <span><span class="op">}</span> <span class="co"># Closing loop for the function</span></span>
 <span></span>
 <span><span class="fu">logistic_1</span><span class="op">(</span>data <span class="op">=</span> <span class="va">lebron</span>, colnum <span class="op">=</span> <span class="fl">6</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in rgl.init(initValue, onlyNULL): RGL: unable to</span></span>
+<span><span class="co">#&gt; open X11 display</span></span>
+<span><span class="co">#&gt; Warning: 'rgl.init' failed, running with 'rgl.useNULL =</span></span>
+<span><span class="co">#&gt; TRUE'.</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
 <span><span class="co">#&gt; Setting direction: controls &lt; cases</span></span>
 <span><span class="co">#&gt; Setting levels: control = 0, case = 1</span></span>
@@ -903,76 +905,76 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-4.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.476144 test-rmse:0.478562 
-#&gt; [2]  train-rmse:0.463574 test-rmse:0.467503 
-#&gt; [3]  train-rmse:0.454959 test-rmse:0.460474 
-#&gt; [4]  train-rmse:0.448993 test-rmse:0.455963 
-#&gt; [5]  train-rmse:0.444821 test-rmse:0.452101 
-#&gt; [6]  train-rmse:0.440419 test-rmse:0.451403 
-#&gt; [7]  train-rmse:0.436667 test-rmse:0.450788 
-#&gt; [8]  train-rmse:0.433511 test-rmse:0.449871 
-#&gt; [9]  train-rmse:0.431663 test-rmse:0.450169 
-#&gt; [10] train-rmse:0.427720 test-rmse:0.450046 
-#&gt; [11] train-rmse:0.424788 test-rmse:0.450895 
-#&gt; [12] train-rmse:0.422744 test-rmse:0.449402 
-#&gt; [13] train-rmse:0.419597 test-rmse:0.450385 
-#&gt; [14] train-rmse:0.417344 test-rmse:0.450237 
-#&gt; [15] train-rmse:0.413427 test-rmse:0.450686 
-#&gt; [16] train-rmse:0.411022 test-rmse:0.450659 
-#&gt; [17] train-rmse:0.409211 test-rmse:0.450818 
-#&gt; [18] train-rmse:0.405904 test-rmse:0.452264 
-#&gt; [19] train-rmse:0.403075 test-rmse:0.452364 
-#&gt; [20] train-rmse:0.402247 test-rmse:0.453080 
-#&gt; [21] train-rmse:0.398977 test-rmse:0.452725 
-#&gt; [22] train-rmse:0.397407 test-rmse:0.453944 
-#&gt; [23] train-rmse:0.393930 test-rmse:0.453229 
-#&gt; [24] train-rmse:0.389994 test-rmse:0.452871 
-#&gt; [25] train-rmse:0.388467 test-rmse:0.453027 
-#&gt; [26] train-rmse:0.386738 test-rmse:0.452534 
-#&gt; [27] train-rmse:0.384467 test-rmse:0.452899 
-#&gt; [28] train-rmse:0.382570 test-rmse:0.453100 
-#&gt; [29] train-rmse:0.379445 test-rmse:0.454196 
-#&gt; [30] train-rmse:0.377415 test-rmse:0.454774 
-#&gt; [31] train-rmse:0.376504 test-rmse:0.455492 
-#&gt; [32] train-rmse:0.375392 test-rmse:0.455794 
-#&gt; [33] train-rmse:0.373634 test-rmse:0.455489 
-#&gt; [34] train-rmse:0.371433 test-rmse:0.455733 
-#&gt; [35] train-rmse:0.368571 test-rmse:0.456959 
-#&gt; [36] train-rmse:0.367051 test-rmse:0.457008 
-#&gt; [37] train-rmse:0.363892 test-rmse:0.458813 
-#&gt; [38] train-rmse:0.361112 test-rmse:0.458801 
-#&gt; [39] train-rmse:0.359866 test-rmse:0.458274 
-#&gt; [40] train-rmse:0.358560 test-rmse:0.457887 
-#&gt; [41] train-rmse:0.358106 test-rmse:0.458127 
-#&gt; [42] train-rmse:0.355921 test-rmse:0.458705 
-#&gt; [43] train-rmse:0.353788 test-rmse:0.459461 
-#&gt; [44] train-rmse:0.353182 test-rmse:0.459651 
-#&gt; [45] train-rmse:0.352354 test-rmse:0.459765 
-#&gt; [46] train-rmse:0.350558 test-rmse:0.460158 
-#&gt; [47] train-rmse:0.348136 test-rmse:0.458902 
-#&gt; [48] train-rmse:0.346172 test-rmse:0.459073 
-#&gt; [49] train-rmse:0.345309 test-rmse:0.460300 
-#&gt; [50] train-rmse:0.342630 test-rmse:0.460079 
-#&gt; [51] train-rmse:0.341311 test-rmse:0.461742 
-#&gt; [52] train-rmse:0.339357 test-rmse:0.462133 
-#&gt; [53] train-rmse:0.337334 test-rmse:0.462307 
-#&gt; [54] train-rmse:0.334896 test-rmse:0.463136 
-#&gt; [55] train-rmse:0.333012 test-rmse:0.463257 
-#&gt; [56] train-rmse:0.332788 test-rmse:0.463209 
-#&gt; [57] train-rmse:0.330628 test-rmse:0.464458 
-#&gt; [58] train-rmse:0.328841 test-rmse:0.464871 
-#&gt; [59] train-rmse:0.327336 test-rmse:0.466450 
-#&gt; [60] train-rmse:0.325394 test-rmse:0.467173 
-#&gt; [61] train-rmse:0.323361 test-rmse:0.467378 
-#&gt; [62] train-rmse:0.321633 test-rmse:0.467970 
-#&gt; [63] train-rmse:0.319833 test-rmse:0.468894 
-#&gt; [64] train-rmse:0.317659 test-rmse:0.470018 
-#&gt; [65] train-rmse:0.316241 test-rmse:0.470120 
-#&gt; [66] train-rmse:0.314436 test-rmse:0.471113 
-#&gt; [67] train-rmse:0.312160 test-rmse:0.471866 
-#&gt; [68] train-rmse:0.311475 test-rmse:0.472474 
-#&gt; [69] train-rmse:0.309364 test-rmse:0.473537 
-#&gt; [70] train-rmse:0.308724 test-rmse:0.473588
+<pre><code>#&gt; [1]  train-rmse:0.475192 test-rmse:0.478079 
+#&gt; [2]  train-rmse:0.460745 test-rmse:0.465107 
+#&gt; [3]  train-rmse:0.451388 test-rmse:0.459080 
+#&gt; [4]  train-rmse:0.445489 test-rmse:0.455906 
+#&gt; [5]  train-rmse:0.438896 test-rmse:0.454753 
+#&gt; [6]  train-rmse:0.435170 test-rmse:0.454940 
+#&gt; [7]  train-rmse:0.431544 test-rmse:0.454370 
+#&gt; [8]  train-rmse:0.427571 test-rmse:0.452858 
+#&gt; [9]  train-rmse:0.424162 test-rmse:0.453291 
+#&gt; [10] train-rmse:0.420299 test-rmse:0.454480 
+#&gt; [11] train-rmse:0.416102 test-rmse:0.456759 
+#&gt; [12] train-rmse:0.411797 test-rmse:0.457650 
+#&gt; [13] train-rmse:0.410482 test-rmse:0.457898 
+#&gt; [14] train-rmse:0.408634 test-rmse:0.459100 
+#&gt; [15] train-rmse:0.406348 test-rmse:0.460187 
+#&gt; [16] train-rmse:0.402368 test-rmse:0.458932 
+#&gt; [17] train-rmse:0.399812 test-rmse:0.458677 
+#&gt; [18] train-rmse:0.397695 test-rmse:0.459359 
+#&gt; [19] train-rmse:0.394028 test-rmse:0.461203 
+#&gt; [20] train-rmse:0.391255 test-rmse:0.462953 
+#&gt; [21] train-rmse:0.390029 test-rmse:0.463780 
+#&gt; [22] train-rmse:0.386454 test-rmse:0.464364 
+#&gt; [23] train-rmse:0.383933 test-rmse:0.464019 
+#&gt; [24] train-rmse:0.380405 test-rmse:0.465352 
+#&gt; [25] train-rmse:0.378997 test-rmse:0.465155 
+#&gt; [26] train-rmse:0.378035 test-rmse:0.465882 
+#&gt; [27] train-rmse:0.376297 test-rmse:0.467501 
+#&gt; [28] train-rmse:0.373678 test-rmse:0.468427 
+#&gt; [29] train-rmse:0.370551 test-rmse:0.469632 
+#&gt; [30] train-rmse:0.368614 test-rmse:0.469647 
+#&gt; [31] train-rmse:0.367087 test-rmse:0.468969 
+#&gt; [32] train-rmse:0.365240 test-rmse:0.469454 
+#&gt; [33] train-rmse:0.364351 test-rmse:0.469551 
+#&gt; [34] train-rmse:0.363537 test-rmse:0.470564 
+#&gt; [35] train-rmse:0.362598 test-rmse:0.470403 
+#&gt; [36] train-rmse:0.360605 test-rmse:0.470439 
+#&gt; [37] train-rmse:0.359448 test-rmse:0.471352 
+#&gt; [38] train-rmse:0.357047 test-rmse:0.472299 
+#&gt; [39] train-rmse:0.356753 test-rmse:0.472468 
+#&gt; [40] train-rmse:0.356337 test-rmse:0.472618 
+#&gt; [41] train-rmse:0.354152 test-rmse:0.472050 
+#&gt; [42] train-rmse:0.353494 test-rmse:0.472129 
+#&gt; [43] train-rmse:0.351278 test-rmse:0.473007 
+#&gt; [44] train-rmse:0.349063 test-rmse:0.474251 
+#&gt; [45] train-rmse:0.347140 test-rmse:0.475184 
+#&gt; [46] train-rmse:0.344705 test-rmse:0.476496 
+#&gt; [47] train-rmse:0.343971 test-rmse:0.476474 
+#&gt; [48] train-rmse:0.342816 test-rmse:0.477032 
+#&gt; [49] train-rmse:0.341562 test-rmse:0.476662 
+#&gt; [50] train-rmse:0.338655 test-rmse:0.477149 
+#&gt; [51] train-rmse:0.336345 test-rmse:0.478140 
+#&gt; [52] train-rmse:0.334830 test-rmse:0.478396 
+#&gt; [53] train-rmse:0.332630 test-rmse:0.479673 
+#&gt; [54] train-rmse:0.330085 test-rmse:0.480057 
+#&gt; [55] train-rmse:0.328973 test-rmse:0.480978 
+#&gt; [56] train-rmse:0.327095 test-rmse:0.480589 
+#&gt; [57] train-rmse:0.326709 test-rmse:0.480824 
+#&gt; [58] train-rmse:0.325985 test-rmse:0.481004 
+#&gt; [59] train-rmse:0.323679 test-rmse:0.480972 
+#&gt; [60] train-rmse:0.322220 test-rmse:0.480484 
+#&gt; [61] train-rmse:0.320199 test-rmse:0.480786 
+#&gt; [62] train-rmse:0.318155 test-rmse:0.481231 
+#&gt; [63] train-rmse:0.317449 test-rmse:0.482030 
+#&gt; [64] train-rmse:0.316382 test-rmse:0.482857 
+#&gt; [65] train-rmse:0.314298 test-rmse:0.484149 
+#&gt; [66] train-rmse:0.313270 test-rmse:0.485328 
+#&gt; [67] train-rmse:0.312403 test-rmse:0.485504 
+#&gt; [68] train-rmse:0.310201 test-rmse:0.485571 
+#&gt; [69] train-rmse:0.309894 test-rmse:0.485966 
+#&gt; [70] train-rmse:0.308192 test-rmse:0.486661
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases
 #&gt; Setting levels: control = 0, case = 1
@@ -993,29 +995,29 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-8.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.350824 test-rmse:0.350826 
-#&gt; [2]  train-rmse:0.246155 test-rmse:0.246158 
-#&gt; [3]  train-rmse:0.172714 test-rmse:0.172718 
-#&gt; [4]  train-rmse:0.121185 test-rmse:0.121188 
-#&gt; [5]  train-rmse:0.085029 test-rmse:0.085032 
-#&gt; [6]  train-rmse:0.059661 test-rmse:0.059663 
-#&gt; [7]  train-rmse:0.041861 test-rmse:0.041863 
-#&gt; [8]  train-rmse:0.029372 test-rmse:0.029373 
-#&gt; [9]  train-rmse:0.020608 test-rmse:0.020610 
-#&gt; [10] train-rmse:0.014460 test-rmse:0.014461 
-#&gt; [11] train-rmse:0.010146 test-rmse:0.010146 
-#&gt; [12] train-rmse:0.007119 test-rmse:0.007119 
-#&gt; [13] train-rmse:0.004995 test-rmse:0.004995 
-#&gt; [14] train-rmse:0.003505 test-rmse:0.003505 
-#&gt; [15] train-rmse:0.002459 test-rmse:0.002459 
-#&gt; [16] train-rmse:0.001725 test-rmse:0.001726 
+<pre><code>#&gt; [1]  train-rmse:0.350836 test-rmse:0.350838 
+#&gt; [2]  train-rmse:0.246171 test-rmse:0.246174 
+#&gt; [3]  train-rmse:0.172731 test-rmse:0.172734 
+#&gt; [4]  train-rmse:0.121201 test-rmse:0.121204 
+#&gt; [5]  train-rmse:0.085043 test-rmse:0.085046 
+#&gt; [6]  train-rmse:0.059672 test-rmse:0.059674 
+#&gt; [7]  train-rmse:0.041870 test-rmse:0.041872 
+#&gt; [8]  train-rmse:0.029379 test-rmse:0.029381 
+#&gt; [9]  train-rmse:0.020615 test-rmse:0.020616 
+#&gt; [10] train-rmse:0.014465 test-rmse:0.014466 
+#&gt; [11] train-rmse:0.010149 test-rmse:0.010150 
+#&gt; [12] train-rmse:0.007122 test-rmse:0.007122 
+#&gt; [13] train-rmse:0.004997 test-rmse:0.004997 
+#&gt; [14] train-rmse:0.003506 test-rmse:0.003507 
+#&gt; [15] train-rmse:0.002460 test-rmse:0.002460 
+#&gt; [16] train-rmse:0.001726 test-rmse:0.001726 
 #&gt; [17] train-rmse:0.001211 test-rmse:0.001211 
-#&gt; [18] train-rmse:0.000849 test-rmse:0.000849 
+#&gt; [18] train-rmse:0.000850 test-rmse:0.000850 
 #&gt; [19] train-rmse:0.000596 test-rmse:0.000596 
-#&gt; [20] train-rmse:0.000418 test-rmse:0.000418 
-#&gt; [21] train-rmse:0.000293 test-rmse:0.000293 
+#&gt; [20] train-rmse:0.000418 test-rmse:0.000419 
+#&gt; [21] train-rmse:0.000294 test-rmse:0.000294 
 #&gt; [22] train-rmse:0.000206 test-rmse:0.000206 
-#&gt; [23] train-rmse:0.000144 test-rmse:0.000144 
+#&gt; [23] train-rmse:0.000145 test-rmse:0.000145 
 #&gt; [24] train-rmse:0.000101 test-rmse:0.000101 
 #&gt; [25] train-rmse:0.000071 test-rmse:0.000071 
 #&gt; [26] train-rmse:0.000050 test-rmse:0.000050 
@@ -1093,76 +1095,76 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-14.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.470376 test-rmse:0.479959 
-#&gt; [2]  train-rmse:0.453387 test-rmse:0.471480 
-#&gt; [3]  train-rmse:0.442872 test-rmse:0.467979 
-#&gt; [4]  train-rmse:0.435073 test-rmse:0.467341 
-#&gt; [5]  train-rmse:0.431218 test-rmse:0.466991 
-#&gt; [6]  train-rmse:0.425888 test-rmse:0.467568 
-#&gt; [7]  train-rmse:0.423895 test-rmse:0.466266 
-#&gt; [8]  train-rmse:0.419954 test-rmse:0.466441 
-#&gt; [9]  train-rmse:0.417434 test-rmse:0.465230 
-#&gt; [10] train-rmse:0.413718 test-rmse:0.466888 
-#&gt; [11] train-rmse:0.410281 test-rmse:0.466853 
-#&gt; [12] train-rmse:0.407585 test-rmse:0.468813 
-#&gt; [13] train-rmse:0.406435 test-rmse:0.468586 
-#&gt; [14] train-rmse:0.405209 test-rmse:0.469302 
-#&gt; [15] train-rmse:0.401530 test-rmse:0.468692 
-#&gt; [16] train-rmse:0.398126 test-rmse:0.468722 
-#&gt; [17] train-rmse:0.395889 test-rmse:0.469836 
-#&gt; [18] train-rmse:0.392163 test-rmse:0.470516 
-#&gt; [19] train-rmse:0.387945 test-rmse:0.471069 
-#&gt; [20] train-rmse:0.386932 test-rmse:0.471384 
-#&gt; [21] train-rmse:0.384878 test-rmse:0.472052 
-#&gt; [22] train-rmse:0.382496 test-rmse:0.472522 
-#&gt; [23] train-rmse:0.379117 test-rmse:0.473605 
-#&gt; [24] train-rmse:0.375649 test-rmse:0.473835 
-#&gt; [25] train-rmse:0.373457 test-rmse:0.474532 
-#&gt; [26] train-rmse:0.370817 test-rmse:0.474590 
-#&gt; [27] train-rmse:0.368762 test-rmse:0.476130 
-#&gt; [28] train-rmse:0.366161 test-rmse:0.476836 
-#&gt; [29] train-rmse:0.363188 test-rmse:0.477363 
-#&gt; [30] train-rmse:0.361532 test-rmse:0.476964 
-#&gt; [31] train-rmse:0.360264 test-rmse:0.477921 
-#&gt; [32] train-rmse:0.357790 test-rmse:0.477276 
-#&gt; [33] train-rmse:0.355311 test-rmse:0.478001 
-#&gt; [34] train-rmse:0.352196 test-rmse:0.477349 
-#&gt; [35] train-rmse:0.350114 test-rmse:0.477405 
-#&gt; [36] train-rmse:0.349005 test-rmse:0.477194 
-#&gt; [37] train-rmse:0.347719 test-rmse:0.477163 
-#&gt; [38] train-rmse:0.346784 test-rmse:0.477026 
-#&gt; [39] train-rmse:0.345636 test-rmse:0.477004 
-#&gt; [40] train-rmse:0.343623 test-rmse:0.477453 
-#&gt; [41] train-rmse:0.340926 test-rmse:0.477200 
-#&gt; [42] train-rmse:0.339610 test-rmse:0.477063 
-#&gt; [43] train-rmse:0.338114 test-rmse:0.476603 
-#&gt; [44] train-rmse:0.337161 test-rmse:0.477081 
-#&gt; [45] train-rmse:0.335310 test-rmse:0.477718 
-#&gt; [46] train-rmse:0.333155 test-rmse:0.478709 
-#&gt; [47] train-rmse:0.331283 test-rmse:0.479318 
-#&gt; [48] train-rmse:0.328594 test-rmse:0.479546 
-#&gt; [49] train-rmse:0.327513 test-rmse:0.480445 
-#&gt; [50] train-rmse:0.327141 test-rmse:0.481062 
-#&gt; [51] train-rmse:0.325709 test-rmse:0.481752 
-#&gt; [52] train-rmse:0.323339 test-rmse:0.482711 
-#&gt; [53] train-rmse:0.320991 test-rmse:0.483422 
-#&gt; [54] train-rmse:0.320335 test-rmse:0.483969 
-#&gt; [55] train-rmse:0.318912 test-rmse:0.484782 
-#&gt; [56] train-rmse:0.317346 test-rmse:0.485648 
-#&gt; [57] train-rmse:0.316029 test-rmse:0.485568 
-#&gt; [58] train-rmse:0.314046 test-rmse:0.486434 
-#&gt; [59] train-rmse:0.311916 test-rmse:0.487268 
-#&gt; [60] train-rmse:0.309432 test-rmse:0.487138 
-#&gt; [61] train-rmse:0.308339 test-rmse:0.487302 
-#&gt; [62] train-rmse:0.307715 test-rmse:0.487245 
-#&gt; [63] train-rmse:0.306562 test-rmse:0.487641 
-#&gt; [64] train-rmse:0.305473 test-rmse:0.487510 
-#&gt; [65] train-rmse:0.303432 test-rmse:0.487882 
-#&gt; [66] train-rmse:0.301222 test-rmse:0.488623 
-#&gt; [67] train-rmse:0.298861 test-rmse:0.489104 
-#&gt; [68] train-rmse:0.297184 test-rmse:0.490484 
-#&gt; [69] train-rmse:0.295459 test-rmse:0.490403 
-#&gt; [70] train-rmse:0.294919 test-rmse:0.490425
+<pre><code>#&gt; [1]  train-rmse:0.471288 test-rmse:0.480597 
+#&gt; [2]  train-rmse:0.454148 test-rmse:0.471956 
+#&gt; [3]  train-rmse:0.444279 test-rmse:0.468135 
+#&gt; [4]  train-rmse:0.436460 test-rmse:0.466477 
+#&gt; [5]  train-rmse:0.430706 test-rmse:0.465734 
+#&gt; [6]  train-rmse:0.425711 test-rmse:0.466878 
+#&gt; [7]  train-rmse:0.420403 test-rmse:0.466368 
+#&gt; [8]  train-rmse:0.415413 test-rmse:0.466983 
+#&gt; [9]  train-rmse:0.411158 test-rmse:0.468684 
+#&gt; [10] train-rmse:0.408749 test-rmse:0.468528 
+#&gt; [11] train-rmse:0.405317 test-rmse:0.468140 
+#&gt; [12] train-rmse:0.401817 test-rmse:0.468375 
+#&gt; [13] train-rmse:0.399431 test-rmse:0.469036 
+#&gt; [14] train-rmse:0.395495 test-rmse:0.469593 
+#&gt; [15] train-rmse:0.392010 test-rmse:0.470457 
+#&gt; [16] train-rmse:0.388653 test-rmse:0.472501 
+#&gt; [17] train-rmse:0.387409 test-rmse:0.472397 
+#&gt; [18] train-rmse:0.383724 test-rmse:0.473634 
+#&gt; [19] train-rmse:0.382593 test-rmse:0.474546 
+#&gt; [20] train-rmse:0.378619 test-rmse:0.476287 
+#&gt; [21] train-rmse:0.376242 test-rmse:0.476496 
+#&gt; [22] train-rmse:0.374736 test-rmse:0.474994 
+#&gt; [23] train-rmse:0.372731 test-rmse:0.476013 
+#&gt; [24] train-rmse:0.369985 test-rmse:0.476399 
+#&gt; [25] train-rmse:0.367332 test-rmse:0.477766 
+#&gt; [26] train-rmse:0.364767 test-rmse:0.478064 
+#&gt; [27] train-rmse:0.362684 test-rmse:0.478989 
+#&gt; [28] train-rmse:0.360203 test-rmse:0.478573 
+#&gt; [29] train-rmse:0.358111 test-rmse:0.478864 
+#&gt; [30] train-rmse:0.357035 test-rmse:0.479190 
+#&gt; [31] train-rmse:0.354377 test-rmse:0.480162 
+#&gt; [32] train-rmse:0.351908 test-rmse:0.480480 
+#&gt; [33] train-rmse:0.351209 test-rmse:0.480823 
+#&gt; [34] train-rmse:0.348424 test-rmse:0.480542 
+#&gt; [35] train-rmse:0.346924 test-rmse:0.480054 
+#&gt; [36] train-rmse:0.344238 test-rmse:0.481170 
+#&gt; [37] train-rmse:0.343246 test-rmse:0.481543 
+#&gt; [38] train-rmse:0.342540 test-rmse:0.481763 
+#&gt; [39] train-rmse:0.339574 test-rmse:0.481122 
+#&gt; [40] train-rmse:0.337354 test-rmse:0.482510 
+#&gt; [41] train-rmse:0.335757 test-rmse:0.482954 
+#&gt; [42] train-rmse:0.333766 test-rmse:0.484287 
+#&gt; [43] train-rmse:0.331758 test-rmse:0.484819 
+#&gt; [44] train-rmse:0.331201 test-rmse:0.485416 
+#&gt; [45] train-rmse:0.329451 test-rmse:0.485938 
+#&gt; [46] train-rmse:0.327174 test-rmse:0.485647 
+#&gt; [47] train-rmse:0.325412 test-rmse:0.486074 
+#&gt; [48] train-rmse:0.323566 test-rmse:0.486410 
+#&gt; [49] train-rmse:0.322551 test-rmse:0.487852 
+#&gt; [50] train-rmse:0.320895 test-rmse:0.488615 
+#&gt; [51] train-rmse:0.319681 test-rmse:0.489755 
+#&gt; [52] train-rmse:0.318106 test-rmse:0.490562 
+#&gt; [53] train-rmse:0.315893 test-rmse:0.490989 
+#&gt; [54] train-rmse:0.314484 test-rmse:0.491501 
+#&gt; [55] train-rmse:0.313154 test-rmse:0.492249 
+#&gt; [56] train-rmse:0.310960 test-rmse:0.492431 
+#&gt; [57] train-rmse:0.308151 test-rmse:0.492892 
+#&gt; [58] train-rmse:0.305982 test-rmse:0.493646 
+#&gt; [59] train-rmse:0.304090 test-rmse:0.493688 
+#&gt; [60] train-rmse:0.301510 test-rmse:0.493719 
+#&gt; [61] train-rmse:0.300066 test-rmse:0.494916 
+#&gt; [62] train-rmse:0.297987 test-rmse:0.496096 
+#&gt; [63] train-rmse:0.296870 test-rmse:0.496458 
+#&gt; [64] train-rmse:0.296605 test-rmse:0.496525 
+#&gt; [65] train-rmse:0.294505 test-rmse:0.497734 
+#&gt; [66] train-rmse:0.292709 test-rmse:0.498562 
+#&gt; [67] train-rmse:0.291528 test-rmse:0.498973 
+#&gt; [68] train-rmse:0.289977 test-rmse:0.499720 
+#&gt; [69] train-rmse:0.288232 test-rmse:0.500854 
+#&gt; [70] train-rmse:0.286875 test-rmse:0.501465
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases
 #&gt; Setting levels: control = 0, case = 1
@@ -1183,25 +1185,25 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-18.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.350822 test-rmse:0.350821 
-#&gt; [2]  train-rmse:0.246152 test-rmse:0.246151 
-#&gt; [3]  train-rmse:0.172711 test-rmse:0.172710 
-#&gt; [4]  train-rmse:0.121182 test-rmse:0.121180 
-#&gt; [5]  train-rmse:0.085026 test-rmse:0.085025 
-#&gt; [6]  train-rmse:0.059658 test-rmse:0.059657 
-#&gt; [7]  train-rmse:0.041859 test-rmse:0.041858 
-#&gt; [8]  train-rmse:0.029370 test-rmse:0.029369 
-#&gt; [9]  train-rmse:0.020607 test-rmse:0.020607 
-#&gt; [10] train-rmse:0.014459 test-rmse:0.014459 
-#&gt; [11] train-rmse:0.010145 test-rmse:0.010145 
-#&gt; [12] train-rmse:0.007118 test-rmse:0.007118 
-#&gt; [13] train-rmse:0.004994 test-rmse:0.004994 
-#&gt; [14] train-rmse:0.003504 test-rmse:0.003504 
-#&gt; [15] train-rmse:0.002459 test-rmse:0.002459 
-#&gt; [16] train-rmse:0.001725 test-rmse:0.001725 
+<pre><code>#&gt; [1]  train-rmse:0.350806 test-rmse:0.350810 
+#&gt; [2]  train-rmse:0.246130 test-rmse:0.246136 
+#&gt; [3]  train-rmse:0.172688 test-rmse:0.172694 
+#&gt; [4]  train-rmse:0.121160 test-rmse:0.121166 
+#&gt; [5]  train-rmse:0.085008 test-rmse:0.085012 
+#&gt; [6]  train-rmse:0.059642 test-rmse:0.059646 
+#&gt; [7]  train-rmse:0.041846 test-rmse:0.041849 
+#&gt; [8]  train-rmse:0.029360 test-rmse:0.029362 
+#&gt; [9]  train-rmse:0.020599 test-rmse:0.020601 
+#&gt; [10] train-rmse:0.014453 test-rmse:0.014454 
+#&gt; [11] train-rmse:0.010140 test-rmse:0.010141 
+#&gt; [12] train-rmse:0.007114 test-rmse:0.007115 
+#&gt; [13] train-rmse:0.004992 test-rmse:0.004992 
+#&gt; [14] train-rmse:0.003502 test-rmse:0.003503 
+#&gt; [15] train-rmse:0.002457 test-rmse:0.002458 
+#&gt; [16] train-rmse:0.001724 test-rmse:0.001724 
 #&gt; [17] train-rmse:0.001210 test-rmse:0.001210 
 #&gt; [18] train-rmse:0.000849 test-rmse:0.000849 
-#&gt; [19] train-rmse:0.000596 test-rmse:0.000596 
+#&gt; [19] train-rmse:0.000595 test-rmse:0.000596 
 #&gt; [20] train-rmse:0.000418 test-rmse:0.000418 
 #&gt; [21] train-rmse:0.000293 test-rmse:0.000293 
 #&gt; [22] train-rmse:0.000206 test-rmse:0.000206 
@@ -1283,76 +1285,76 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-24.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.471391 test-rmse:0.481189 
-#&gt; [2]  train-rmse:0.455547 test-rmse:0.469744 
-#&gt; [3]  train-rmse:0.445057 test-rmse:0.466894 
-#&gt; [4]  train-rmse:0.438664 test-rmse:0.466114 
-#&gt; [5]  train-rmse:0.432583 test-rmse:0.464660 
-#&gt; [6]  train-rmse:0.427073 test-rmse:0.466880 
-#&gt; [7]  train-rmse:0.421625 test-rmse:0.464989 
-#&gt; [8]  train-rmse:0.417663 test-rmse:0.464809 
-#&gt; [9]  train-rmse:0.415027 test-rmse:0.465373 
-#&gt; [10] train-rmse:0.409836 test-rmse:0.466984 
-#&gt; [11] train-rmse:0.405816 test-rmse:0.469168 
-#&gt; [12] train-rmse:0.403440 test-rmse:0.470523 
-#&gt; [13] train-rmse:0.401912 test-rmse:0.471266 
-#&gt; [14] train-rmse:0.398924 test-rmse:0.472400 
-#&gt; [15] train-rmse:0.395019 test-rmse:0.472489 
-#&gt; [16] train-rmse:0.393648 test-rmse:0.471867 
-#&gt; [17] train-rmse:0.391375 test-rmse:0.473183 
-#&gt; [18] train-rmse:0.388984 test-rmse:0.472980 
-#&gt; [19] train-rmse:0.388284 test-rmse:0.473698 
-#&gt; [20] train-rmse:0.386324 test-rmse:0.474739 
-#&gt; [21] train-rmse:0.385213 test-rmse:0.474960 
-#&gt; [22] train-rmse:0.382278 test-rmse:0.474498 
-#&gt; [23] train-rmse:0.378827 test-rmse:0.476668 
-#&gt; [24] train-rmse:0.377884 test-rmse:0.477570 
-#&gt; [25] train-rmse:0.374871 test-rmse:0.477621 
-#&gt; [26] train-rmse:0.372707 test-rmse:0.477877 
-#&gt; [27] train-rmse:0.370127 test-rmse:0.477583 
-#&gt; [28] train-rmse:0.367759 test-rmse:0.476749 
-#&gt; [29] train-rmse:0.366066 test-rmse:0.476368 
-#&gt; [30] train-rmse:0.363867 test-rmse:0.476622 
-#&gt; [31] train-rmse:0.362045 test-rmse:0.477304 
-#&gt; [32] train-rmse:0.358841 test-rmse:0.476316 
-#&gt; [33] train-rmse:0.356543 test-rmse:0.476612 
-#&gt; [34] train-rmse:0.353660 test-rmse:0.476929 
-#&gt; [35] train-rmse:0.352077 test-rmse:0.477073 
-#&gt; [36] train-rmse:0.351153 test-rmse:0.477482 
-#&gt; [37] train-rmse:0.348208 test-rmse:0.477965 
-#&gt; [38] train-rmse:0.346105 test-rmse:0.477946 
-#&gt; [39] train-rmse:0.344032 test-rmse:0.477134 
-#&gt; [40] train-rmse:0.341681 test-rmse:0.477221 
-#&gt; [41] train-rmse:0.338970 test-rmse:0.478715 
-#&gt; [42] train-rmse:0.336918 test-rmse:0.479090 
-#&gt; [43] train-rmse:0.335588 test-rmse:0.479170 
-#&gt; [44] train-rmse:0.333278 test-rmse:0.480013 
-#&gt; [45] train-rmse:0.332120 test-rmse:0.480946 
-#&gt; [46] train-rmse:0.329920 test-rmse:0.481960 
-#&gt; [47] train-rmse:0.328341 test-rmse:0.482355 
-#&gt; [48] train-rmse:0.326399 test-rmse:0.483102 
-#&gt; [49] train-rmse:0.324738 test-rmse:0.484285 
-#&gt; [50] train-rmse:0.324118 test-rmse:0.484037 
-#&gt; [51] train-rmse:0.321977 test-rmse:0.485103 
-#&gt; [52] train-rmse:0.320736 test-rmse:0.485361 
-#&gt; [53] train-rmse:0.318751 test-rmse:0.487033 
-#&gt; [54] train-rmse:0.316191 test-rmse:0.488110 
-#&gt; [55] train-rmse:0.314172 test-rmse:0.487651 
-#&gt; [56] train-rmse:0.313694 test-rmse:0.488266 
-#&gt; [57] train-rmse:0.311423 test-rmse:0.488294 
-#&gt; [58] train-rmse:0.310172 test-rmse:0.488361 
-#&gt; [59] train-rmse:0.308348 test-rmse:0.488932 
-#&gt; [60] train-rmse:0.306982 test-rmse:0.489724 
-#&gt; [61] train-rmse:0.305282 test-rmse:0.490384 
-#&gt; [62] train-rmse:0.303546 test-rmse:0.490633 
-#&gt; [63] train-rmse:0.302081 test-rmse:0.490621 
-#&gt; [64] train-rmse:0.301427 test-rmse:0.490028 
-#&gt; [65] train-rmse:0.300181 test-rmse:0.490678 
-#&gt; [66] train-rmse:0.298538 test-rmse:0.492055 
-#&gt; [67] train-rmse:0.297295 test-rmse:0.492493 
-#&gt; [68] train-rmse:0.296920 test-rmse:0.492876 
-#&gt; [69] train-rmse:0.295868 test-rmse:0.493036 
-#&gt; [70] train-rmse:0.295132 test-rmse:0.493147
+<pre><code>#&gt; [1]  train-rmse:0.473801 test-rmse:0.480014 
+#&gt; [2]  train-rmse:0.458215 test-rmse:0.469864 
+#&gt; [3]  train-rmse:0.449741 test-rmse:0.466168 
+#&gt; [4]  train-rmse:0.442625 test-rmse:0.464386 
+#&gt; [5]  train-rmse:0.437502 test-rmse:0.463313 
+#&gt; [6]  train-rmse:0.433406 test-rmse:0.465118 
+#&gt; [7]  train-rmse:0.429744 test-rmse:0.465226 
+#&gt; [8]  train-rmse:0.427812 test-rmse:0.464808 
+#&gt; [9]  train-rmse:0.425196 test-rmse:0.465825 
+#&gt; [10] train-rmse:0.422256 test-rmse:0.466677 
+#&gt; [11] train-rmse:0.418247 test-rmse:0.467299 
+#&gt; [12] train-rmse:0.414233 test-rmse:0.465835 
+#&gt; [13] train-rmse:0.412075 test-rmse:0.467204 
+#&gt; [14] train-rmse:0.410693 test-rmse:0.467586 
+#&gt; [15] train-rmse:0.409503 test-rmse:0.468581 
+#&gt; [16] train-rmse:0.408755 test-rmse:0.469685 
+#&gt; [17] train-rmse:0.406969 test-rmse:0.469987 
+#&gt; [18] train-rmse:0.404962 test-rmse:0.470371 
+#&gt; [19] train-rmse:0.403384 test-rmse:0.471426 
+#&gt; [20] train-rmse:0.400175 test-rmse:0.473795 
+#&gt; [21] train-rmse:0.399097 test-rmse:0.473812 
+#&gt; [22] train-rmse:0.396074 test-rmse:0.473160 
+#&gt; [23] train-rmse:0.393537 test-rmse:0.472550 
+#&gt; [24] train-rmse:0.390971 test-rmse:0.473480 
+#&gt; [25] train-rmse:0.387452 test-rmse:0.473622 
+#&gt; [26] train-rmse:0.384494 test-rmse:0.473356 
+#&gt; [27] train-rmse:0.381861 test-rmse:0.474089 
+#&gt; [28] train-rmse:0.377919 test-rmse:0.475059 
+#&gt; [29] train-rmse:0.376196 test-rmse:0.474627 
+#&gt; [30] train-rmse:0.375485 test-rmse:0.474749 
+#&gt; [31] train-rmse:0.373193 test-rmse:0.475647 
+#&gt; [32] train-rmse:0.372183 test-rmse:0.475989 
+#&gt; [33] train-rmse:0.370839 test-rmse:0.475017 
+#&gt; [34] train-rmse:0.368011 test-rmse:0.474879 
+#&gt; [35] train-rmse:0.365786 test-rmse:0.476053 
+#&gt; [36] train-rmse:0.361786 test-rmse:0.478188 
+#&gt; [37] train-rmse:0.358594 test-rmse:0.479465 
+#&gt; [38] train-rmse:0.357436 test-rmse:0.480038 
+#&gt; [39] train-rmse:0.355393 test-rmse:0.480862 
+#&gt; [40] train-rmse:0.352473 test-rmse:0.482852 
+#&gt; [41] train-rmse:0.350967 test-rmse:0.483703 
+#&gt; [42] train-rmse:0.349832 test-rmse:0.483414 
+#&gt; [43] train-rmse:0.349549 test-rmse:0.483538 
+#&gt; [44] train-rmse:0.347342 test-rmse:0.483293 
+#&gt; [45] train-rmse:0.345605 test-rmse:0.483945 
+#&gt; [46] train-rmse:0.344805 test-rmse:0.483469 
+#&gt; [47] train-rmse:0.342493 test-rmse:0.483422 
+#&gt; [48] train-rmse:0.339428 test-rmse:0.483950 
+#&gt; [49] train-rmse:0.339030 test-rmse:0.484049 
+#&gt; [50] train-rmse:0.336944 test-rmse:0.483367 
+#&gt; [51] train-rmse:0.333893 test-rmse:0.482459 
+#&gt; [52] train-rmse:0.331244 test-rmse:0.483001 
+#&gt; [53] train-rmse:0.329855 test-rmse:0.482918 
+#&gt; [54] train-rmse:0.329137 test-rmse:0.482874 
+#&gt; [55] train-rmse:0.328487 test-rmse:0.483778 
+#&gt; [56] train-rmse:0.327071 test-rmse:0.484555 
+#&gt; [57] train-rmse:0.324390 test-rmse:0.485547 
+#&gt; [58] train-rmse:0.322206 test-rmse:0.486124 
+#&gt; [59] train-rmse:0.319892 test-rmse:0.487004 
+#&gt; [60] train-rmse:0.317308 test-rmse:0.488051 
+#&gt; [61] train-rmse:0.315291 test-rmse:0.487747 
+#&gt; [62] train-rmse:0.314257 test-rmse:0.487359 
+#&gt; [63] train-rmse:0.313193 test-rmse:0.487545 
+#&gt; [64] train-rmse:0.310592 test-rmse:0.488525 
+#&gt; [65] train-rmse:0.310393 test-rmse:0.488563 
+#&gt; [66] train-rmse:0.308776 test-rmse:0.489347 
+#&gt; [67] train-rmse:0.306880 test-rmse:0.489801 
+#&gt; [68] train-rmse:0.306194 test-rmse:0.489683 
+#&gt; [69] train-rmse:0.303963 test-rmse:0.490333 
+#&gt; [70] train-rmse:0.302760 test-rmse:0.491298
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases
 #&gt; Setting levels: control = 0, case = 1
@@ -1373,27 +1375,27 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-28.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.350732 test-rmse:0.350737 
-#&gt; [2]  train-rmse:0.246025 test-rmse:0.246032 
-#&gt; [3]  train-rmse:0.172578 test-rmse:0.172585 
-#&gt; [4]  train-rmse:0.121057 test-rmse:0.121064 
-#&gt; [5]  train-rmse:0.084917 test-rmse:0.084923 
-#&gt; [6]  train-rmse:0.059566 test-rmse:0.059571 
-#&gt; [7]  train-rmse:0.041784 test-rmse:0.041788 
-#&gt; [8]  train-rmse:0.029310 test-rmse:0.029313 
-#&gt; [9]  train-rmse:0.020560 test-rmse:0.020562 
-#&gt; [10] train-rmse:0.014422 test-rmse:0.014424 
-#&gt; [11] train-rmse:0.010116 test-rmse:0.010118 
-#&gt; [12] train-rmse:0.007096 test-rmse:0.007097 
-#&gt; [13] train-rmse:0.004978 test-rmse:0.004979 
-#&gt; [14] train-rmse:0.003492 test-rmse:0.003492 
-#&gt; [15] train-rmse:0.002449 test-rmse:0.002450 
-#&gt; [16] train-rmse:0.001718 test-rmse:0.001718 
-#&gt; [17] train-rmse:0.001205 test-rmse:0.001205 
-#&gt; [18] train-rmse:0.000845 test-rmse:0.000846 
-#&gt; [19] train-rmse:0.000593 test-rmse:0.000593 
-#&gt; [20] train-rmse:0.000416 test-rmse:0.000416 
-#&gt; [21] train-rmse:0.000292 test-rmse:0.000292 
+<pre><code>#&gt; [1]  train-rmse:0.350779 test-rmse:0.350780 
+#&gt; [2]  train-rmse:0.246092 test-rmse:0.246093 
+#&gt; [3]  train-rmse:0.172648 test-rmse:0.172649 
+#&gt; [4]  train-rmse:0.121123 test-rmse:0.121123 
+#&gt; [5]  train-rmse:0.084975 test-rmse:0.084975 
+#&gt; [6]  train-rmse:0.059615 test-rmse:0.059615 
+#&gt; [7]  train-rmse:0.041823 test-rmse:0.041824 
+#&gt; [8]  train-rmse:0.029341 test-rmse:0.029342 
+#&gt; [9]  train-rmse:0.020585 test-rmse:0.020585 
+#&gt; [10] train-rmse:0.014441 test-rmse:0.014442 
+#&gt; [11] train-rmse:0.010131 test-rmse:0.010132 
+#&gt; [12] train-rmse:0.007108 test-rmse:0.007108 
+#&gt; [13] train-rmse:0.004987 test-rmse:0.004987 
+#&gt; [14] train-rmse:0.003498 test-rmse:0.003498 
+#&gt; [15] train-rmse:0.002454 test-rmse:0.002454 
+#&gt; [16] train-rmse:0.001722 test-rmse:0.001722 
+#&gt; [17] train-rmse:0.001208 test-rmse:0.001208 
+#&gt; [18] train-rmse:0.000847 test-rmse:0.000847 
+#&gt; [19] train-rmse:0.000595 test-rmse:0.000595 
+#&gt; [20] train-rmse:0.000417 test-rmse:0.000417 
+#&gt; [21] train-rmse:0.000293 test-rmse:0.000293 
 #&gt; [22] train-rmse:0.000205 test-rmse:0.000205 
 #&gt; [23] train-rmse:0.000144 test-rmse:0.000144 
 #&gt; [24] train-rmse:0.000101 test-rmse:0.000101 
@@ -1406,7 +1408,7 @@
 #&gt; [31] train-rmse:0.000050 test-rmse:0.000050 
 #&gt; [32] train-rmse:0.000050 test-rmse:0.000050 
 #&gt; [33] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [34] train-rmse:0.000049 test-rmse:0.000050 
+#&gt; [34] train-rmse:0.000050 test-rmse:0.000050 
 #&gt; [35] train-rmse:0.000050 test-rmse:0.000050 
 #&gt; [36] train-rmse:0.000050 test-rmse:0.000050 
 #&gt; [37] train-rmse:0.000050 test-rmse:0.000050 
@@ -1473,76 +1475,76 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-34.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.474806 test-rmse:0.477327 
-#&gt; [2]  train-rmse:0.460194 test-rmse:0.468567 
-#&gt; [3]  train-rmse:0.451103 test-rmse:0.464446 
-#&gt; [4]  train-rmse:0.444766 test-rmse:0.461353 
-#&gt; [5]  train-rmse:0.439933 test-rmse:0.459735 
-#&gt; [6]  train-rmse:0.434587 test-rmse:0.458148 
-#&gt; [7]  train-rmse:0.432074 test-rmse:0.456628 
-#&gt; [8]  train-rmse:0.428070 test-rmse:0.456919 
-#&gt; [9]  train-rmse:0.425809 test-rmse:0.457126 
-#&gt; [10] train-rmse:0.423424 test-rmse:0.457745 
-#&gt; [11] train-rmse:0.421371 test-rmse:0.457869 
-#&gt; [12] train-rmse:0.418730 test-rmse:0.457889 
-#&gt; [13] train-rmse:0.415050 test-rmse:0.457260 
-#&gt; [14] train-rmse:0.410685 test-rmse:0.458697 
-#&gt; [15] train-rmse:0.406654 test-rmse:0.458959 
-#&gt; [16] train-rmse:0.402437 test-rmse:0.459619 
-#&gt; [17] train-rmse:0.398835 test-rmse:0.460915 
-#&gt; [18] train-rmse:0.396471 test-rmse:0.461584 
-#&gt; [19] train-rmse:0.395539 test-rmse:0.461310 
-#&gt; [20] train-rmse:0.392449 test-rmse:0.462386 
-#&gt; [21] train-rmse:0.388385 test-rmse:0.463716 
-#&gt; [22] train-rmse:0.386142 test-rmse:0.464954 
-#&gt; [23] train-rmse:0.383937 test-rmse:0.466150 
-#&gt; [24] train-rmse:0.383189 test-rmse:0.467036 
-#&gt; [25] train-rmse:0.381766 test-rmse:0.467289 
-#&gt; [26] train-rmse:0.379216 test-rmse:0.467775 
-#&gt; [27] train-rmse:0.376576 test-rmse:0.468056 
-#&gt; [28] train-rmse:0.374455 test-rmse:0.468093 
-#&gt; [29] train-rmse:0.372813 test-rmse:0.468241 
-#&gt; [30] train-rmse:0.371925 test-rmse:0.468451 
-#&gt; [31] train-rmse:0.370339 test-rmse:0.468939 
-#&gt; [32] train-rmse:0.368483 test-rmse:0.469352 
-#&gt; [33] train-rmse:0.365769 test-rmse:0.470102 
-#&gt; [34] train-rmse:0.363748 test-rmse:0.470834 
-#&gt; [35] train-rmse:0.362648 test-rmse:0.470980 
-#&gt; [36] train-rmse:0.359854 test-rmse:0.471540 
-#&gt; [37] train-rmse:0.358168 test-rmse:0.472813 
-#&gt; [38] train-rmse:0.355880 test-rmse:0.472769 
-#&gt; [39] train-rmse:0.353999 test-rmse:0.472446 
-#&gt; [40] train-rmse:0.351588 test-rmse:0.473530 
-#&gt; [41] train-rmse:0.349368 test-rmse:0.472972 
-#&gt; [42] train-rmse:0.348816 test-rmse:0.473473 
-#&gt; [43] train-rmse:0.346445 test-rmse:0.474530 
-#&gt; [44] train-rmse:0.344027 test-rmse:0.474449 
-#&gt; [45] train-rmse:0.341265 test-rmse:0.476748 
-#&gt; [46] train-rmse:0.338787 test-rmse:0.477893 
-#&gt; [47] train-rmse:0.336858 test-rmse:0.478158 
-#&gt; [48] train-rmse:0.335004 test-rmse:0.479104 
-#&gt; [49] train-rmse:0.334594 test-rmse:0.478971 
-#&gt; [50] train-rmse:0.333463 test-rmse:0.478899 
-#&gt; [51] train-rmse:0.332069 test-rmse:0.479791 
-#&gt; [52] train-rmse:0.331328 test-rmse:0.481001 
-#&gt; [53] train-rmse:0.329724 test-rmse:0.481301 
-#&gt; [54] train-rmse:0.327866 test-rmse:0.481444 
-#&gt; [55] train-rmse:0.325509 test-rmse:0.481943 
-#&gt; [56] train-rmse:0.323790 test-rmse:0.482850 
-#&gt; [57] train-rmse:0.322412 test-rmse:0.483244 
-#&gt; [58] train-rmse:0.320115 test-rmse:0.483289 
-#&gt; [59] train-rmse:0.319143 test-rmse:0.483689 
-#&gt; [60] train-rmse:0.318132 test-rmse:0.483346 
-#&gt; [61] train-rmse:0.317056 test-rmse:0.483574 
-#&gt; [62] train-rmse:0.314811 test-rmse:0.484470 
-#&gt; [63] train-rmse:0.313338 test-rmse:0.485339 
-#&gt; [64] train-rmse:0.310976 test-rmse:0.485383 
-#&gt; [65] train-rmse:0.309806 test-rmse:0.486243 
-#&gt; [66] train-rmse:0.307857 test-rmse:0.486291 
-#&gt; [67] train-rmse:0.306005 test-rmse:0.486813 
-#&gt; [68] train-rmse:0.303882 test-rmse:0.486972 
-#&gt; [69] train-rmse:0.303206 test-rmse:0.487281 
-#&gt; [70] train-rmse:0.301917 test-rmse:0.487293
+<pre><code>#&gt; [1]  train-rmse:0.469345 test-rmse:0.483306 
+#&gt; [2]  train-rmse:0.451129 test-rmse:0.475073 
+#&gt; [3]  train-rmse:0.438859 test-rmse:0.472677 
+#&gt; [4]  train-rmse:0.430394 test-rmse:0.474792 
+#&gt; [5]  train-rmse:0.424651 test-rmse:0.474480 
+#&gt; [6]  train-rmse:0.419686 test-rmse:0.476138 
+#&gt; [7]  train-rmse:0.416104 test-rmse:0.477385 
+#&gt; [8]  train-rmse:0.409485 test-rmse:0.479152 
+#&gt; [9]  train-rmse:0.407226 test-rmse:0.477947 
+#&gt; [10] train-rmse:0.403165 test-rmse:0.478425 
+#&gt; [11] train-rmse:0.401277 test-rmse:0.479130 
+#&gt; [12] train-rmse:0.396918 test-rmse:0.479524 
+#&gt; [13] train-rmse:0.392692 test-rmse:0.481042 
+#&gt; [14] train-rmse:0.389309 test-rmse:0.482407 
+#&gt; [15] train-rmse:0.385995 test-rmse:0.483304 
+#&gt; [16] train-rmse:0.382852 test-rmse:0.484639 
+#&gt; [17] train-rmse:0.381596 test-rmse:0.485118 
+#&gt; [18] train-rmse:0.379741 test-rmse:0.485999 
+#&gt; [19] train-rmse:0.377448 test-rmse:0.486745 
+#&gt; [20] train-rmse:0.373995 test-rmse:0.487018 
+#&gt; [21] train-rmse:0.371236 test-rmse:0.487427 
+#&gt; [22] train-rmse:0.367078 test-rmse:0.487029 
+#&gt; [23] train-rmse:0.364324 test-rmse:0.487024 
+#&gt; [24] train-rmse:0.361429 test-rmse:0.486409 
+#&gt; [25] train-rmse:0.358355 test-rmse:0.486373 
+#&gt; [26] train-rmse:0.356879 test-rmse:0.486452 
+#&gt; [27] train-rmse:0.356182 test-rmse:0.486853 
+#&gt; [28] train-rmse:0.353620 test-rmse:0.487637 
+#&gt; [29] train-rmse:0.352210 test-rmse:0.487617 
+#&gt; [30] train-rmse:0.349787 test-rmse:0.488029 
+#&gt; [31] train-rmse:0.347052 test-rmse:0.488152 
+#&gt; [32] train-rmse:0.344668 test-rmse:0.489566 
+#&gt; [33] train-rmse:0.342204 test-rmse:0.489855 
+#&gt; [34] train-rmse:0.340754 test-rmse:0.489307 
+#&gt; [35] train-rmse:0.340022 test-rmse:0.489012 
+#&gt; [36] train-rmse:0.337948 test-rmse:0.489216 
+#&gt; [37] train-rmse:0.336364 test-rmse:0.489918 
+#&gt; [38] train-rmse:0.335238 test-rmse:0.490907 
+#&gt; [39] train-rmse:0.333505 test-rmse:0.490977 
+#&gt; [40] train-rmse:0.331388 test-rmse:0.491889 
+#&gt; [41] train-rmse:0.328998 test-rmse:0.492251 
+#&gt; [42] train-rmse:0.327470 test-rmse:0.491634 
+#&gt; [43] train-rmse:0.326239 test-rmse:0.492068 
+#&gt; [44] train-rmse:0.324830 test-rmse:0.492400 
+#&gt; [45] train-rmse:0.322450 test-rmse:0.492293 
+#&gt; [46] train-rmse:0.321218 test-rmse:0.492800 
+#&gt; [47] train-rmse:0.318764 test-rmse:0.493141 
+#&gt; [48] train-rmse:0.316828 test-rmse:0.493773 
+#&gt; [49] train-rmse:0.314391 test-rmse:0.493342 
+#&gt; [50] train-rmse:0.312233 test-rmse:0.493425 
+#&gt; [51] train-rmse:0.310441 test-rmse:0.493546 
+#&gt; [52] train-rmse:0.309609 test-rmse:0.493152 
+#&gt; [53] train-rmse:0.308001 test-rmse:0.493657 
+#&gt; [54] train-rmse:0.306697 test-rmse:0.493582 
+#&gt; [55] train-rmse:0.304640 test-rmse:0.493931 
+#&gt; [56] train-rmse:0.303244 test-rmse:0.494351 
+#&gt; [57] train-rmse:0.302286 test-rmse:0.494680 
+#&gt; [58] train-rmse:0.301160 test-rmse:0.494775 
+#&gt; [59] train-rmse:0.300158 test-rmse:0.494663 
+#&gt; [60] train-rmse:0.297504 test-rmse:0.494739 
+#&gt; [61] train-rmse:0.295155 test-rmse:0.495895 
+#&gt; [62] train-rmse:0.293799 test-rmse:0.496655 
+#&gt; [63] train-rmse:0.292051 test-rmse:0.496780 
+#&gt; [64] train-rmse:0.288926 test-rmse:0.497473 
+#&gt; [65] train-rmse:0.287236 test-rmse:0.497843 
+#&gt; [66] train-rmse:0.285369 test-rmse:0.498784 
+#&gt; [67] train-rmse:0.283905 test-rmse:0.499510 
+#&gt; [68] train-rmse:0.283018 test-rmse:0.499894 
+#&gt; [69] train-rmse:0.281572 test-rmse:0.499873 
+#&gt; [70] train-rmse:0.281403 test-rmse:0.499882
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases
 #&gt; Setting levels: control = 0, case = 1
@@ -1563,28 +1565,218 @@
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
 <div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-38.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.350811 test-rmse:0.350811 
-#&gt; [2]  train-rmse:0.246136 test-rmse:0.246136 
-#&gt; [3]  train-rmse:0.172695 test-rmse:0.172695 
-#&gt; [4]  train-rmse:0.121166 test-rmse:0.121166 
-#&gt; [5]  train-rmse:0.085013 test-rmse:0.085013 
-#&gt; [6]  train-rmse:0.059647 test-rmse:0.059647 
-#&gt; [7]  train-rmse:0.041850 test-rmse:0.041850 
-#&gt; [8]  train-rmse:0.029363 test-rmse:0.029363 
-#&gt; [9]  train-rmse:0.020601 test-rmse:0.020601 
-#&gt; [10] train-rmse:0.014454 test-rmse:0.014454 
-#&gt; [11] train-rmse:0.010141 test-rmse:0.010141 
-#&gt; [12] train-rmse:0.007115 test-rmse:0.007115 
-#&gt; [13] train-rmse:0.004992 test-rmse:0.004992 
-#&gt; [14] train-rmse:0.003503 test-rmse:0.003503 
-#&gt; [15] train-rmse:0.002458 test-rmse:0.002458 
-#&gt; [16] train-rmse:0.001724 test-rmse:0.001724 
-#&gt; [17] train-rmse:0.001210 test-rmse:0.001210 
-#&gt; [18] train-rmse:0.000849 test-rmse:0.000849 
-#&gt; [19] train-rmse:0.000596 test-rmse:0.000596 
-#&gt; [20] train-rmse:0.000418 test-rmse:0.000418 
-#&gt; [21] train-rmse:0.000293 test-rmse:0.000293 
-#&gt; [22] train-rmse:0.000206 test-rmse:0.000206 
+<pre><code>#&gt; [1]  train-rmse:0.350752 test-rmse:0.350751 
+#&gt; [2]  train-rmse:0.246054 test-rmse:0.246052 
+#&gt; [3]  train-rmse:0.172608 test-rmse:0.172606 
+#&gt; [4]  train-rmse:0.121085 test-rmse:0.121083 
+#&gt; [5]  train-rmse:0.084942 test-rmse:0.084940 
+#&gt; [6]  train-rmse:0.059587 test-rmse:0.059586 
+#&gt; [7]  train-rmse:0.041800 test-rmse:0.041799 
+#&gt; [8]  train-rmse:0.029323 test-rmse:0.029322 
+#&gt; [9]  train-rmse:0.020570 test-rmse:0.020570 
+#&gt; [10] train-rmse:0.014430 test-rmse:0.014430 
+#&gt; [11] train-rmse:0.010123 test-rmse:0.010122 
+#&gt; [12] train-rmse:0.007101 test-rmse:0.007101 
+#&gt; [13] train-rmse:0.004982 test-rmse:0.004981 
+#&gt; [14] train-rmse:0.003495 test-rmse:0.003494 
+#&gt; [15] train-rmse:0.002451 test-rmse:0.002451 
+#&gt; [16] train-rmse:0.001720 test-rmse:0.001720 
+#&gt; [17] train-rmse:0.001206 test-rmse:0.001206 
+#&gt; [18] train-rmse:0.000846 test-rmse:0.000846 
+#&gt; [19] train-rmse:0.000594 test-rmse:0.000594 
+#&gt; [20] train-rmse:0.000416 test-rmse:0.000416 
+#&gt; [21] train-rmse:0.000292 test-rmse:0.000292 
+#&gt; [22] train-rmse:0.000205 test-rmse:0.000205 
+#&gt; [23] train-rmse:0.000144 test-rmse:0.000144 
+#&gt; [24] train-rmse:0.000101 test-rmse:0.000101 
+#&gt; [25] train-rmse:0.000071 test-rmse:0.000071 
+#&gt; [26] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [27] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [28] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [29] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [30] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [31] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [32] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [33] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [34] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [35] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [36] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [37] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [38] train-rmse:0.000050 test-rmse:0.000050 
+#&gt; [39] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [40] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [41] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [42] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [43] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [44] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [45] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [46] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [47] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [48] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [49] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [50] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [51] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [52] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [53] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [54] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [55] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [56] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [57] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [58] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [59] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [60] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [61] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [62] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [63] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [64] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [65] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [66] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [67] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [68] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [69] train-rmse:0.000050 test-rmse:0.000049 
+#&gt; [70] train-rmse:0.000050 test-rmse:0.000049
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-39.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-40.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-41.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-42.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-43.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-44.png" width="672"></div>
+<pre><code>#&gt; [1]  train-rmse:0.469983 test-rmse:0.481825 
+#&gt; [2]  train-rmse:0.453292 test-rmse:0.474652 
+#&gt; [3]  train-rmse:0.442160 test-rmse:0.470276 
+#&gt; [4]  train-rmse:0.434314 test-rmse:0.469678 
+#&gt; [5]  train-rmse:0.429381 test-rmse:0.468875 
+#&gt; [6]  train-rmse:0.425673 test-rmse:0.470175 
+#&gt; [7]  train-rmse:0.422683 test-rmse:0.469549 
+#&gt; [8]  train-rmse:0.419515 test-rmse:0.471713 
+#&gt; [9]  train-rmse:0.418412 test-rmse:0.471700 
+#&gt; [10] train-rmse:0.412741 test-rmse:0.473357 
+#&gt; [11] train-rmse:0.410944 test-rmse:0.473120 
+#&gt; [12] train-rmse:0.408424 test-rmse:0.473023 
+#&gt; [13] train-rmse:0.405919 test-rmse:0.472233 
+#&gt; [14] train-rmse:0.404462 test-rmse:0.472746 
+#&gt; [15] train-rmse:0.403653 test-rmse:0.472729 
+#&gt; [16] train-rmse:0.399715 test-rmse:0.472551 
+#&gt; [17] train-rmse:0.396624 test-rmse:0.472368 
+#&gt; [18] train-rmse:0.393517 test-rmse:0.471737 
+#&gt; [19] train-rmse:0.392274 test-rmse:0.471105 
+#&gt; [20] train-rmse:0.391304 test-rmse:0.471421 
+#&gt; [21] train-rmse:0.388356 test-rmse:0.472729 
+#&gt; [22] train-rmse:0.386881 test-rmse:0.473676 
+#&gt; [23] train-rmse:0.383574 test-rmse:0.474620 
+#&gt; [24] train-rmse:0.379972 test-rmse:0.475196 
+#&gt; [25] train-rmse:0.379027 test-rmse:0.474874 
+#&gt; [26] train-rmse:0.377911 test-rmse:0.475319 
+#&gt; [27] train-rmse:0.374023 test-rmse:0.477312 
+#&gt; [28] train-rmse:0.371324 test-rmse:0.477651 
+#&gt; [29] train-rmse:0.369694 test-rmse:0.477372 
+#&gt; [30] train-rmse:0.367384 test-rmse:0.476881 
+#&gt; [31] train-rmse:0.365231 test-rmse:0.477780 
+#&gt; [32] train-rmse:0.362514 test-rmse:0.477771 
+#&gt; [33] train-rmse:0.361889 test-rmse:0.477999 
+#&gt; [34] train-rmse:0.358611 test-rmse:0.477956 
+#&gt; [35] train-rmse:0.357341 test-rmse:0.477890 
+#&gt; [36] train-rmse:0.354910 test-rmse:0.477889 
+#&gt; [37] train-rmse:0.352434 test-rmse:0.478723 
+#&gt; [38] train-rmse:0.349446 test-rmse:0.479393 
+#&gt; [39] train-rmse:0.348320 test-rmse:0.479751 
+#&gt; [40] train-rmse:0.346057 test-rmse:0.479579 
+#&gt; [41] train-rmse:0.344301 test-rmse:0.479321 
+#&gt; [42] train-rmse:0.342503 test-rmse:0.479055 
+#&gt; [43] train-rmse:0.341741 test-rmse:0.479281 
+#&gt; [44] train-rmse:0.340278 test-rmse:0.479698 
+#&gt; [45] train-rmse:0.338905 test-rmse:0.479804 
+#&gt; [46] train-rmse:0.338534 test-rmse:0.479388 
+#&gt; [47] train-rmse:0.338150 test-rmse:0.479594 
+#&gt; [48] train-rmse:0.336896 test-rmse:0.479947 
+#&gt; [49] train-rmse:0.334466 test-rmse:0.481629 
+#&gt; [50] train-rmse:0.332821 test-rmse:0.482458 
+#&gt; [51] train-rmse:0.330561 test-rmse:0.483253 
+#&gt; [52] train-rmse:0.328776 test-rmse:0.482987 
+#&gt; [53] train-rmse:0.327713 test-rmse:0.483217 
+#&gt; [54] train-rmse:0.325673 test-rmse:0.483616 
+#&gt; [55] train-rmse:0.323789 test-rmse:0.484530 
+#&gt; [56] train-rmse:0.321965 test-rmse:0.485015 
+#&gt; [57] train-rmse:0.321327 test-rmse:0.484828 
+#&gt; [58] train-rmse:0.320789 test-rmse:0.484955 
+#&gt; [59] train-rmse:0.319977 test-rmse:0.485544 
+#&gt; [60] train-rmse:0.319336 test-rmse:0.485246 
+#&gt; [61] train-rmse:0.317920 test-rmse:0.485508 
+#&gt; [62] train-rmse:0.316384 test-rmse:0.486216 
+#&gt; [63] train-rmse:0.314147 test-rmse:0.486477 
+#&gt; [64] train-rmse:0.313547 test-rmse:0.487216 
+#&gt; [65] train-rmse:0.311705 test-rmse:0.488294 
+#&gt; [66] train-rmse:0.310588 test-rmse:0.488662 
+#&gt; [67] train-rmse:0.308651 test-rmse:0.487913 
+#&gt; [68] train-rmse:0.306966 test-rmse:0.488149 
+#&gt; [69] train-rmse:0.305213 test-rmse:0.489127 
+#&gt; [70] train-rmse:0.303103 test-rmse:0.489845
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-45.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-46.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-47.png" width="672"></div>
+<pre><code>#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases
+#&gt; Setting levels: control = 0, case = 1
+#&gt; Setting direction: controls &lt; cases</code></pre>
+<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-48.png" width="672"></div>
+<pre><code>#&gt; [1]  train-rmse:0.350759 test-rmse:0.350760 
+#&gt; [2]  train-rmse:0.246064 test-rmse:0.246065 
+#&gt; [3]  train-rmse:0.172619 test-rmse:0.172619 
+#&gt; [4]  train-rmse:0.121095 test-rmse:0.121096 
+#&gt; [5]  train-rmse:0.084951 test-rmse:0.084951 
+#&gt; [6]  train-rmse:0.059595 test-rmse:0.059595 
+#&gt; [7]  train-rmse:0.041807 test-rmse:0.041807 
+#&gt; [8]  train-rmse:0.029328 test-rmse:0.029328 
+#&gt; [9]  train-rmse:0.020574 test-rmse:0.020574 
+#&gt; [10] train-rmse:0.014433 test-rmse:0.014433 
+#&gt; [11] train-rmse:0.010125 test-rmse:0.010125 
+#&gt; [12] train-rmse:0.007103 test-rmse:0.007103 
+#&gt; [13] train-rmse:0.004983 test-rmse:0.004983 
+#&gt; [14] train-rmse:0.003496 test-rmse:0.003496 
+#&gt; [15] train-rmse:0.002452 test-rmse:0.002452 
+#&gt; [16] train-rmse:0.001720 test-rmse:0.001720 
+#&gt; [17] train-rmse:0.001207 test-rmse:0.001207 
+#&gt; [18] train-rmse:0.000847 test-rmse:0.000847 
+#&gt; [19] train-rmse:0.000594 test-rmse:0.000594 
+#&gt; [20] train-rmse:0.000417 test-rmse:0.000417 
+#&gt; [21] train-rmse:0.000292 test-rmse:0.000292 
+#&gt; [22] train-rmse:0.000205 test-rmse:0.000205 
 #&gt; [23] train-rmse:0.000144 test-rmse:0.000144 
 #&gt; [24] train-rmse:0.000101 test-rmse:0.000101 
 #&gt; [25] train-rmse:0.000071 test-rmse:0.000071 
@@ -1637,198 +1829,8 @@
 #&gt; Setting direction: controls &lt; cases
 #&gt; Setting levels: control = 0, case = 1
 #&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-39.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-40.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-41.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-42.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-43.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-44.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.471577 test-rmse:0.480744 
-#&gt; [2]  train-rmse:0.454265 test-rmse:0.471583 
-#&gt; [3]  train-rmse:0.444762 test-rmse:0.468178 
-#&gt; [4]  train-rmse:0.438154 test-rmse:0.465017 
-#&gt; [5]  train-rmse:0.434042 test-rmse:0.464051 
-#&gt; [6]  train-rmse:0.429515 test-rmse:0.463162 
-#&gt; [7]  train-rmse:0.424879 test-rmse:0.462757 
-#&gt; [8]  train-rmse:0.422605 test-rmse:0.463300 
-#&gt; [9]  train-rmse:0.418741 test-rmse:0.463332 
-#&gt; [10] train-rmse:0.415888 test-rmse:0.465554 
-#&gt; [11] train-rmse:0.412331 test-rmse:0.465948 
-#&gt; [12] train-rmse:0.409270 test-rmse:0.466338 
-#&gt; [13] train-rmse:0.407598 test-rmse:0.464630 
-#&gt; [14] train-rmse:0.405619 test-rmse:0.465577 
-#&gt; [15] train-rmse:0.403221 test-rmse:0.465341 
-#&gt; [16] train-rmse:0.401821 test-rmse:0.465707 
-#&gt; [17] train-rmse:0.400564 test-rmse:0.466053 
-#&gt; [18] train-rmse:0.399474 test-rmse:0.465748 
-#&gt; [19] train-rmse:0.397441 test-rmse:0.465750 
-#&gt; [20] train-rmse:0.394472 test-rmse:0.466224 
-#&gt; [21] train-rmse:0.393116 test-rmse:0.466412 
-#&gt; [22] train-rmse:0.390620 test-rmse:0.465684 
-#&gt; [23] train-rmse:0.387416 test-rmse:0.466095 
-#&gt; [24] train-rmse:0.386378 test-rmse:0.466550 
-#&gt; [25] train-rmse:0.384605 test-rmse:0.466656 
-#&gt; [26] train-rmse:0.381410 test-rmse:0.466764 
-#&gt; [27] train-rmse:0.378212 test-rmse:0.465584 
-#&gt; [28] train-rmse:0.377111 test-rmse:0.465691 
-#&gt; [29] train-rmse:0.374755 test-rmse:0.466208 
-#&gt; [30] train-rmse:0.371775 test-rmse:0.466713 
-#&gt; [31] train-rmse:0.370571 test-rmse:0.466772 
-#&gt; [32] train-rmse:0.369029 test-rmse:0.468559 
-#&gt; [33] train-rmse:0.368610 test-rmse:0.468287 
-#&gt; [34] train-rmse:0.367808 test-rmse:0.468524 
-#&gt; [35] train-rmse:0.367062 test-rmse:0.468352 
-#&gt; [36] train-rmse:0.366186 test-rmse:0.468407 
-#&gt; [37] train-rmse:0.363883 test-rmse:0.467376 
-#&gt; [38] train-rmse:0.361354 test-rmse:0.468753 
-#&gt; [39] train-rmse:0.359755 test-rmse:0.469330 
-#&gt; [40] train-rmse:0.357923 test-rmse:0.469506 
-#&gt; [41] train-rmse:0.354185 test-rmse:0.469816 
-#&gt; [42] train-rmse:0.352034 test-rmse:0.471337 
-#&gt; [43] train-rmse:0.348321 test-rmse:0.471297 
-#&gt; [44] train-rmse:0.344673 test-rmse:0.471338 
-#&gt; [45] train-rmse:0.341964 test-rmse:0.471260 
-#&gt; [46] train-rmse:0.339466 test-rmse:0.471782 
-#&gt; [47] train-rmse:0.338032 test-rmse:0.471911 
-#&gt; [48] train-rmse:0.335915 test-rmse:0.471929 
-#&gt; [49] train-rmse:0.333468 test-rmse:0.472566 
-#&gt; [50] train-rmse:0.331806 test-rmse:0.472157 
-#&gt; [51] train-rmse:0.328948 test-rmse:0.472021 
-#&gt; [52] train-rmse:0.326076 test-rmse:0.472872 
-#&gt; [53] train-rmse:0.323846 test-rmse:0.473045 
-#&gt; [54] train-rmse:0.321768 test-rmse:0.473011 
-#&gt; [55] train-rmse:0.320399 test-rmse:0.472836 
-#&gt; [56] train-rmse:0.318842 test-rmse:0.472671 
-#&gt; [57] train-rmse:0.316777 test-rmse:0.473612 
-#&gt; [58] train-rmse:0.316078 test-rmse:0.473772 
-#&gt; [59] train-rmse:0.315315 test-rmse:0.473332 
-#&gt; [60] train-rmse:0.313517 test-rmse:0.473501 
-#&gt; [61] train-rmse:0.312084 test-rmse:0.474112 
-#&gt; [62] train-rmse:0.310038 test-rmse:0.473522 
-#&gt; [63] train-rmse:0.309017 test-rmse:0.473653 
-#&gt; [64] train-rmse:0.307556 test-rmse:0.473114 
-#&gt; [65] train-rmse:0.305566 test-rmse:0.472764 
-#&gt; [66] train-rmse:0.303763 test-rmse:0.472985 
-#&gt; [67] train-rmse:0.302499 test-rmse:0.473220 
-#&gt; [68] train-rmse:0.300772 test-rmse:0.474625 
-#&gt; [69] train-rmse:0.298926 test-rmse:0.475909 
-#&gt; [70] train-rmse:0.297109 test-rmse:0.475763
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-45.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-46.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-47.png" width="672"></div>
-<pre><code>#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
-<div class="inline-figure"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-48.png" width="672"></div>
-<pre><code>#&gt; [1]  train-rmse:0.350845 test-rmse:0.350845 
-#&gt; [2]  train-rmse:0.246185 test-rmse:0.246185 
-#&gt; [3]  train-rmse:0.172745 test-rmse:0.172745 
-#&gt; [4]  train-rmse:0.121214 test-rmse:0.121214 
-#&gt; [5]  train-rmse:0.085054 test-rmse:0.085055 
-#&gt; [6]  train-rmse:0.059682 test-rmse:0.059682 
-#&gt; [7]  train-rmse:0.041878 test-rmse:0.041878 
-#&gt; [8]  train-rmse:0.029385 test-rmse:0.029386 
-#&gt; [9]  train-rmse:0.020620 test-rmse:0.020620 
-#&gt; [10] train-rmse:0.014469 test-rmse:0.014469 
-#&gt; [11] train-rmse:0.010152 test-rmse:0.010152 
-#&gt; [12] train-rmse:0.007124 test-rmse:0.007124 
-#&gt; [13] train-rmse:0.004999 test-rmse:0.004999 
-#&gt; [14] train-rmse:0.003508 test-rmse:0.003508 
-#&gt; [15] train-rmse:0.002461 test-rmse:0.002461 
-#&gt; [16] train-rmse:0.001727 test-rmse:0.001727 
-#&gt; [17] train-rmse:0.001212 test-rmse:0.001212 
-#&gt; [18] train-rmse:0.000850 test-rmse:0.000850 
-#&gt; [19] train-rmse:0.000597 test-rmse:0.000597 
-#&gt; [20] train-rmse:0.000419 test-rmse:0.000419 
-#&gt; [21] train-rmse:0.000294 test-rmse:0.000294 
-#&gt; [22] train-rmse:0.000206 test-rmse:0.000206 
-#&gt; [23] train-rmse:0.000145 test-rmse:0.000145 
-#&gt; [24] train-rmse:0.000101 test-rmse:0.000101 
-#&gt; [25] train-rmse:0.000071 test-rmse:0.000071 
-#&gt; [26] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [27] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [28] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [29] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [30] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [31] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [32] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [33] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [34] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [35] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [36] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [37] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [38] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [39] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [40] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [41] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [42] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [43] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [44] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [45] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [46] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [47] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [48] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [49] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [50] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [51] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [52] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [53] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [54] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [55] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [56] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [57] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [58] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [59] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [60] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [61] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [62] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [63] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [64] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [65] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [66] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [67] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [68] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [69] train-rmse:0.000050 test-rmse:0.000050 
-#&gt; [70] train-rmse:0.000050 test-rmse:0.000050
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases
-#&gt; Setting levels: control = 0, case = 1
-#&gt; Setting direction: controls &lt; cases</code></pre>
 <p><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-49.png" width="672"><img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic%20ensemble-50.png" width="672"></p>
-<pre><code>#&gt;                     Model  Accuracy
+<pre><code><a href="https://rdrr.io/r/base/warnings.html">#&gt;                     Model  Accuracy
 #&gt; 1                     C50 1.0000000
 #&gt; 2                  Cubist 1.0000000
 #&gt; 3       Ensemble_ADABoost 1.0000000
@@ -1836,11 +1838,10 @@
 #&gt; 5  Ensemble_Random_Forest 1.0000000
 #&gt; 6        Ensemble_XGBoost 1.0000000
 #&gt; 7           Random_Forest 1.0000000
-#&gt; 8                BayesGLM 0.6455523
-#&gt; 9                 XGBoost 0.6441496
-#&gt; 10               ADABoost 0.6086781</code></pre>
-<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+#&gt; 8                BayesGLM 0.6430284
+#&gt; 9                 XGBoost 0.6361022
+#&gt; 10               ADABoost 0.6176642
+warnings()</a></code></pre>
 
 </div>
   <div class="chapter-nav">
@@ -1865,7 +1866,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

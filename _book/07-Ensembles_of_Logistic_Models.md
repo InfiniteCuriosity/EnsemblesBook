@@ -29,7 +29,7 @@ Here's an image of Lebron in play.
 There is a LOT of data in sports and HR analytics (which are extremely similar in some ways). A lot of the data is set up as logistic data. For example, here is a data set of the performance of Lebron James. The main column of interest is "result", which is either 1 or 0. Thus it perfectly fits our requirements for logistic analysis.
 
 
-``` r
+```r
 
 library(Ensembles)
 #> Loading required package: arm
@@ -38,7 +38,7 @@ library(Ensembles)
 #> Loading required package: lme4
 #> 
 #> arm (Version 1.14-4, built: 2024-4-1)
-#> Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
+#> Working directory is /Users/russconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook
 #> Loading required package: brnn
 #> Loading required package: Formula
 #> Loading required package: truncnorm
@@ -279,9 +279,6 @@ library(Ensembles)
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     slice
-```
-
-``` r
 head(lebron, n = 20)
 #>    top left  date qtr time_remaining result shot_type
 #> 1  310  203 19283   2            566      0         3
@@ -351,7 +348,7 @@ head(lebron, n = 20)
 Let's look at the structure of the data:
 
 
-``` r
+```r
 lebron <- Ensembles::lebron
 str(Ensembles::lebron)
 #> 'data.frame':	1533 obs. of  12 variables:
@@ -372,7 +369,7 @@ str(Ensembles::lebron)
 We see that all of these are numbers. It might be easier if "qtr" and "opponent" were changed to factors, so we'll do that first.
 
 
-``` r
+```r
 
 lebron$qtr <- as.factor(lebron$qtr)
 lebron$opponent <- as.factor(lebron$opponent)
@@ -403,7 +400,7 @@ We will make an ensemble of the predictions from those five models, and then use
 We will also show the ROC curves for each of the results, and save all the trained models at the end.
 
 
-``` r
+```r
 
 # Load libraries - note these will work with individual and ensemble models
 library(arm) # to use with BayesGLM
@@ -437,9 +434,6 @@ library(tidyverse) # My favorite tool for data science!
 #> ✖ tidyr::unpack()         masks Matrix::unpack()
 #> ✖ purrr::when()           masks foreach::when()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 library(pROC) # To print ROC curves
 
 # Set initial values to 0
@@ -848,6 +842,10 @@ return(results)
 } # Closing loop for the function
 
 logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
+#> Warning in rgl.init(initValue, onlyNULL): RGL: unable to
+#> open X11 display
+#> Warning: 'rgl.init' failed, running with 'rgl.useNULL =
+#> TRUE'.
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -888,76 +886,76 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-4.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.476144	test-rmse:0.478562 
-#> [2]	train-rmse:0.463574	test-rmse:0.467503 
-#> [3]	train-rmse:0.454959	test-rmse:0.460474 
-#> [4]	train-rmse:0.448993	test-rmse:0.455963 
-#> [5]	train-rmse:0.444821	test-rmse:0.452101 
-#> [6]	train-rmse:0.440419	test-rmse:0.451403 
-#> [7]	train-rmse:0.436667	test-rmse:0.450788 
-#> [8]	train-rmse:0.433511	test-rmse:0.449871 
-#> [9]	train-rmse:0.431663	test-rmse:0.450169 
-#> [10]	train-rmse:0.427720	test-rmse:0.450046 
-#> [11]	train-rmse:0.424788	test-rmse:0.450895 
-#> [12]	train-rmse:0.422744	test-rmse:0.449402 
-#> [13]	train-rmse:0.419597	test-rmse:0.450385 
-#> [14]	train-rmse:0.417344	test-rmse:0.450237 
-#> [15]	train-rmse:0.413427	test-rmse:0.450686 
-#> [16]	train-rmse:0.411022	test-rmse:0.450659 
-#> [17]	train-rmse:0.409211	test-rmse:0.450818 
-#> [18]	train-rmse:0.405904	test-rmse:0.452264 
-#> [19]	train-rmse:0.403075	test-rmse:0.452364 
-#> [20]	train-rmse:0.402247	test-rmse:0.453080 
-#> [21]	train-rmse:0.398977	test-rmse:0.452725 
-#> [22]	train-rmse:0.397407	test-rmse:0.453944 
-#> [23]	train-rmse:0.393930	test-rmse:0.453229 
-#> [24]	train-rmse:0.389994	test-rmse:0.452871 
-#> [25]	train-rmse:0.388467	test-rmse:0.453027 
-#> [26]	train-rmse:0.386738	test-rmse:0.452534 
-#> [27]	train-rmse:0.384467	test-rmse:0.452899 
-#> [28]	train-rmse:0.382570	test-rmse:0.453100 
-#> [29]	train-rmse:0.379445	test-rmse:0.454196 
-#> [30]	train-rmse:0.377415	test-rmse:0.454774 
-#> [31]	train-rmse:0.376504	test-rmse:0.455492 
-#> [32]	train-rmse:0.375392	test-rmse:0.455794 
-#> [33]	train-rmse:0.373634	test-rmse:0.455489 
-#> [34]	train-rmse:0.371433	test-rmse:0.455733 
-#> [35]	train-rmse:0.368571	test-rmse:0.456959 
-#> [36]	train-rmse:0.367051	test-rmse:0.457008 
-#> [37]	train-rmse:0.363892	test-rmse:0.458813 
-#> [38]	train-rmse:0.361112	test-rmse:0.458801 
-#> [39]	train-rmse:0.359866	test-rmse:0.458274 
-#> [40]	train-rmse:0.358560	test-rmse:0.457887 
-#> [41]	train-rmse:0.358106	test-rmse:0.458127 
-#> [42]	train-rmse:0.355921	test-rmse:0.458705 
-#> [43]	train-rmse:0.353788	test-rmse:0.459461 
-#> [44]	train-rmse:0.353182	test-rmse:0.459651 
-#> [45]	train-rmse:0.352354	test-rmse:0.459765 
-#> [46]	train-rmse:0.350558	test-rmse:0.460158 
-#> [47]	train-rmse:0.348136	test-rmse:0.458902 
-#> [48]	train-rmse:0.346172	test-rmse:0.459073 
-#> [49]	train-rmse:0.345309	test-rmse:0.460300 
-#> [50]	train-rmse:0.342630	test-rmse:0.460079 
-#> [51]	train-rmse:0.341311	test-rmse:0.461742 
-#> [52]	train-rmse:0.339357	test-rmse:0.462133 
-#> [53]	train-rmse:0.337334	test-rmse:0.462307 
-#> [54]	train-rmse:0.334896	test-rmse:0.463136 
-#> [55]	train-rmse:0.333012	test-rmse:0.463257 
-#> [56]	train-rmse:0.332788	test-rmse:0.463209 
-#> [57]	train-rmse:0.330628	test-rmse:0.464458 
-#> [58]	train-rmse:0.328841	test-rmse:0.464871 
-#> [59]	train-rmse:0.327336	test-rmse:0.466450 
-#> [60]	train-rmse:0.325394	test-rmse:0.467173 
-#> [61]	train-rmse:0.323361	test-rmse:0.467378 
-#> [62]	train-rmse:0.321633	test-rmse:0.467970 
-#> [63]	train-rmse:0.319833	test-rmse:0.468894 
-#> [64]	train-rmse:0.317659	test-rmse:0.470018 
-#> [65]	train-rmse:0.316241	test-rmse:0.470120 
-#> [66]	train-rmse:0.314436	test-rmse:0.471113 
-#> [67]	train-rmse:0.312160	test-rmse:0.471866 
-#> [68]	train-rmse:0.311475	test-rmse:0.472474 
-#> [69]	train-rmse:0.309364	test-rmse:0.473537 
-#> [70]	train-rmse:0.308724	test-rmse:0.473588
+#> [1]	train-rmse:0.475192	test-rmse:0.478079 
+#> [2]	train-rmse:0.460745	test-rmse:0.465107 
+#> [3]	train-rmse:0.451388	test-rmse:0.459080 
+#> [4]	train-rmse:0.445489	test-rmse:0.455906 
+#> [5]	train-rmse:0.438896	test-rmse:0.454753 
+#> [6]	train-rmse:0.435170	test-rmse:0.454940 
+#> [7]	train-rmse:0.431544	test-rmse:0.454370 
+#> [8]	train-rmse:0.427571	test-rmse:0.452858 
+#> [9]	train-rmse:0.424162	test-rmse:0.453291 
+#> [10]	train-rmse:0.420299	test-rmse:0.454480 
+#> [11]	train-rmse:0.416102	test-rmse:0.456759 
+#> [12]	train-rmse:0.411797	test-rmse:0.457650 
+#> [13]	train-rmse:0.410482	test-rmse:0.457898 
+#> [14]	train-rmse:0.408634	test-rmse:0.459100 
+#> [15]	train-rmse:0.406348	test-rmse:0.460187 
+#> [16]	train-rmse:0.402368	test-rmse:0.458932 
+#> [17]	train-rmse:0.399812	test-rmse:0.458677 
+#> [18]	train-rmse:0.397695	test-rmse:0.459359 
+#> [19]	train-rmse:0.394028	test-rmse:0.461203 
+#> [20]	train-rmse:0.391255	test-rmse:0.462953 
+#> [21]	train-rmse:0.390029	test-rmse:0.463780 
+#> [22]	train-rmse:0.386454	test-rmse:0.464364 
+#> [23]	train-rmse:0.383933	test-rmse:0.464019 
+#> [24]	train-rmse:0.380405	test-rmse:0.465352 
+#> [25]	train-rmse:0.378997	test-rmse:0.465155 
+#> [26]	train-rmse:0.378035	test-rmse:0.465882 
+#> [27]	train-rmse:0.376297	test-rmse:0.467501 
+#> [28]	train-rmse:0.373678	test-rmse:0.468427 
+#> [29]	train-rmse:0.370551	test-rmse:0.469632 
+#> [30]	train-rmse:0.368614	test-rmse:0.469647 
+#> [31]	train-rmse:0.367087	test-rmse:0.468969 
+#> [32]	train-rmse:0.365240	test-rmse:0.469454 
+#> [33]	train-rmse:0.364351	test-rmse:0.469551 
+#> [34]	train-rmse:0.363537	test-rmse:0.470564 
+#> [35]	train-rmse:0.362598	test-rmse:0.470403 
+#> [36]	train-rmse:0.360605	test-rmse:0.470439 
+#> [37]	train-rmse:0.359448	test-rmse:0.471352 
+#> [38]	train-rmse:0.357047	test-rmse:0.472299 
+#> [39]	train-rmse:0.356753	test-rmse:0.472468 
+#> [40]	train-rmse:0.356337	test-rmse:0.472618 
+#> [41]	train-rmse:0.354152	test-rmse:0.472050 
+#> [42]	train-rmse:0.353494	test-rmse:0.472129 
+#> [43]	train-rmse:0.351278	test-rmse:0.473007 
+#> [44]	train-rmse:0.349063	test-rmse:0.474251 
+#> [45]	train-rmse:0.347140	test-rmse:0.475184 
+#> [46]	train-rmse:0.344705	test-rmse:0.476496 
+#> [47]	train-rmse:0.343971	test-rmse:0.476474 
+#> [48]	train-rmse:0.342816	test-rmse:0.477032 
+#> [49]	train-rmse:0.341562	test-rmse:0.476662 
+#> [50]	train-rmse:0.338655	test-rmse:0.477149 
+#> [51]	train-rmse:0.336345	test-rmse:0.478140 
+#> [52]	train-rmse:0.334830	test-rmse:0.478396 
+#> [53]	train-rmse:0.332630	test-rmse:0.479673 
+#> [54]	train-rmse:0.330085	test-rmse:0.480057 
+#> [55]	train-rmse:0.328973	test-rmse:0.480978 
+#> [56]	train-rmse:0.327095	test-rmse:0.480589 
+#> [57]	train-rmse:0.326709	test-rmse:0.480824 
+#> [58]	train-rmse:0.325985	test-rmse:0.481004 
+#> [59]	train-rmse:0.323679	test-rmse:0.480972 
+#> [60]	train-rmse:0.322220	test-rmse:0.480484 
+#> [61]	train-rmse:0.320199	test-rmse:0.480786 
+#> [62]	train-rmse:0.318155	test-rmse:0.481231 
+#> [63]	train-rmse:0.317449	test-rmse:0.482030 
+#> [64]	train-rmse:0.316382	test-rmse:0.482857 
+#> [65]	train-rmse:0.314298	test-rmse:0.484149 
+#> [66]	train-rmse:0.313270	test-rmse:0.485328 
+#> [67]	train-rmse:0.312403	test-rmse:0.485504 
+#> [68]	train-rmse:0.310201	test-rmse:0.485571 
+#> [69]	train-rmse:0.309894	test-rmse:0.485966 
+#> [70]	train-rmse:0.308192	test-rmse:0.486661
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -994,29 +992,29 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-8.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.350824	test-rmse:0.350826 
-#> [2]	train-rmse:0.246155	test-rmse:0.246158 
-#> [3]	train-rmse:0.172714	test-rmse:0.172718 
-#> [4]	train-rmse:0.121185	test-rmse:0.121188 
-#> [5]	train-rmse:0.085029	test-rmse:0.085032 
-#> [6]	train-rmse:0.059661	test-rmse:0.059663 
-#> [7]	train-rmse:0.041861	test-rmse:0.041863 
-#> [8]	train-rmse:0.029372	test-rmse:0.029373 
-#> [9]	train-rmse:0.020608	test-rmse:0.020610 
-#> [10]	train-rmse:0.014460	test-rmse:0.014461 
-#> [11]	train-rmse:0.010146	test-rmse:0.010146 
-#> [12]	train-rmse:0.007119	test-rmse:0.007119 
-#> [13]	train-rmse:0.004995	test-rmse:0.004995 
-#> [14]	train-rmse:0.003505	test-rmse:0.003505 
-#> [15]	train-rmse:0.002459	test-rmse:0.002459 
-#> [16]	train-rmse:0.001725	test-rmse:0.001726 
+#> [1]	train-rmse:0.350836	test-rmse:0.350838 
+#> [2]	train-rmse:0.246171	test-rmse:0.246174 
+#> [3]	train-rmse:0.172731	test-rmse:0.172734 
+#> [4]	train-rmse:0.121201	test-rmse:0.121204 
+#> [5]	train-rmse:0.085043	test-rmse:0.085046 
+#> [6]	train-rmse:0.059672	test-rmse:0.059674 
+#> [7]	train-rmse:0.041870	test-rmse:0.041872 
+#> [8]	train-rmse:0.029379	test-rmse:0.029381 
+#> [9]	train-rmse:0.020615	test-rmse:0.020616 
+#> [10]	train-rmse:0.014465	test-rmse:0.014466 
+#> [11]	train-rmse:0.010149	test-rmse:0.010150 
+#> [12]	train-rmse:0.007122	test-rmse:0.007122 
+#> [13]	train-rmse:0.004997	test-rmse:0.004997 
+#> [14]	train-rmse:0.003506	test-rmse:0.003507 
+#> [15]	train-rmse:0.002460	test-rmse:0.002460 
+#> [16]	train-rmse:0.001726	test-rmse:0.001726 
 #> [17]	train-rmse:0.001211	test-rmse:0.001211 
-#> [18]	train-rmse:0.000849	test-rmse:0.000849 
+#> [18]	train-rmse:0.000850	test-rmse:0.000850 
 #> [19]	train-rmse:0.000596	test-rmse:0.000596 
-#> [20]	train-rmse:0.000418	test-rmse:0.000418 
-#> [21]	train-rmse:0.000293	test-rmse:0.000293 
+#> [20]	train-rmse:0.000418	test-rmse:0.000419 
+#> [21]	train-rmse:0.000294	test-rmse:0.000294 
 #> [22]	train-rmse:0.000206	test-rmse:0.000206 
-#> [23]	train-rmse:0.000144	test-rmse:0.000144 
+#> [23]	train-rmse:0.000145	test-rmse:0.000145 
 #> [24]	train-rmse:0.000101	test-rmse:0.000101 
 #> [25]	train-rmse:0.000071	test-rmse:0.000071 
 #> [26]	train-rmse:0.000050	test-rmse:0.000050 
@@ -1118,76 +1116,76 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-14.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.470376	test-rmse:0.479959 
-#> [2]	train-rmse:0.453387	test-rmse:0.471480 
-#> [3]	train-rmse:0.442872	test-rmse:0.467979 
-#> [4]	train-rmse:0.435073	test-rmse:0.467341 
-#> [5]	train-rmse:0.431218	test-rmse:0.466991 
-#> [6]	train-rmse:0.425888	test-rmse:0.467568 
-#> [7]	train-rmse:0.423895	test-rmse:0.466266 
-#> [8]	train-rmse:0.419954	test-rmse:0.466441 
-#> [9]	train-rmse:0.417434	test-rmse:0.465230 
-#> [10]	train-rmse:0.413718	test-rmse:0.466888 
-#> [11]	train-rmse:0.410281	test-rmse:0.466853 
-#> [12]	train-rmse:0.407585	test-rmse:0.468813 
-#> [13]	train-rmse:0.406435	test-rmse:0.468586 
-#> [14]	train-rmse:0.405209	test-rmse:0.469302 
-#> [15]	train-rmse:0.401530	test-rmse:0.468692 
-#> [16]	train-rmse:0.398126	test-rmse:0.468722 
-#> [17]	train-rmse:0.395889	test-rmse:0.469836 
-#> [18]	train-rmse:0.392163	test-rmse:0.470516 
-#> [19]	train-rmse:0.387945	test-rmse:0.471069 
-#> [20]	train-rmse:0.386932	test-rmse:0.471384 
-#> [21]	train-rmse:0.384878	test-rmse:0.472052 
-#> [22]	train-rmse:0.382496	test-rmse:0.472522 
-#> [23]	train-rmse:0.379117	test-rmse:0.473605 
-#> [24]	train-rmse:0.375649	test-rmse:0.473835 
-#> [25]	train-rmse:0.373457	test-rmse:0.474532 
-#> [26]	train-rmse:0.370817	test-rmse:0.474590 
-#> [27]	train-rmse:0.368762	test-rmse:0.476130 
-#> [28]	train-rmse:0.366161	test-rmse:0.476836 
-#> [29]	train-rmse:0.363188	test-rmse:0.477363 
-#> [30]	train-rmse:0.361532	test-rmse:0.476964 
-#> [31]	train-rmse:0.360264	test-rmse:0.477921 
-#> [32]	train-rmse:0.357790	test-rmse:0.477276 
-#> [33]	train-rmse:0.355311	test-rmse:0.478001 
-#> [34]	train-rmse:0.352196	test-rmse:0.477349 
-#> [35]	train-rmse:0.350114	test-rmse:0.477405 
-#> [36]	train-rmse:0.349005	test-rmse:0.477194 
-#> [37]	train-rmse:0.347719	test-rmse:0.477163 
-#> [38]	train-rmse:0.346784	test-rmse:0.477026 
-#> [39]	train-rmse:0.345636	test-rmse:0.477004 
-#> [40]	train-rmse:0.343623	test-rmse:0.477453 
-#> [41]	train-rmse:0.340926	test-rmse:0.477200 
-#> [42]	train-rmse:0.339610	test-rmse:0.477063 
-#> [43]	train-rmse:0.338114	test-rmse:0.476603 
-#> [44]	train-rmse:0.337161	test-rmse:0.477081 
-#> [45]	train-rmse:0.335310	test-rmse:0.477718 
-#> [46]	train-rmse:0.333155	test-rmse:0.478709 
-#> [47]	train-rmse:0.331283	test-rmse:0.479318 
-#> [48]	train-rmse:0.328594	test-rmse:0.479546 
-#> [49]	train-rmse:0.327513	test-rmse:0.480445 
-#> [50]	train-rmse:0.327141	test-rmse:0.481062 
-#> [51]	train-rmse:0.325709	test-rmse:0.481752 
-#> [52]	train-rmse:0.323339	test-rmse:0.482711 
-#> [53]	train-rmse:0.320991	test-rmse:0.483422 
-#> [54]	train-rmse:0.320335	test-rmse:0.483969 
-#> [55]	train-rmse:0.318912	test-rmse:0.484782 
-#> [56]	train-rmse:0.317346	test-rmse:0.485648 
-#> [57]	train-rmse:0.316029	test-rmse:0.485568 
-#> [58]	train-rmse:0.314046	test-rmse:0.486434 
-#> [59]	train-rmse:0.311916	test-rmse:0.487268 
-#> [60]	train-rmse:0.309432	test-rmse:0.487138 
-#> [61]	train-rmse:0.308339	test-rmse:0.487302 
-#> [62]	train-rmse:0.307715	test-rmse:0.487245 
-#> [63]	train-rmse:0.306562	test-rmse:0.487641 
-#> [64]	train-rmse:0.305473	test-rmse:0.487510 
-#> [65]	train-rmse:0.303432	test-rmse:0.487882 
-#> [66]	train-rmse:0.301222	test-rmse:0.488623 
-#> [67]	train-rmse:0.298861	test-rmse:0.489104 
-#> [68]	train-rmse:0.297184	test-rmse:0.490484 
-#> [69]	train-rmse:0.295459	test-rmse:0.490403 
-#> [70]	train-rmse:0.294919	test-rmse:0.490425
+#> [1]	train-rmse:0.471288	test-rmse:0.480597 
+#> [2]	train-rmse:0.454148	test-rmse:0.471956 
+#> [3]	train-rmse:0.444279	test-rmse:0.468135 
+#> [4]	train-rmse:0.436460	test-rmse:0.466477 
+#> [5]	train-rmse:0.430706	test-rmse:0.465734 
+#> [6]	train-rmse:0.425711	test-rmse:0.466878 
+#> [7]	train-rmse:0.420403	test-rmse:0.466368 
+#> [8]	train-rmse:0.415413	test-rmse:0.466983 
+#> [9]	train-rmse:0.411158	test-rmse:0.468684 
+#> [10]	train-rmse:0.408749	test-rmse:0.468528 
+#> [11]	train-rmse:0.405317	test-rmse:0.468140 
+#> [12]	train-rmse:0.401817	test-rmse:0.468375 
+#> [13]	train-rmse:0.399431	test-rmse:0.469036 
+#> [14]	train-rmse:0.395495	test-rmse:0.469593 
+#> [15]	train-rmse:0.392010	test-rmse:0.470457 
+#> [16]	train-rmse:0.388653	test-rmse:0.472501 
+#> [17]	train-rmse:0.387409	test-rmse:0.472397 
+#> [18]	train-rmse:0.383724	test-rmse:0.473634 
+#> [19]	train-rmse:0.382593	test-rmse:0.474546 
+#> [20]	train-rmse:0.378619	test-rmse:0.476287 
+#> [21]	train-rmse:0.376242	test-rmse:0.476496 
+#> [22]	train-rmse:0.374736	test-rmse:0.474994 
+#> [23]	train-rmse:0.372731	test-rmse:0.476013 
+#> [24]	train-rmse:0.369985	test-rmse:0.476399 
+#> [25]	train-rmse:0.367332	test-rmse:0.477766 
+#> [26]	train-rmse:0.364767	test-rmse:0.478064 
+#> [27]	train-rmse:0.362684	test-rmse:0.478989 
+#> [28]	train-rmse:0.360203	test-rmse:0.478573 
+#> [29]	train-rmse:0.358111	test-rmse:0.478864 
+#> [30]	train-rmse:0.357035	test-rmse:0.479190 
+#> [31]	train-rmse:0.354377	test-rmse:0.480162 
+#> [32]	train-rmse:0.351908	test-rmse:0.480480 
+#> [33]	train-rmse:0.351209	test-rmse:0.480823 
+#> [34]	train-rmse:0.348424	test-rmse:0.480542 
+#> [35]	train-rmse:0.346924	test-rmse:0.480054 
+#> [36]	train-rmse:0.344238	test-rmse:0.481170 
+#> [37]	train-rmse:0.343246	test-rmse:0.481543 
+#> [38]	train-rmse:0.342540	test-rmse:0.481763 
+#> [39]	train-rmse:0.339574	test-rmse:0.481122 
+#> [40]	train-rmse:0.337354	test-rmse:0.482510 
+#> [41]	train-rmse:0.335757	test-rmse:0.482954 
+#> [42]	train-rmse:0.333766	test-rmse:0.484287 
+#> [43]	train-rmse:0.331758	test-rmse:0.484819 
+#> [44]	train-rmse:0.331201	test-rmse:0.485416 
+#> [45]	train-rmse:0.329451	test-rmse:0.485938 
+#> [46]	train-rmse:0.327174	test-rmse:0.485647 
+#> [47]	train-rmse:0.325412	test-rmse:0.486074 
+#> [48]	train-rmse:0.323566	test-rmse:0.486410 
+#> [49]	train-rmse:0.322551	test-rmse:0.487852 
+#> [50]	train-rmse:0.320895	test-rmse:0.488615 
+#> [51]	train-rmse:0.319681	test-rmse:0.489755 
+#> [52]	train-rmse:0.318106	test-rmse:0.490562 
+#> [53]	train-rmse:0.315893	test-rmse:0.490989 
+#> [54]	train-rmse:0.314484	test-rmse:0.491501 
+#> [55]	train-rmse:0.313154	test-rmse:0.492249 
+#> [56]	train-rmse:0.310960	test-rmse:0.492431 
+#> [57]	train-rmse:0.308151	test-rmse:0.492892 
+#> [58]	train-rmse:0.305982	test-rmse:0.493646 
+#> [59]	train-rmse:0.304090	test-rmse:0.493688 
+#> [60]	train-rmse:0.301510	test-rmse:0.493719 
+#> [61]	train-rmse:0.300066	test-rmse:0.494916 
+#> [62]	train-rmse:0.297987	test-rmse:0.496096 
+#> [63]	train-rmse:0.296870	test-rmse:0.496458 
+#> [64]	train-rmse:0.296605	test-rmse:0.496525 
+#> [65]	train-rmse:0.294505	test-rmse:0.497734 
+#> [66]	train-rmse:0.292709	test-rmse:0.498562 
+#> [67]	train-rmse:0.291528	test-rmse:0.498973 
+#> [68]	train-rmse:0.289977	test-rmse:0.499720 
+#> [69]	train-rmse:0.288232	test-rmse:0.500854 
+#> [70]	train-rmse:0.286875	test-rmse:0.501465
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1224,25 +1222,25 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-18.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.350822	test-rmse:0.350821 
-#> [2]	train-rmse:0.246152	test-rmse:0.246151 
-#> [3]	train-rmse:0.172711	test-rmse:0.172710 
-#> [4]	train-rmse:0.121182	test-rmse:0.121180 
-#> [5]	train-rmse:0.085026	test-rmse:0.085025 
-#> [6]	train-rmse:0.059658	test-rmse:0.059657 
-#> [7]	train-rmse:0.041859	test-rmse:0.041858 
-#> [8]	train-rmse:0.029370	test-rmse:0.029369 
-#> [9]	train-rmse:0.020607	test-rmse:0.020607 
-#> [10]	train-rmse:0.014459	test-rmse:0.014459 
-#> [11]	train-rmse:0.010145	test-rmse:0.010145 
-#> [12]	train-rmse:0.007118	test-rmse:0.007118 
-#> [13]	train-rmse:0.004994	test-rmse:0.004994 
-#> [14]	train-rmse:0.003504	test-rmse:0.003504 
-#> [15]	train-rmse:0.002459	test-rmse:0.002459 
-#> [16]	train-rmse:0.001725	test-rmse:0.001725 
+#> [1]	train-rmse:0.350806	test-rmse:0.350810 
+#> [2]	train-rmse:0.246130	test-rmse:0.246136 
+#> [3]	train-rmse:0.172688	test-rmse:0.172694 
+#> [4]	train-rmse:0.121160	test-rmse:0.121166 
+#> [5]	train-rmse:0.085008	test-rmse:0.085012 
+#> [6]	train-rmse:0.059642	test-rmse:0.059646 
+#> [7]	train-rmse:0.041846	test-rmse:0.041849 
+#> [8]	train-rmse:0.029360	test-rmse:0.029362 
+#> [9]	train-rmse:0.020599	test-rmse:0.020601 
+#> [10]	train-rmse:0.014453	test-rmse:0.014454 
+#> [11]	train-rmse:0.010140	test-rmse:0.010141 
+#> [12]	train-rmse:0.007114	test-rmse:0.007115 
+#> [13]	train-rmse:0.004992	test-rmse:0.004992 
+#> [14]	train-rmse:0.003502	test-rmse:0.003503 
+#> [15]	train-rmse:0.002457	test-rmse:0.002458 
+#> [16]	train-rmse:0.001724	test-rmse:0.001724 
 #> [17]	train-rmse:0.001210	test-rmse:0.001210 
 #> [18]	train-rmse:0.000849	test-rmse:0.000849 
-#> [19]	train-rmse:0.000596	test-rmse:0.000596 
+#> [19]	train-rmse:0.000595	test-rmse:0.000596 
 #> [20]	train-rmse:0.000418	test-rmse:0.000418 
 #> [21]	train-rmse:0.000293	test-rmse:0.000293 
 #> [22]	train-rmse:0.000206	test-rmse:0.000206 
@@ -1348,76 +1346,76 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-24.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.471391	test-rmse:0.481189 
-#> [2]	train-rmse:0.455547	test-rmse:0.469744 
-#> [3]	train-rmse:0.445057	test-rmse:0.466894 
-#> [4]	train-rmse:0.438664	test-rmse:0.466114 
-#> [5]	train-rmse:0.432583	test-rmse:0.464660 
-#> [6]	train-rmse:0.427073	test-rmse:0.466880 
-#> [7]	train-rmse:0.421625	test-rmse:0.464989 
-#> [8]	train-rmse:0.417663	test-rmse:0.464809 
-#> [9]	train-rmse:0.415027	test-rmse:0.465373 
-#> [10]	train-rmse:0.409836	test-rmse:0.466984 
-#> [11]	train-rmse:0.405816	test-rmse:0.469168 
-#> [12]	train-rmse:0.403440	test-rmse:0.470523 
-#> [13]	train-rmse:0.401912	test-rmse:0.471266 
-#> [14]	train-rmse:0.398924	test-rmse:0.472400 
-#> [15]	train-rmse:0.395019	test-rmse:0.472489 
-#> [16]	train-rmse:0.393648	test-rmse:0.471867 
-#> [17]	train-rmse:0.391375	test-rmse:0.473183 
-#> [18]	train-rmse:0.388984	test-rmse:0.472980 
-#> [19]	train-rmse:0.388284	test-rmse:0.473698 
-#> [20]	train-rmse:0.386324	test-rmse:0.474739 
-#> [21]	train-rmse:0.385213	test-rmse:0.474960 
-#> [22]	train-rmse:0.382278	test-rmse:0.474498 
-#> [23]	train-rmse:0.378827	test-rmse:0.476668 
-#> [24]	train-rmse:0.377884	test-rmse:0.477570 
-#> [25]	train-rmse:0.374871	test-rmse:0.477621 
-#> [26]	train-rmse:0.372707	test-rmse:0.477877 
-#> [27]	train-rmse:0.370127	test-rmse:0.477583 
-#> [28]	train-rmse:0.367759	test-rmse:0.476749 
-#> [29]	train-rmse:0.366066	test-rmse:0.476368 
-#> [30]	train-rmse:0.363867	test-rmse:0.476622 
-#> [31]	train-rmse:0.362045	test-rmse:0.477304 
-#> [32]	train-rmse:0.358841	test-rmse:0.476316 
-#> [33]	train-rmse:0.356543	test-rmse:0.476612 
-#> [34]	train-rmse:0.353660	test-rmse:0.476929 
-#> [35]	train-rmse:0.352077	test-rmse:0.477073 
-#> [36]	train-rmse:0.351153	test-rmse:0.477482 
-#> [37]	train-rmse:0.348208	test-rmse:0.477965 
-#> [38]	train-rmse:0.346105	test-rmse:0.477946 
-#> [39]	train-rmse:0.344032	test-rmse:0.477134 
-#> [40]	train-rmse:0.341681	test-rmse:0.477221 
-#> [41]	train-rmse:0.338970	test-rmse:0.478715 
-#> [42]	train-rmse:0.336918	test-rmse:0.479090 
-#> [43]	train-rmse:0.335588	test-rmse:0.479170 
-#> [44]	train-rmse:0.333278	test-rmse:0.480013 
-#> [45]	train-rmse:0.332120	test-rmse:0.480946 
-#> [46]	train-rmse:0.329920	test-rmse:0.481960 
-#> [47]	train-rmse:0.328341	test-rmse:0.482355 
-#> [48]	train-rmse:0.326399	test-rmse:0.483102 
-#> [49]	train-rmse:0.324738	test-rmse:0.484285 
-#> [50]	train-rmse:0.324118	test-rmse:0.484037 
-#> [51]	train-rmse:0.321977	test-rmse:0.485103 
-#> [52]	train-rmse:0.320736	test-rmse:0.485361 
-#> [53]	train-rmse:0.318751	test-rmse:0.487033 
-#> [54]	train-rmse:0.316191	test-rmse:0.488110 
-#> [55]	train-rmse:0.314172	test-rmse:0.487651 
-#> [56]	train-rmse:0.313694	test-rmse:0.488266 
-#> [57]	train-rmse:0.311423	test-rmse:0.488294 
-#> [58]	train-rmse:0.310172	test-rmse:0.488361 
-#> [59]	train-rmse:0.308348	test-rmse:0.488932 
-#> [60]	train-rmse:0.306982	test-rmse:0.489724 
-#> [61]	train-rmse:0.305282	test-rmse:0.490384 
-#> [62]	train-rmse:0.303546	test-rmse:0.490633 
-#> [63]	train-rmse:0.302081	test-rmse:0.490621 
-#> [64]	train-rmse:0.301427	test-rmse:0.490028 
-#> [65]	train-rmse:0.300181	test-rmse:0.490678 
-#> [66]	train-rmse:0.298538	test-rmse:0.492055 
-#> [67]	train-rmse:0.297295	test-rmse:0.492493 
-#> [68]	train-rmse:0.296920	test-rmse:0.492876 
-#> [69]	train-rmse:0.295868	test-rmse:0.493036 
-#> [70]	train-rmse:0.295132	test-rmse:0.493147
+#> [1]	train-rmse:0.473801	test-rmse:0.480014 
+#> [2]	train-rmse:0.458215	test-rmse:0.469864 
+#> [3]	train-rmse:0.449741	test-rmse:0.466168 
+#> [4]	train-rmse:0.442625	test-rmse:0.464386 
+#> [5]	train-rmse:0.437502	test-rmse:0.463313 
+#> [6]	train-rmse:0.433406	test-rmse:0.465118 
+#> [7]	train-rmse:0.429744	test-rmse:0.465226 
+#> [8]	train-rmse:0.427812	test-rmse:0.464808 
+#> [9]	train-rmse:0.425196	test-rmse:0.465825 
+#> [10]	train-rmse:0.422256	test-rmse:0.466677 
+#> [11]	train-rmse:0.418247	test-rmse:0.467299 
+#> [12]	train-rmse:0.414233	test-rmse:0.465835 
+#> [13]	train-rmse:0.412075	test-rmse:0.467204 
+#> [14]	train-rmse:0.410693	test-rmse:0.467586 
+#> [15]	train-rmse:0.409503	test-rmse:0.468581 
+#> [16]	train-rmse:0.408755	test-rmse:0.469685 
+#> [17]	train-rmse:0.406969	test-rmse:0.469987 
+#> [18]	train-rmse:0.404962	test-rmse:0.470371 
+#> [19]	train-rmse:0.403384	test-rmse:0.471426 
+#> [20]	train-rmse:0.400175	test-rmse:0.473795 
+#> [21]	train-rmse:0.399097	test-rmse:0.473812 
+#> [22]	train-rmse:0.396074	test-rmse:0.473160 
+#> [23]	train-rmse:0.393537	test-rmse:0.472550 
+#> [24]	train-rmse:0.390971	test-rmse:0.473480 
+#> [25]	train-rmse:0.387452	test-rmse:0.473622 
+#> [26]	train-rmse:0.384494	test-rmse:0.473356 
+#> [27]	train-rmse:0.381861	test-rmse:0.474089 
+#> [28]	train-rmse:0.377919	test-rmse:0.475059 
+#> [29]	train-rmse:0.376196	test-rmse:0.474627 
+#> [30]	train-rmse:0.375485	test-rmse:0.474749 
+#> [31]	train-rmse:0.373193	test-rmse:0.475647 
+#> [32]	train-rmse:0.372183	test-rmse:0.475989 
+#> [33]	train-rmse:0.370839	test-rmse:0.475017 
+#> [34]	train-rmse:0.368011	test-rmse:0.474879 
+#> [35]	train-rmse:0.365786	test-rmse:0.476053 
+#> [36]	train-rmse:0.361786	test-rmse:0.478188 
+#> [37]	train-rmse:0.358594	test-rmse:0.479465 
+#> [38]	train-rmse:0.357436	test-rmse:0.480038 
+#> [39]	train-rmse:0.355393	test-rmse:0.480862 
+#> [40]	train-rmse:0.352473	test-rmse:0.482852 
+#> [41]	train-rmse:0.350967	test-rmse:0.483703 
+#> [42]	train-rmse:0.349832	test-rmse:0.483414 
+#> [43]	train-rmse:0.349549	test-rmse:0.483538 
+#> [44]	train-rmse:0.347342	test-rmse:0.483293 
+#> [45]	train-rmse:0.345605	test-rmse:0.483945 
+#> [46]	train-rmse:0.344805	test-rmse:0.483469 
+#> [47]	train-rmse:0.342493	test-rmse:0.483422 
+#> [48]	train-rmse:0.339428	test-rmse:0.483950 
+#> [49]	train-rmse:0.339030	test-rmse:0.484049 
+#> [50]	train-rmse:0.336944	test-rmse:0.483367 
+#> [51]	train-rmse:0.333893	test-rmse:0.482459 
+#> [52]	train-rmse:0.331244	test-rmse:0.483001 
+#> [53]	train-rmse:0.329855	test-rmse:0.482918 
+#> [54]	train-rmse:0.329137	test-rmse:0.482874 
+#> [55]	train-rmse:0.328487	test-rmse:0.483778 
+#> [56]	train-rmse:0.327071	test-rmse:0.484555 
+#> [57]	train-rmse:0.324390	test-rmse:0.485547 
+#> [58]	train-rmse:0.322206	test-rmse:0.486124 
+#> [59]	train-rmse:0.319892	test-rmse:0.487004 
+#> [60]	train-rmse:0.317308	test-rmse:0.488051 
+#> [61]	train-rmse:0.315291	test-rmse:0.487747 
+#> [62]	train-rmse:0.314257	test-rmse:0.487359 
+#> [63]	train-rmse:0.313193	test-rmse:0.487545 
+#> [64]	train-rmse:0.310592	test-rmse:0.488525 
+#> [65]	train-rmse:0.310393	test-rmse:0.488563 
+#> [66]	train-rmse:0.308776	test-rmse:0.489347 
+#> [67]	train-rmse:0.306880	test-rmse:0.489801 
+#> [68]	train-rmse:0.306194	test-rmse:0.489683 
+#> [69]	train-rmse:0.303963	test-rmse:0.490333 
+#> [70]	train-rmse:0.302760	test-rmse:0.491298
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1454,27 +1452,27 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-28.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.350732	test-rmse:0.350737 
-#> [2]	train-rmse:0.246025	test-rmse:0.246032 
-#> [3]	train-rmse:0.172578	test-rmse:0.172585 
-#> [4]	train-rmse:0.121057	test-rmse:0.121064 
-#> [5]	train-rmse:0.084917	test-rmse:0.084923 
-#> [6]	train-rmse:0.059566	test-rmse:0.059571 
-#> [7]	train-rmse:0.041784	test-rmse:0.041788 
-#> [8]	train-rmse:0.029310	test-rmse:0.029313 
-#> [9]	train-rmse:0.020560	test-rmse:0.020562 
-#> [10]	train-rmse:0.014422	test-rmse:0.014424 
-#> [11]	train-rmse:0.010116	test-rmse:0.010118 
-#> [12]	train-rmse:0.007096	test-rmse:0.007097 
-#> [13]	train-rmse:0.004978	test-rmse:0.004979 
-#> [14]	train-rmse:0.003492	test-rmse:0.003492 
-#> [15]	train-rmse:0.002449	test-rmse:0.002450 
-#> [16]	train-rmse:0.001718	test-rmse:0.001718 
-#> [17]	train-rmse:0.001205	test-rmse:0.001205 
-#> [18]	train-rmse:0.000845	test-rmse:0.000846 
-#> [19]	train-rmse:0.000593	test-rmse:0.000593 
-#> [20]	train-rmse:0.000416	test-rmse:0.000416 
-#> [21]	train-rmse:0.000292	test-rmse:0.000292 
+#> [1]	train-rmse:0.350779	test-rmse:0.350780 
+#> [2]	train-rmse:0.246092	test-rmse:0.246093 
+#> [3]	train-rmse:0.172648	test-rmse:0.172649 
+#> [4]	train-rmse:0.121123	test-rmse:0.121123 
+#> [5]	train-rmse:0.084975	test-rmse:0.084975 
+#> [6]	train-rmse:0.059615	test-rmse:0.059615 
+#> [7]	train-rmse:0.041823	test-rmse:0.041824 
+#> [8]	train-rmse:0.029341	test-rmse:0.029342 
+#> [9]	train-rmse:0.020585	test-rmse:0.020585 
+#> [10]	train-rmse:0.014441	test-rmse:0.014442 
+#> [11]	train-rmse:0.010131	test-rmse:0.010132 
+#> [12]	train-rmse:0.007108	test-rmse:0.007108 
+#> [13]	train-rmse:0.004987	test-rmse:0.004987 
+#> [14]	train-rmse:0.003498	test-rmse:0.003498 
+#> [15]	train-rmse:0.002454	test-rmse:0.002454 
+#> [16]	train-rmse:0.001722	test-rmse:0.001722 
+#> [17]	train-rmse:0.001208	test-rmse:0.001208 
+#> [18]	train-rmse:0.000847	test-rmse:0.000847 
+#> [19]	train-rmse:0.000595	test-rmse:0.000595 
+#> [20]	train-rmse:0.000417	test-rmse:0.000417 
+#> [21]	train-rmse:0.000293	test-rmse:0.000293 
 #> [22]	train-rmse:0.000205	test-rmse:0.000205 
 #> [23]	train-rmse:0.000144	test-rmse:0.000144 
 #> [24]	train-rmse:0.000101	test-rmse:0.000101 
@@ -1487,7 +1485,7 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 #> [31]	train-rmse:0.000050	test-rmse:0.000050 
 #> [32]	train-rmse:0.000050	test-rmse:0.000050 
 #> [33]	train-rmse:0.000050	test-rmse:0.000050 
-#> [34]	train-rmse:0.000049	test-rmse:0.000050 
+#> [34]	train-rmse:0.000050	test-rmse:0.000050 
 #> [35]	train-rmse:0.000050	test-rmse:0.000050 
 #> [36]	train-rmse:0.000050	test-rmse:0.000050 
 #> [37]	train-rmse:0.000050	test-rmse:0.000050 
@@ -1578,76 +1576,76 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-34.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.474806	test-rmse:0.477327 
-#> [2]	train-rmse:0.460194	test-rmse:0.468567 
-#> [3]	train-rmse:0.451103	test-rmse:0.464446 
-#> [4]	train-rmse:0.444766	test-rmse:0.461353 
-#> [5]	train-rmse:0.439933	test-rmse:0.459735 
-#> [6]	train-rmse:0.434587	test-rmse:0.458148 
-#> [7]	train-rmse:0.432074	test-rmse:0.456628 
-#> [8]	train-rmse:0.428070	test-rmse:0.456919 
-#> [9]	train-rmse:0.425809	test-rmse:0.457126 
-#> [10]	train-rmse:0.423424	test-rmse:0.457745 
-#> [11]	train-rmse:0.421371	test-rmse:0.457869 
-#> [12]	train-rmse:0.418730	test-rmse:0.457889 
-#> [13]	train-rmse:0.415050	test-rmse:0.457260 
-#> [14]	train-rmse:0.410685	test-rmse:0.458697 
-#> [15]	train-rmse:0.406654	test-rmse:0.458959 
-#> [16]	train-rmse:0.402437	test-rmse:0.459619 
-#> [17]	train-rmse:0.398835	test-rmse:0.460915 
-#> [18]	train-rmse:0.396471	test-rmse:0.461584 
-#> [19]	train-rmse:0.395539	test-rmse:0.461310 
-#> [20]	train-rmse:0.392449	test-rmse:0.462386 
-#> [21]	train-rmse:0.388385	test-rmse:0.463716 
-#> [22]	train-rmse:0.386142	test-rmse:0.464954 
-#> [23]	train-rmse:0.383937	test-rmse:0.466150 
-#> [24]	train-rmse:0.383189	test-rmse:0.467036 
-#> [25]	train-rmse:0.381766	test-rmse:0.467289 
-#> [26]	train-rmse:0.379216	test-rmse:0.467775 
-#> [27]	train-rmse:0.376576	test-rmse:0.468056 
-#> [28]	train-rmse:0.374455	test-rmse:0.468093 
-#> [29]	train-rmse:0.372813	test-rmse:0.468241 
-#> [30]	train-rmse:0.371925	test-rmse:0.468451 
-#> [31]	train-rmse:0.370339	test-rmse:0.468939 
-#> [32]	train-rmse:0.368483	test-rmse:0.469352 
-#> [33]	train-rmse:0.365769	test-rmse:0.470102 
-#> [34]	train-rmse:0.363748	test-rmse:0.470834 
-#> [35]	train-rmse:0.362648	test-rmse:0.470980 
-#> [36]	train-rmse:0.359854	test-rmse:0.471540 
-#> [37]	train-rmse:0.358168	test-rmse:0.472813 
-#> [38]	train-rmse:0.355880	test-rmse:0.472769 
-#> [39]	train-rmse:0.353999	test-rmse:0.472446 
-#> [40]	train-rmse:0.351588	test-rmse:0.473530 
-#> [41]	train-rmse:0.349368	test-rmse:0.472972 
-#> [42]	train-rmse:0.348816	test-rmse:0.473473 
-#> [43]	train-rmse:0.346445	test-rmse:0.474530 
-#> [44]	train-rmse:0.344027	test-rmse:0.474449 
-#> [45]	train-rmse:0.341265	test-rmse:0.476748 
-#> [46]	train-rmse:0.338787	test-rmse:0.477893 
-#> [47]	train-rmse:0.336858	test-rmse:0.478158 
-#> [48]	train-rmse:0.335004	test-rmse:0.479104 
-#> [49]	train-rmse:0.334594	test-rmse:0.478971 
-#> [50]	train-rmse:0.333463	test-rmse:0.478899 
-#> [51]	train-rmse:0.332069	test-rmse:0.479791 
-#> [52]	train-rmse:0.331328	test-rmse:0.481001 
-#> [53]	train-rmse:0.329724	test-rmse:0.481301 
-#> [54]	train-rmse:0.327866	test-rmse:0.481444 
-#> [55]	train-rmse:0.325509	test-rmse:0.481943 
-#> [56]	train-rmse:0.323790	test-rmse:0.482850 
-#> [57]	train-rmse:0.322412	test-rmse:0.483244 
-#> [58]	train-rmse:0.320115	test-rmse:0.483289 
-#> [59]	train-rmse:0.319143	test-rmse:0.483689 
-#> [60]	train-rmse:0.318132	test-rmse:0.483346 
-#> [61]	train-rmse:0.317056	test-rmse:0.483574 
-#> [62]	train-rmse:0.314811	test-rmse:0.484470 
-#> [63]	train-rmse:0.313338	test-rmse:0.485339 
-#> [64]	train-rmse:0.310976	test-rmse:0.485383 
-#> [65]	train-rmse:0.309806	test-rmse:0.486243 
-#> [66]	train-rmse:0.307857	test-rmse:0.486291 
-#> [67]	train-rmse:0.306005	test-rmse:0.486813 
-#> [68]	train-rmse:0.303882	test-rmse:0.486972 
-#> [69]	train-rmse:0.303206	test-rmse:0.487281 
-#> [70]	train-rmse:0.301917	test-rmse:0.487293
+#> [1]	train-rmse:0.469345	test-rmse:0.483306 
+#> [2]	train-rmse:0.451129	test-rmse:0.475073 
+#> [3]	train-rmse:0.438859	test-rmse:0.472677 
+#> [4]	train-rmse:0.430394	test-rmse:0.474792 
+#> [5]	train-rmse:0.424651	test-rmse:0.474480 
+#> [6]	train-rmse:0.419686	test-rmse:0.476138 
+#> [7]	train-rmse:0.416104	test-rmse:0.477385 
+#> [8]	train-rmse:0.409485	test-rmse:0.479152 
+#> [9]	train-rmse:0.407226	test-rmse:0.477947 
+#> [10]	train-rmse:0.403165	test-rmse:0.478425 
+#> [11]	train-rmse:0.401277	test-rmse:0.479130 
+#> [12]	train-rmse:0.396918	test-rmse:0.479524 
+#> [13]	train-rmse:0.392692	test-rmse:0.481042 
+#> [14]	train-rmse:0.389309	test-rmse:0.482407 
+#> [15]	train-rmse:0.385995	test-rmse:0.483304 
+#> [16]	train-rmse:0.382852	test-rmse:0.484639 
+#> [17]	train-rmse:0.381596	test-rmse:0.485118 
+#> [18]	train-rmse:0.379741	test-rmse:0.485999 
+#> [19]	train-rmse:0.377448	test-rmse:0.486745 
+#> [20]	train-rmse:0.373995	test-rmse:0.487018 
+#> [21]	train-rmse:0.371236	test-rmse:0.487427 
+#> [22]	train-rmse:0.367078	test-rmse:0.487029 
+#> [23]	train-rmse:0.364324	test-rmse:0.487024 
+#> [24]	train-rmse:0.361429	test-rmse:0.486409 
+#> [25]	train-rmse:0.358355	test-rmse:0.486373 
+#> [26]	train-rmse:0.356879	test-rmse:0.486452 
+#> [27]	train-rmse:0.356182	test-rmse:0.486853 
+#> [28]	train-rmse:0.353620	test-rmse:0.487637 
+#> [29]	train-rmse:0.352210	test-rmse:0.487617 
+#> [30]	train-rmse:0.349787	test-rmse:0.488029 
+#> [31]	train-rmse:0.347052	test-rmse:0.488152 
+#> [32]	train-rmse:0.344668	test-rmse:0.489566 
+#> [33]	train-rmse:0.342204	test-rmse:0.489855 
+#> [34]	train-rmse:0.340754	test-rmse:0.489307 
+#> [35]	train-rmse:0.340022	test-rmse:0.489012 
+#> [36]	train-rmse:0.337948	test-rmse:0.489216 
+#> [37]	train-rmse:0.336364	test-rmse:0.489918 
+#> [38]	train-rmse:0.335238	test-rmse:0.490907 
+#> [39]	train-rmse:0.333505	test-rmse:0.490977 
+#> [40]	train-rmse:0.331388	test-rmse:0.491889 
+#> [41]	train-rmse:0.328998	test-rmse:0.492251 
+#> [42]	train-rmse:0.327470	test-rmse:0.491634 
+#> [43]	train-rmse:0.326239	test-rmse:0.492068 
+#> [44]	train-rmse:0.324830	test-rmse:0.492400 
+#> [45]	train-rmse:0.322450	test-rmse:0.492293 
+#> [46]	train-rmse:0.321218	test-rmse:0.492800 
+#> [47]	train-rmse:0.318764	test-rmse:0.493141 
+#> [48]	train-rmse:0.316828	test-rmse:0.493773 
+#> [49]	train-rmse:0.314391	test-rmse:0.493342 
+#> [50]	train-rmse:0.312233	test-rmse:0.493425 
+#> [51]	train-rmse:0.310441	test-rmse:0.493546 
+#> [52]	train-rmse:0.309609	test-rmse:0.493152 
+#> [53]	train-rmse:0.308001	test-rmse:0.493657 
+#> [54]	train-rmse:0.306697	test-rmse:0.493582 
+#> [55]	train-rmse:0.304640	test-rmse:0.493931 
+#> [56]	train-rmse:0.303244	test-rmse:0.494351 
+#> [57]	train-rmse:0.302286	test-rmse:0.494680 
+#> [58]	train-rmse:0.301160	test-rmse:0.494775 
+#> [59]	train-rmse:0.300158	test-rmse:0.494663 
+#> [60]	train-rmse:0.297504	test-rmse:0.494739 
+#> [61]	train-rmse:0.295155	test-rmse:0.495895 
+#> [62]	train-rmse:0.293799	test-rmse:0.496655 
+#> [63]	train-rmse:0.292051	test-rmse:0.496780 
+#> [64]	train-rmse:0.288926	test-rmse:0.497473 
+#> [65]	train-rmse:0.287236	test-rmse:0.497843 
+#> [66]	train-rmse:0.285369	test-rmse:0.498784 
+#> [67]	train-rmse:0.283905	test-rmse:0.499510 
+#> [68]	train-rmse:0.283018	test-rmse:0.499894 
+#> [69]	train-rmse:0.281572	test-rmse:0.499873 
+#> [70]	train-rmse:0.281403	test-rmse:0.499882
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1684,28 +1682,28 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-38.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.350811	test-rmse:0.350811 
-#> [2]	train-rmse:0.246136	test-rmse:0.246136 
-#> [3]	train-rmse:0.172695	test-rmse:0.172695 
-#> [4]	train-rmse:0.121166	test-rmse:0.121166 
-#> [5]	train-rmse:0.085013	test-rmse:0.085013 
-#> [6]	train-rmse:0.059647	test-rmse:0.059647 
-#> [7]	train-rmse:0.041850	test-rmse:0.041850 
-#> [8]	train-rmse:0.029363	test-rmse:0.029363 
-#> [9]	train-rmse:0.020601	test-rmse:0.020601 
-#> [10]	train-rmse:0.014454	test-rmse:0.014454 
-#> [11]	train-rmse:0.010141	test-rmse:0.010141 
-#> [12]	train-rmse:0.007115	test-rmse:0.007115 
-#> [13]	train-rmse:0.004992	test-rmse:0.004992 
-#> [14]	train-rmse:0.003503	test-rmse:0.003503 
-#> [15]	train-rmse:0.002458	test-rmse:0.002458 
-#> [16]	train-rmse:0.001724	test-rmse:0.001724 
-#> [17]	train-rmse:0.001210	test-rmse:0.001210 
-#> [18]	train-rmse:0.000849	test-rmse:0.000849 
-#> [19]	train-rmse:0.000596	test-rmse:0.000596 
-#> [20]	train-rmse:0.000418	test-rmse:0.000418 
-#> [21]	train-rmse:0.000293	test-rmse:0.000293 
-#> [22]	train-rmse:0.000206	test-rmse:0.000206 
+#> [1]	train-rmse:0.350752	test-rmse:0.350751 
+#> [2]	train-rmse:0.246054	test-rmse:0.246052 
+#> [3]	train-rmse:0.172608	test-rmse:0.172606 
+#> [4]	train-rmse:0.121085	test-rmse:0.121083 
+#> [5]	train-rmse:0.084942	test-rmse:0.084940 
+#> [6]	train-rmse:0.059587	test-rmse:0.059586 
+#> [7]	train-rmse:0.041800	test-rmse:0.041799 
+#> [8]	train-rmse:0.029323	test-rmse:0.029322 
+#> [9]	train-rmse:0.020570	test-rmse:0.020570 
+#> [10]	train-rmse:0.014430	test-rmse:0.014430 
+#> [11]	train-rmse:0.010123	test-rmse:0.010122 
+#> [12]	train-rmse:0.007101	test-rmse:0.007101 
+#> [13]	train-rmse:0.004982	test-rmse:0.004981 
+#> [14]	train-rmse:0.003495	test-rmse:0.003494 
+#> [15]	train-rmse:0.002451	test-rmse:0.002451 
+#> [16]	train-rmse:0.001720	test-rmse:0.001720 
+#> [17]	train-rmse:0.001206	test-rmse:0.001206 
+#> [18]	train-rmse:0.000846	test-rmse:0.000846 
+#> [19]	train-rmse:0.000594	test-rmse:0.000594 
+#> [20]	train-rmse:0.000416	test-rmse:0.000416 
+#> [21]	train-rmse:0.000292	test-rmse:0.000292 
+#> [22]	train-rmse:0.000205	test-rmse:0.000205 
 #> [23]	train-rmse:0.000144	test-rmse:0.000144 
 #> [24]	train-rmse:0.000101	test-rmse:0.000101 
 #> [25]	train-rmse:0.000071	test-rmse:0.000071 
@@ -1722,38 +1720,38 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 #> [36]	train-rmse:0.000050	test-rmse:0.000050 
 #> [37]	train-rmse:0.000050	test-rmse:0.000050 
 #> [38]	train-rmse:0.000050	test-rmse:0.000050 
-#> [39]	train-rmse:0.000050	test-rmse:0.000050 
-#> [40]	train-rmse:0.000050	test-rmse:0.000050 
-#> [41]	train-rmse:0.000050	test-rmse:0.000050 
-#> [42]	train-rmse:0.000050	test-rmse:0.000050 
-#> [43]	train-rmse:0.000050	test-rmse:0.000050 
-#> [44]	train-rmse:0.000050	test-rmse:0.000050 
-#> [45]	train-rmse:0.000050	test-rmse:0.000050 
-#> [46]	train-rmse:0.000050	test-rmse:0.000050 
-#> [47]	train-rmse:0.000050	test-rmse:0.000050 
-#> [48]	train-rmse:0.000050	test-rmse:0.000050 
-#> [49]	train-rmse:0.000050	test-rmse:0.000050 
-#> [50]	train-rmse:0.000050	test-rmse:0.000050 
-#> [51]	train-rmse:0.000050	test-rmse:0.000050 
-#> [52]	train-rmse:0.000050	test-rmse:0.000050 
-#> [53]	train-rmse:0.000050	test-rmse:0.000050 
-#> [54]	train-rmse:0.000050	test-rmse:0.000050 
-#> [55]	train-rmse:0.000050	test-rmse:0.000050 
-#> [56]	train-rmse:0.000050	test-rmse:0.000050 
-#> [57]	train-rmse:0.000050	test-rmse:0.000050 
-#> [58]	train-rmse:0.000050	test-rmse:0.000050 
-#> [59]	train-rmse:0.000050	test-rmse:0.000050 
-#> [60]	train-rmse:0.000050	test-rmse:0.000050 
-#> [61]	train-rmse:0.000050	test-rmse:0.000050 
-#> [62]	train-rmse:0.000050	test-rmse:0.000050 
-#> [63]	train-rmse:0.000050	test-rmse:0.000050 
-#> [64]	train-rmse:0.000050	test-rmse:0.000050 
-#> [65]	train-rmse:0.000050	test-rmse:0.000050 
-#> [66]	train-rmse:0.000050	test-rmse:0.000050 
-#> [67]	train-rmse:0.000050	test-rmse:0.000050 
-#> [68]	train-rmse:0.000050	test-rmse:0.000050 
-#> [69]	train-rmse:0.000050	test-rmse:0.000050 
-#> [70]	train-rmse:0.000050	test-rmse:0.000050
+#> [39]	train-rmse:0.000050	test-rmse:0.000049 
+#> [40]	train-rmse:0.000050	test-rmse:0.000049 
+#> [41]	train-rmse:0.000050	test-rmse:0.000049 
+#> [42]	train-rmse:0.000050	test-rmse:0.000049 
+#> [43]	train-rmse:0.000050	test-rmse:0.000049 
+#> [44]	train-rmse:0.000050	test-rmse:0.000049 
+#> [45]	train-rmse:0.000050	test-rmse:0.000049 
+#> [46]	train-rmse:0.000050	test-rmse:0.000049 
+#> [47]	train-rmse:0.000050	test-rmse:0.000049 
+#> [48]	train-rmse:0.000050	test-rmse:0.000049 
+#> [49]	train-rmse:0.000050	test-rmse:0.000049 
+#> [50]	train-rmse:0.000050	test-rmse:0.000049 
+#> [51]	train-rmse:0.000050	test-rmse:0.000049 
+#> [52]	train-rmse:0.000050	test-rmse:0.000049 
+#> [53]	train-rmse:0.000050	test-rmse:0.000049 
+#> [54]	train-rmse:0.000050	test-rmse:0.000049 
+#> [55]	train-rmse:0.000050	test-rmse:0.000049 
+#> [56]	train-rmse:0.000050	test-rmse:0.000049 
+#> [57]	train-rmse:0.000050	test-rmse:0.000049 
+#> [58]	train-rmse:0.000050	test-rmse:0.000049 
+#> [59]	train-rmse:0.000050	test-rmse:0.000049 
+#> [60]	train-rmse:0.000050	test-rmse:0.000049 
+#> [61]	train-rmse:0.000050	test-rmse:0.000049 
+#> [62]	train-rmse:0.000050	test-rmse:0.000049 
+#> [63]	train-rmse:0.000050	test-rmse:0.000049 
+#> [64]	train-rmse:0.000050	test-rmse:0.000049 
+#> [65]	train-rmse:0.000050	test-rmse:0.000049 
+#> [66]	train-rmse:0.000050	test-rmse:0.000049 
+#> [67]	train-rmse:0.000050	test-rmse:0.000049 
+#> [68]	train-rmse:0.000050	test-rmse:0.000049 
+#> [69]	train-rmse:0.000050	test-rmse:0.000049 
+#> [70]	train-rmse:0.000050	test-rmse:0.000049
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1808,76 +1806,76 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-44.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.471577	test-rmse:0.480744 
-#> [2]	train-rmse:0.454265	test-rmse:0.471583 
-#> [3]	train-rmse:0.444762	test-rmse:0.468178 
-#> [4]	train-rmse:0.438154	test-rmse:0.465017 
-#> [5]	train-rmse:0.434042	test-rmse:0.464051 
-#> [6]	train-rmse:0.429515	test-rmse:0.463162 
-#> [7]	train-rmse:0.424879	test-rmse:0.462757 
-#> [8]	train-rmse:0.422605	test-rmse:0.463300 
-#> [9]	train-rmse:0.418741	test-rmse:0.463332 
-#> [10]	train-rmse:0.415888	test-rmse:0.465554 
-#> [11]	train-rmse:0.412331	test-rmse:0.465948 
-#> [12]	train-rmse:0.409270	test-rmse:0.466338 
-#> [13]	train-rmse:0.407598	test-rmse:0.464630 
-#> [14]	train-rmse:0.405619	test-rmse:0.465577 
-#> [15]	train-rmse:0.403221	test-rmse:0.465341 
-#> [16]	train-rmse:0.401821	test-rmse:0.465707 
-#> [17]	train-rmse:0.400564	test-rmse:0.466053 
-#> [18]	train-rmse:0.399474	test-rmse:0.465748 
-#> [19]	train-rmse:0.397441	test-rmse:0.465750 
-#> [20]	train-rmse:0.394472	test-rmse:0.466224 
-#> [21]	train-rmse:0.393116	test-rmse:0.466412 
-#> [22]	train-rmse:0.390620	test-rmse:0.465684 
-#> [23]	train-rmse:0.387416	test-rmse:0.466095 
-#> [24]	train-rmse:0.386378	test-rmse:0.466550 
-#> [25]	train-rmse:0.384605	test-rmse:0.466656 
-#> [26]	train-rmse:0.381410	test-rmse:0.466764 
-#> [27]	train-rmse:0.378212	test-rmse:0.465584 
-#> [28]	train-rmse:0.377111	test-rmse:0.465691 
-#> [29]	train-rmse:0.374755	test-rmse:0.466208 
-#> [30]	train-rmse:0.371775	test-rmse:0.466713 
-#> [31]	train-rmse:0.370571	test-rmse:0.466772 
-#> [32]	train-rmse:0.369029	test-rmse:0.468559 
-#> [33]	train-rmse:0.368610	test-rmse:0.468287 
-#> [34]	train-rmse:0.367808	test-rmse:0.468524 
-#> [35]	train-rmse:0.367062	test-rmse:0.468352 
-#> [36]	train-rmse:0.366186	test-rmse:0.468407 
-#> [37]	train-rmse:0.363883	test-rmse:0.467376 
-#> [38]	train-rmse:0.361354	test-rmse:0.468753 
-#> [39]	train-rmse:0.359755	test-rmse:0.469330 
-#> [40]	train-rmse:0.357923	test-rmse:0.469506 
-#> [41]	train-rmse:0.354185	test-rmse:0.469816 
-#> [42]	train-rmse:0.352034	test-rmse:0.471337 
-#> [43]	train-rmse:0.348321	test-rmse:0.471297 
-#> [44]	train-rmse:0.344673	test-rmse:0.471338 
-#> [45]	train-rmse:0.341964	test-rmse:0.471260 
-#> [46]	train-rmse:0.339466	test-rmse:0.471782 
-#> [47]	train-rmse:0.338032	test-rmse:0.471911 
-#> [48]	train-rmse:0.335915	test-rmse:0.471929 
-#> [49]	train-rmse:0.333468	test-rmse:0.472566 
-#> [50]	train-rmse:0.331806	test-rmse:0.472157 
-#> [51]	train-rmse:0.328948	test-rmse:0.472021 
-#> [52]	train-rmse:0.326076	test-rmse:0.472872 
-#> [53]	train-rmse:0.323846	test-rmse:0.473045 
-#> [54]	train-rmse:0.321768	test-rmse:0.473011 
-#> [55]	train-rmse:0.320399	test-rmse:0.472836 
-#> [56]	train-rmse:0.318842	test-rmse:0.472671 
-#> [57]	train-rmse:0.316777	test-rmse:0.473612 
-#> [58]	train-rmse:0.316078	test-rmse:0.473772 
-#> [59]	train-rmse:0.315315	test-rmse:0.473332 
-#> [60]	train-rmse:0.313517	test-rmse:0.473501 
-#> [61]	train-rmse:0.312084	test-rmse:0.474112 
-#> [62]	train-rmse:0.310038	test-rmse:0.473522 
-#> [63]	train-rmse:0.309017	test-rmse:0.473653 
-#> [64]	train-rmse:0.307556	test-rmse:0.473114 
-#> [65]	train-rmse:0.305566	test-rmse:0.472764 
-#> [66]	train-rmse:0.303763	test-rmse:0.472985 
-#> [67]	train-rmse:0.302499	test-rmse:0.473220 
-#> [68]	train-rmse:0.300772	test-rmse:0.474625 
-#> [69]	train-rmse:0.298926	test-rmse:0.475909 
-#> [70]	train-rmse:0.297109	test-rmse:0.475763
+#> [1]	train-rmse:0.469983	test-rmse:0.481825 
+#> [2]	train-rmse:0.453292	test-rmse:0.474652 
+#> [3]	train-rmse:0.442160	test-rmse:0.470276 
+#> [4]	train-rmse:0.434314	test-rmse:0.469678 
+#> [5]	train-rmse:0.429381	test-rmse:0.468875 
+#> [6]	train-rmse:0.425673	test-rmse:0.470175 
+#> [7]	train-rmse:0.422683	test-rmse:0.469549 
+#> [8]	train-rmse:0.419515	test-rmse:0.471713 
+#> [9]	train-rmse:0.418412	test-rmse:0.471700 
+#> [10]	train-rmse:0.412741	test-rmse:0.473357 
+#> [11]	train-rmse:0.410944	test-rmse:0.473120 
+#> [12]	train-rmse:0.408424	test-rmse:0.473023 
+#> [13]	train-rmse:0.405919	test-rmse:0.472233 
+#> [14]	train-rmse:0.404462	test-rmse:0.472746 
+#> [15]	train-rmse:0.403653	test-rmse:0.472729 
+#> [16]	train-rmse:0.399715	test-rmse:0.472551 
+#> [17]	train-rmse:0.396624	test-rmse:0.472368 
+#> [18]	train-rmse:0.393517	test-rmse:0.471737 
+#> [19]	train-rmse:0.392274	test-rmse:0.471105 
+#> [20]	train-rmse:0.391304	test-rmse:0.471421 
+#> [21]	train-rmse:0.388356	test-rmse:0.472729 
+#> [22]	train-rmse:0.386881	test-rmse:0.473676 
+#> [23]	train-rmse:0.383574	test-rmse:0.474620 
+#> [24]	train-rmse:0.379972	test-rmse:0.475196 
+#> [25]	train-rmse:0.379027	test-rmse:0.474874 
+#> [26]	train-rmse:0.377911	test-rmse:0.475319 
+#> [27]	train-rmse:0.374023	test-rmse:0.477312 
+#> [28]	train-rmse:0.371324	test-rmse:0.477651 
+#> [29]	train-rmse:0.369694	test-rmse:0.477372 
+#> [30]	train-rmse:0.367384	test-rmse:0.476881 
+#> [31]	train-rmse:0.365231	test-rmse:0.477780 
+#> [32]	train-rmse:0.362514	test-rmse:0.477771 
+#> [33]	train-rmse:0.361889	test-rmse:0.477999 
+#> [34]	train-rmse:0.358611	test-rmse:0.477956 
+#> [35]	train-rmse:0.357341	test-rmse:0.477890 
+#> [36]	train-rmse:0.354910	test-rmse:0.477889 
+#> [37]	train-rmse:0.352434	test-rmse:0.478723 
+#> [38]	train-rmse:0.349446	test-rmse:0.479393 
+#> [39]	train-rmse:0.348320	test-rmse:0.479751 
+#> [40]	train-rmse:0.346057	test-rmse:0.479579 
+#> [41]	train-rmse:0.344301	test-rmse:0.479321 
+#> [42]	train-rmse:0.342503	test-rmse:0.479055 
+#> [43]	train-rmse:0.341741	test-rmse:0.479281 
+#> [44]	train-rmse:0.340278	test-rmse:0.479698 
+#> [45]	train-rmse:0.338905	test-rmse:0.479804 
+#> [46]	train-rmse:0.338534	test-rmse:0.479388 
+#> [47]	train-rmse:0.338150	test-rmse:0.479594 
+#> [48]	train-rmse:0.336896	test-rmse:0.479947 
+#> [49]	train-rmse:0.334466	test-rmse:0.481629 
+#> [50]	train-rmse:0.332821	test-rmse:0.482458 
+#> [51]	train-rmse:0.330561	test-rmse:0.483253 
+#> [52]	train-rmse:0.328776	test-rmse:0.482987 
+#> [53]	train-rmse:0.327713	test-rmse:0.483217 
+#> [54]	train-rmse:0.325673	test-rmse:0.483616 
+#> [55]	train-rmse:0.323789	test-rmse:0.484530 
+#> [56]	train-rmse:0.321965	test-rmse:0.485015 
+#> [57]	train-rmse:0.321327	test-rmse:0.484828 
+#> [58]	train-rmse:0.320789	test-rmse:0.484955 
+#> [59]	train-rmse:0.319977	test-rmse:0.485544 
+#> [60]	train-rmse:0.319336	test-rmse:0.485246 
+#> [61]	train-rmse:0.317920	test-rmse:0.485508 
+#> [62]	train-rmse:0.316384	test-rmse:0.486216 
+#> [63]	train-rmse:0.314147	test-rmse:0.486477 
+#> [64]	train-rmse:0.313547	test-rmse:0.487216 
+#> [65]	train-rmse:0.311705	test-rmse:0.488294 
+#> [66]	train-rmse:0.310588	test-rmse:0.488662 
+#> [67]	train-rmse:0.308651	test-rmse:0.487913 
+#> [68]	train-rmse:0.306966	test-rmse:0.488149 
+#> [69]	train-rmse:0.305213	test-rmse:0.489127 
+#> [70]	train-rmse:0.303103	test-rmse:0.489845
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
@@ -1914,29 +1912,29 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 <img src="07-Ensembles_of_Logistic_Models_files/figure-html/Logistic ensemble-48.png" width="672" />
 
 ```
-#> [1]	train-rmse:0.350845	test-rmse:0.350845 
-#> [2]	train-rmse:0.246185	test-rmse:0.246185 
-#> [3]	train-rmse:0.172745	test-rmse:0.172745 
-#> [4]	train-rmse:0.121214	test-rmse:0.121214 
-#> [5]	train-rmse:0.085054	test-rmse:0.085055 
-#> [6]	train-rmse:0.059682	test-rmse:0.059682 
-#> [7]	train-rmse:0.041878	test-rmse:0.041878 
-#> [8]	train-rmse:0.029385	test-rmse:0.029386 
-#> [9]	train-rmse:0.020620	test-rmse:0.020620 
-#> [10]	train-rmse:0.014469	test-rmse:0.014469 
-#> [11]	train-rmse:0.010152	test-rmse:0.010152 
-#> [12]	train-rmse:0.007124	test-rmse:0.007124 
-#> [13]	train-rmse:0.004999	test-rmse:0.004999 
-#> [14]	train-rmse:0.003508	test-rmse:0.003508 
-#> [15]	train-rmse:0.002461	test-rmse:0.002461 
-#> [16]	train-rmse:0.001727	test-rmse:0.001727 
-#> [17]	train-rmse:0.001212	test-rmse:0.001212 
-#> [18]	train-rmse:0.000850	test-rmse:0.000850 
-#> [19]	train-rmse:0.000597	test-rmse:0.000597 
-#> [20]	train-rmse:0.000419	test-rmse:0.000419 
-#> [21]	train-rmse:0.000294	test-rmse:0.000294 
-#> [22]	train-rmse:0.000206	test-rmse:0.000206 
-#> [23]	train-rmse:0.000145	test-rmse:0.000145 
+#> [1]	train-rmse:0.350759	test-rmse:0.350760 
+#> [2]	train-rmse:0.246064	test-rmse:0.246065 
+#> [3]	train-rmse:0.172619	test-rmse:0.172619 
+#> [4]	train-rmse:0.121095	test-rmse:0.121096 
+#> [5]	train-rmse:0.084951	test-rmse:0.084951 
+#> [6]	train-rmse:0.059595	test-rmse:0.059595 
+#> [7]	train-rmse:0.041807	test-rmse:0.041807 
+#> [8]	train-rmse:0.029328	test-rmse:0.029328 
+#> [9]	train-rmse:0.020574	test-rmse:0.020574 
+#> [10]	train-rmse:0.014433	test-rmse:0.014433 
+#> [11]	train-rmse:0.010125	test-rmse:0.010125 
+#> [12]	train-rmse:0.007103	test-rmse:0.007103 
+#> [13]	train-rmse:0.004983	test-rmse:0.004983 
+#> [14]	train-rmse:0.003496	test-rmse:0.003496 
+#> [15]	train-rmse:0.002452	test-rmse:0.002452 
+#> [16]	train-rmse:0.001720	test-rmse:0.001720 
+#> [17]	train-rmse:0.001207	test-rmse:0.001207 
+#> [18]	train-rmse:0.000847	test-rmse:0.000847 
+#> [19]	train-rmse:0.000594	test-rmse:0.000594 
+#> [20]	train-rmse:0.000417	test-rmse:0.000417 
+#> [21]	train-rmse:0.000292	test-rmse:0.000292 
+#> [22]	train-rmse:0.000205	test-rmse:0.000205 
+#> [23]	train-rmse:0.000144	test-rmse:0.000144 
 #> [24]	train-rmse:0.000101	test-rmse:0.000101 
 #> [25]	train-rmse:0.000071	test-rmse:0.000071 
 #> [26]	train-rmse:0.000050	test-rmse:0.000050 
@@ -2001,11 +1999,8 @@ logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, tes
 #> 5  Ensemble_Random_Forest 1.0000000
 #> 6        Ensemble_XGBoost 1.0000000
 #> 7           Random_Forest 1.0000000
-#> 8                BayesGLM 0.6455523
-#> 9                 XGBoost 0.6441496
-#> 10               ADABoost 0.6086781
-```
-
-``` r
+#> 8                BayesGLM 0.6430284
+#> 9                 XGBoost 0.6361022
+#> 10               ADABoost 0.6176642
 warnings()
 ```

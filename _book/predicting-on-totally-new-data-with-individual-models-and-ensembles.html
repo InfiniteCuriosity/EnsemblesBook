@@ -56,7 +56,7 @@
 <li><a class="active" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
 <li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
 <li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
-<li><a class="" href="summary-and-charge-to-the-graduates-of-the-class.html"><span class="header-section-number">14</span> Summary and Charge to the Graduates of the Class!</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -70,7 +70,7 @@
 <span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles<a class="anchor" aria-label="anchor" href="#predicting-on-totally-new-data-with-individual-models-and-ensembles"><i class="fas fa-link"></i></a>
 </h1>
 <p>Let’s start with a simple ensemble of cubist, gam and linear models:</p>
-<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span> <span class="co"># Allows us to use tree models</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span> <span class="co"># For the Boston Housing data set library(Metrics)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glin.github.io/reactable/">reactable</a></span><span class="op">)</span> <span class="co"># For the final report - looks amazing!</span></span>
@@ -85,9 +85,8 @@
 <span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
 <span><span class="co">#&gt; ✖ dplyr::select() masks MASS::select()</span></span>
-<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
-<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span>
+<span></span>
 <span><span class="co"># Set initial values to 0</span></span>
 <span><span class="va">linear_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">linear_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
@@ -168,7 +167,7 @@
 <span><span class="op">}</span> <span class="co"># Closing brace for numresamples</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="va">do_you_have_new_data</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'/Users/russellconte/NewBoston.csv'</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span><span class="op">)</span></span>
+<span>  <span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">'/Users/russconte/NewBoston.csv'</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span><span class="op">[</span><span class="va">colnum</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"y"</span></span>
@@ -184,7 +183,7 @@
 <span>    <span class="st">"tree"</span> <span class="op">=</span> <span class="va">new_tree</span> <span class="op">/</span> <span class="va">tree_RMSE_mean</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">new_ensemble</span><span class="op">$</span><span class="va">Row_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums-methods.html">rowMeans</a></span><span class="op">(</span><span class="va">new_ensemble</span><span class="op">)</span></span>
+<span>  <span class="va">new_ensemble</span><span class="op">$</span><span class="va">Row_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html">rowMeans</a></span><span class="op">(</span><span class="va">new_ensemble</span><span class="op">)</span></span>
 <span>  <span class="va">new_ensemble</span><span class="op">$</span><span class="va">y_ensemble</span> <span class="op">&lt;-</span> <span class="va">new_data</span><span class="op">$</span><span class="va">y</span></span>
 <span></span>
 <span>  <span class="va">new_ensemble_linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_linear_train_fit</span>, newdata <span class="op">=</span> <span class="va">new_ensemble</span><span class="op">)</span></span>
@@ -226,9 +225,8 @@
 <span><span class="co">#&gt;   +.gg   ggplot2</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span></code></pre></div>
-<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span></span>
 <span><span class="co"># Note these results show up in the Viewer.</span></span></code></pre></div>
 
 </div>
@@ -254,7 +252,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-03.</p>
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

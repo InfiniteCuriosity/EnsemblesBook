@@ -31,7 +31,7 @@ All our models will be structured in a way that is as close to identical as poss
 [Classification models](https://en.wikipedia.org/wiki/Statistical_classification) are a set of models to identify the class of a specific observation. For example, in the Carseats data set, the Shelve Location is an example of this data type:
 
 
-``` r
+```r
 library(ISLR)
 head(Carseats)
 #>   Sales CompPrice Income Advertising Population Price
@@ -69,7 +69,7 @@ In this case, that is (83 + 75 + 272) / (83 + 1 + 105 + 4 + 75 + 56 + 106 + 90 +
 ### Build our first classification model from the structure:
 
 
-``` r
+```r
 
 # Load libraries
 
@@ -107,7 +107,7 @@ In this case, that is (83 + 75 + 272) / (83 + 1 + 105 + 4 + 75 + 56 + 106 + 90 +
 Now that we have the structure, let's build the model:
 
 
-``` r
+```r
 
 # Load libraries
 library(C50)
@@ -122,9 +122,6 @@ library(tidyverse)
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 #> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
-
-``` r
 
 # Set initial values to 0:
 C50_train_accuracy <- 0
@@ -199,10 +196,10 @@ return(c(C50_holdout_mean))
 C50_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>              y_test
 #> C50_test_pred Bad Good Medium
-#>        Bad      8    0     10
-#>        Good     0   14      6
-#>        Medium  22    7     41
-#> [1] 0.5833333
+#>        Bad     11    2     10
+#>        Good     1   12     10
+#>        Medium  15    8     39
+#> [1] 0.5740741
 ```
 
 Now that we see how one individual classification model is made, let's make 11 more (total of 12).
@@ -210,7 +207,7 @@ Now that we see how one individual classification model is made, let's make 11 m
 ### Adabag for classification data
 
 
-``` r
+```r
 
 # Load libraries
 library(ipred)
@@ -288,13 +285,10 @@ return(adabag_holdout_mean)
 adabag_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                 y_test
 #> adabag_test_pred Bad Good Medium
-#>           Bad     11    0      7
-#>           Good     0   13      2
-#>           Medium  15    8     44
-#> [1] 0.68
-```
-
-``` r
+#>           Bad     12    1      6
+#>           Good     0   11      5
+#>           Medium  14    9     44
+#> [1] 0.6568627
 
 # Check for errors
 warnings()
@@ -303,7 +297,7 @@ warnings()
 ### Bagged Random Forest
 
 
-``` r
+```r
 
 # Load libraries
 library(randomForest)
@@ -317,9 +311,6 @@ library(randomForest)
 #> The following object is masked from 'package:ggplot2':
 #> 
 #>     margin
-```
-
-``` r
 
 # Set initial values to 0
 bag_rf_train_accuracy <- 0
@@ -394,13 +385,10 @@ return(bag_rf_holdout_mean)
 bag_rf_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                 y_test
 #> bag_rf_test_pred Bad Good Medium
-#>           Bad      9    1      6
-#>           Good     0   10      6
-#>           Medium  12    6     36
-#> [1] 0.6395349
-```
-
-``` r
+#>           Bad     11    0      2
+#>           Good     0   11      5
+#>           Medium  19    9     37
+#> [1] 0.6276596
 
 # Check for errors
 warnings()
@@ -409,7 +397,7 @@ warnings()
 ### Linear model
 
 
-``` r
+```r
 
 # Load libraries
 library(MachineShop)
@@ -421,9 +409,6 @@ library(MachineShop)
 #> The following object is masked from 'package:stats':
 #> 
 #>     ppr
-```
-
-``` r
 
 # Set initial values to 0
 linear_train_accuracy <- 0
@@ -499,13 +484,10 @@ return(linear_holdout_mean)
 linear1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                 y_test
 #> linear_test_pred Bad Good Medium
-#>           Bad      9    0      0
-#>           Good     0    9      1
-#>           Medium  11    5     51
-#> [1] 0.8023256
-```
-
-``` r
+#>           Bad      5    0      0
+#>           Good     0   11      1
+#>           Medium  30    9     45
+#> [1] 0.6039604
 
 # Check for errors
 warnings()
@@ -514,7 +496,7 @@ warnings()
 ### Naive Bayes model
 
 
-``` r
+```r
 
 # Load libraries
 library(e1071)
@@ -592,13 +574,10 @@ return(n_bayes_holdout_mean)
 n_bayes_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                  y_test
 #> n_bayes_test_pred Bad Good Medium
-#>            Bad      8    1      6
-#>            Good     1    9      8
-#>            Medium  15   11     45
-#> [1] 0.5961538
-```
-
-``` r
+#>            Bad      5    0      3
+#>            Good     0    6      5
+#>            Medium  21   11     39
+#> [1] 0.5555556
 
 # Check for errors
 warnings()
@@ -607,7 +586,7 @@ warnings()
 ### Partial Least Squares
 
 
-``` r
+```r
 
 # Load libraries
 library(MachineShop)
@@ -688,11 +667,8 @@ pls_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, 
 #> pls_test_predict Bad Good Medium
 #>           Bad      0    0      0
 #>           Good     0    0      0
-#>           Medium  17   19     46
-#> [1] 0.5609756
-```
-
-``` r
+#>           Medium  24   18     47
+#> [1] 0.5280899
 
 # Check for errors
 warnings()
@@ -701,7 +677,7 @@ warnings()
 ### Penalized Discriminant Analysis Model
 
 
-``` r
+```r
 
 # Load libraries
 library(MachineShop)
@@ -780,13 +756,10 @@ return(pda_holdout_mean)
 pda_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                 y_test
 #> pda_test_predict Bad Good Medium
-#>           Bad     15    0      4
-#>           Good     0   12      6
-#>           Medium   4    3     49
-#> [1] 0.8172043
-```
-
-``` r
+#>           Bad     12    0      6
+#>           Good     0   17      4
+#>           Medium   7    2     42
+#> [1] 0.7888889
 
 # Check for errors
 warnings()
@@ -795,7 +768,7 @@ warnings()
 ### Random Forest
 
 
-``` r
+```r
 
 # Load libraries
 library(randomForest)
@@ -873,13 +846,10 @@ return(rf_holdout_mean)
 rf_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>             y_test
 #> rf_test_pred Bad Good Medium
-#>       Bad      6    0      8
-#>       Good     1   18      3
-#>       Medium  16   12     56
-#> [1] 0.6666667
-```
-
-``` r
+#>       Bad      5    0      2
+#>       Good     1   12      0
+#>       Medium  24   10     41
+#> [1] 0.6105263
 
 # Check for errors
 warnings()
@@ -888,7 +858,7 @@ warnings()
 ### Ranger
 
 
-``` r
+```r
 
 # Load libraries
 library(MachineShop)
@@ -967,13 +937,10 @@ return(ranger_holdout_mean)
 ranger_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                    y_test
 #> ranger_test_predict Bad Good Medium
-#>              Bad      2    1      3
-#>              Good     1    8      3
-#>              Medium  16   18     43
-#> [1] 0.5578947
-```
-
-``` r
+#>              Bad      8    0      2
+#>              Good     0    9      4
+#>              Medium  21   19     54
+#> [1] 0.6068376
 
 # Check for errors
 warnings()
@@ -982,7 +949,7 @@ warnings()
 ### Regularized Discriminant Analysis
 
 
-``` r
+```r
 
 # Load libraries
 library(klaR)
@@ -992,9 +959,6 @@ library(klaR)
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     select
-```
-
-``` r
 
 # Set initial values to 0
 rda_train_accuracy <- 0
@@ -1071,11 +1035,8 @@ rda_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, 
 #>          Bad Good Medium
 #>   Bad      0    0      0
 #>   Good     0    0      0
-#>   Medium  16   22     55
-#> [1] 0.5913978
-```
-
-``` r
+#>   Medium  19   20     48
+#> [1] 0.5517241
 
 # Check for errors
 warnings()
@@ -1084,7 +1045,7 @@ warnings()
 ### Rpart
 
 
-``` r
+```r
 
 # Load libraries
 library(MachineShop)
@@ -1163,13 +1124,10 @@ return(rpart_holdout_mean)
 rpart_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>                   y_test
 #> rpart_test_predict Bad Good Medium
-#>             Bad     11    1     11
-#>             Good     1   14      9
-#>             Medium  11    4     35
-#> [1] 0.6185567
-```
-
-``` r
+#>             Bad     12    0      9
+#>             Good     0   13      6
+#>             Medium  12   17     38
+#> [1] 0.588785
 
 # Check for errors
 warnings()
@@ -1178,7 +1136,7 @@ warnings()
 ### Support Vector Machines
 
 
-``` r
+```r
 
 # Load libraries
 library(e1071)
@@ -1258,11 +1216,8 @@ svm_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, 
 #> svm_test_pred Bad Good Medium
 #>        Bad      0    0      0
 #>        Good     0    0      0
-#>        Medium  29   21     51
-#> [1] 0.5049505
-```
-
-``` r
+#>        Medium  20   29     59
+#> [1] 0.5462963
 
 # Check for errors
 warnings()
@@ -1271,7 +1226,7 @@ warnings()
 ### Trees
 
 
-``` r
+```r
 
 # Load libraries
 library(tree)
@@ -1349,13 +1304,10 @@ return(tree_holdout_mean)
 tree_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>               y_test
 #> tree_test_pred Bad Good Medium
-#>         Bad     10    0     11
-#>         Good     2   11      8
-#>         Medium   6    7     42
-#> [1] 0.6494845
-```
-
-``` r
+#>         Bad      8    0     10
+#>         Good     0   10      6
+#>         Medium  15   13     44
+#> [1] 0.5849057
 
 # Check for errors
 warnings()
@@ -1364,7 +1316,7 @@ warnings()
 ### XGBoost
 
 
-``` r
+```r
 
 # Load libraries
 library(xgboost)
@@ -1373,9 +1325,6 @@ library(xgboost)
 #> The following object is masked from 'package:dplyr':
 #> 
 #>     slice
-```
-
-``` r
 
 # Set initial values to 0
 xgb_train_accuracy <- 0
@@ -1509,13 +1458,10 @@ return(xgb_holdout_mean)
 xgb_1(data = ISLR::Carseats, colnum = 7, numresamples = 5, train_amount = 0.60, test_amount = 0.20)
 #>         
 #>          Bad Good Medium
-#>   Bad      2    0      2
-#>   Good     0   12      4
-#>   Medium  24   11     40
-#> [1] 0.5684211
-```
-
-``` r
+#>   Bad      7    0      3
+#>   Good     1   10      5
+#>   Medium  20   15     42
+#> [1] 0.5728155
 
 # Check for errors
 warnings()
