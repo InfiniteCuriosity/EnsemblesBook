@@ -1,0 +1,1375 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Numerical data: How to make 23 individual models, and basic skills with functions
+
+This is where we will begin building the skills to make ensembles of
+models of numerical data. However, this is going to be much easier than
+it might appear at first. Let's see how we can make this as easy as
+possible.
+
+How to work backwards and make the function we need: Start from the end
+
+We are going to start at the ending, not at the beginning, and work
+backwards from there. This method is much, much easier than working
+forward, as you will see throughout this book. While it might be a
+little uncomfortable at first, this skill will allow you to complete
+your work at a faster rate than if you work forward.
+
+We'll use the Boston Housing data set, and we'll start with the Bagged
+Random Forest function. For now we're only going to work with one
+function, to keep everything simple. In essence, we are going to run
+this like an assembly line.
+
+We want the ending to be the error rate by model. Virtually any customer
+you work with is going to want to know, "How accurate is it?" That's our
+starting point.
+
+How do we determine model accuracy? We already did this in the previous
+chapter, finding the root mean squared error for the individual models
+and the ensemble models. We're going to do the same steps here, so the
+process is familiar to you.
+
+To get the error rate by model on the holdout data sets (test and
+validation), we're going to need a model (Bagged Random Forest in this
+first example), fit to the training data, and use that model to make
+predictions on the test data. We can then measure the error in the
+predictions, just as we did before. These steps should be familiar to
+you. If not, please re-read the previous chapter.
+
+But what do we need to complete those steps? We're going to have to go
+backward (a little) and make a function that will allow us to work with
+any data set.
+
+What does our function need? Let's make a list:
+
+-   The data (such as Boston housing)
+
+-   Column number (such as 14, the median value of the property)
+
+-   Train amount
+
+-   Test amount
+
+-   Validation amount
+
+-   Number of times to resample
+
+One of the key steps here is to change the name of the target variable
+to y. The initial name could be nearly anything, but this method changes
+the name of the target variable to y. This allows us to make one small
+change that will allow this to be the easiest possible solution:
+
+### All our models will be structured the same way: y \~ ., data = train
+
+This means that y (our target value) is a function of the other
+features, and the data set is the training data set. While there will be
+some variations on this in our 27 models, the basic structure is the
+same.
+
+### Having the same structure for all the models makes it much easier to build, debug, and deploy the completed models.
+
+Then we only need to start with our initial values, and it will run.
+
+One extremely nice part about creating models this way is the enormous
+efficiency it gives us. Once we have the Bagged Random Forest model
+working, we will be able to use very similar (and identical in many
+cases!) processes with other models (such as Support Vector Machines).
+
+The rock solid foundation we lay at the beginning will allow us to have
+a smooth and easy experience once the foundation is solid and we use it
+to build more models. The other models will mainly be almost exact
+duplicates of our fist example.'
+
+Here are the steps we will follow:
+
+-   Load the library
+
+-   Set initial values to 0
+
+-   Create the function
+
+-   Set up random resampling
+
+-   Break the data into train and test
+
+-   Fit the model on the training data, make predictions and measure
+    error on the test data
+
+-   Return the results
+
+-   Check for errors or warnings
+
+-   Test on a different data set
+
+### Exercise: Re-read the steps above how we will work backwards to come up with the function we need.
+
+### 1. Bagged Random Forest
+
+```{r Load libraries we will need}
+library(e1071) # will allow us to use a tuned random forest model
+library(Metrics) # Will allow us to calculate the root mean squared error
+library(randomForest) # To use the random forest function
+library(tidyverse) # Amazing set of tools for data science
+```
+
+```{r Set initial values to 0}
+# Set initial values to 0. The function will return an error if any of these are left out.
+
+bag_rf_holdout_RMSE <- 0
+bag_rf_holdout_RMSE_mean <- 0
+bag_rf_train_RMSE <- 0
+bag_rf_test_RMSE <- 0
+bag_rf_validation_RMSE <- 0
+```
+
+```{r Now that we have the initial values set up, make the function}
+
+# Define the function
+
+numerical_1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+#Set up random resampling
+
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col())
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+#Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Fit the model to the training data, make predictions on the testing data, then calculate the error rates on the testing data sets.
+bag_rf_train_fit <- e1071::tune.randomForest(x = train, y = train$y, mtry = ncol(train) - 1)
+bag_rf_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict( object = bag_rf_train_fit$best.model, newdata = train))
+bag_rf_train_RMSE_mean <- mean(bag_rf_train_RMSE)
+bag_rf_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict( object = bag_rf_train_fit$best.model, newdata = test))
+bag_rf_test_RMSE_mean <- mean(bag_rf_test_RMSE)
+
+# Itemize the error on the holdout data sets, and calculate the mean of the results
+bag_rf_holdout_RMSE[i] <- mean(bag_rf_test_RMSE_mean)
+bag_rf_holdout_RMSE_mean <- mean(c(bag_rf_holdout_RMSE))
+
+# These are the predictions we will need when we make the ensembles
+bag_rf_test_predict_value <- as.numeric(predict(object = bag_rf_train_fit$best.model, newdata = test))
+
+
+# Return the mean of the results to the user
+
+} # closing brace for numresamples
+  return(bag_rf_holdout_RMSE_mean)
+
+} # closing brace for numerical_1 function
+
+# Here is our first numerical function in actual use. We will use 25 resamples
+
+numerical_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings, the best possible result
+```
+
+Exercise: Try it yourself: Change the values of train, test and
+validation, and the number of resamples. See how those change the
+result.
+
+One of your own: Find any numerical data set, and make a bagged random
+forest function for that data set. (For example, you may use the Auto
+data set in the ISLR package. You will need to remove the last column,
+vehicle name. Model mpg as a function of the other features using the
+Bagged Random Forest function, but any numerical data set will work).
+
+Post: Share on social your first results making a numerical function
+(screen shot/video optional at this stage, we will be learning how to do
+those later)
+
+For example, "Did my first data science function building up to making
+ensembles later on. Got everything to run, no errors. #AIEnsembles"
+
+Now we will build the remaining 22 models for numerical data. They are
+all built using the same structure, on the same foundation.
+
+Now that we know how to build a basic function, let's build the 22 other
+sets of tools we will need to make our ensemble, starting with bagging:
+
+### 2. Bagging (bootstrap aggregating)
+
+```{r Bagging model for numerical data}
+library(ipred) #for the bagging function
+
+# Set initial values to 0
+bagging_train_RMSE <- 0
+bagging_test_RMSE <- 0
+bagging_validation_RMSE <- 0
+bagging_holdout_RMSE <- 0
+bagging_test_predict_value <- 0
+bagging_validation_predict_value <- 0
+
+#Create the function:
+
+bagging_1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+#Set up random resampling
+for (i in 1:numresamples) {
+
+#Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Fit the model to the training data, calculate error, make predictions on the holdout data
+
+bagging_train_fit <- ipred::bagging(formula = y ~ ., data = train)
+bagging_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = bagging_train_fit, newdata = train))
+bagging_train_RMSE_mean <- mean(bagging_train_RMSE)
+bagging_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = bagging_train_fit, newdata = test))
+bagging_test_RMSE_mean <- mean(bagging_test_RMSE)
+bagging_holdout_RMSE[i] <- mean(bagging_test_RMSE_mean)
+bagging_holdout_RMSE_mean <- mean(bagging_holdout_RMSE)
+y_hat_bagging <- c(bagging_test_predict_value)
+
+} # closing braces for the resampling function
+  return(bagging_holdout_RMSE_mean)
+  
+} # closing braces for the bagging function
+
+# Test the function:
+bagging_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.20, numresamples = 25)
+warnings() # no warnings
+```
+
+### 3. BayesGLM
+
+```{r BayesGLM model for numerical data}
+library(arm) # to use bayesglm function
+
+# Set initial values to 0
+bayesglm_train_RMSE <- 0
+bayesglm_test_RMSE <- 0
+bayesglm_validation_RMSE <- 0
+bayesglm_holdout_RMSE <- 0
+bayesglm_test_predict_value <- 0
+bayesglm_validation_predict_value <- 0
+
+# Create the function:
+bayesglm_1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+#Set up random resampling
+for (i in 1:numresamples) {
+
+#Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+#Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+#Breaks the data into train, test and validation sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+bayesglm_train_fit <- arm::bayesglm(y ~ ., data = train, family = gaussian(link = "identity"))
+bayesglm_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = bayesglm_train_fit, newdata = train))
+bayesglm_train_RMSE_mean <- mean(bayesglm_train_RMSE)
+bayesglm_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = bayesglm_train_fit, newdata = test))
+bayesglm_test_RMSE_mean <- mean(bayesglm_test_RMSE) 
+y_hat_bayesglm <- c(bayesglm_test_predict_value)
+
+} # closing braces for resampling
+  return(bayesglm_test_RMSE_mean)
+  
+} # closing braces for the function
+
+bayesglm_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.20, numresamples = 25)
+warnings() # no warnings
+```
+
+### 4. BayesRNN
+
+```{r BayesRNN for individual numerical data}
+library(brnn) # so we can use the BayesRNN function
+
+#Set initial values to 0
+
+bayesrnn_train_RMSE <- 0
+bayesrnn_test_RMSE <- 0
+bayesrnn_validation_RMSE <- 0
+bayesrnn_holdout_RMSE <- 0
+bayesrnn_test_predict_value <- 0
+bayesrnn_validation_predict_value <- 0
+
+# Create the function:
+
+bayesrnn_1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Fit the model on the training data, make predictions on the testing data
+bayesrnn_train_fit <- brnn::brnn(x = as.matrix(train), y = train$y)
+bayesrnn_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = bayesrnn_train_fit, newdata = train))
+bayesrnn_train_RMSE_mean <- mean(bayesrnn_train_RMSE)
+bayesrnn_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = bayesrnn_train_fit, newdata = test))
+bayesrnn_test_RMSE_mean <- mean(bayesrnn_test_RMSE)
+
+y_hat_bayesrnn <- c(bayesrnn_test_predict_value)
+
+} # Closing brace for number of resamples 
+  return(bayesrnn_test_RMSE_mean)
+
+} # Closing brace for the function
+
+bayesrnn_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+
+warnings() # no warnings for BayesRNN function
+```
+
+### 5. Boosted Random Forest
+
+```{r Individual numerical model for Boosted Random Forest}
+library(e1071)
+library(randomForest)
+library(tidyverse)
+
+#Set initial values to 0
+boost_rf_train_RMSE <- 0
+boost_rf_test_RMSE <- 0
+boost_rf_validation_RMSE <- 0
+boost_rf_holdout_RMSE <- 0
+boost_rf_test_predict_value <- 0
+boost_rf_validation_predict_value <- 0
+
+#Create the function:
+boost_rf_1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+#Set up random resampling
+for (i in 1:numresamples) {
+
+#Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+#Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Fit boosted random forest model on the training data, make predictions on holdout data
+
+boost_rf_train_fit <- e1071::tune.randomForest(x = train, y = train$y, mtry = ncol(train) - 1)
+boost_rf_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict( object = boost_rf_train_fit$best.model, newdata = train
+  ))
+boost_rf_train_RMSE_mean <- mean(boost_rf_train_RMSE)
+boost_rf_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict( object = boost_rf_train_fit$best.model, newdata = test
+  ))
+boost_rf_test_RMSE_mean <- mean(boost_rf_test_RMSE)
+
+} # closing brace for numresamples
+  return(boost_rf_test_RMSE_mean)
+  
+} # closing brace for the function
+
+boost_rf_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for Boosted Random Forest function
+```
+
+### 6. Cubist
+
+```{r Individual model based on the cubist function}
+library(Cubist)
+library(tidyverse)
+
+# Set initial values to 0
+
+cubist_train_RMSE <- 0
+cubist_test_RMSE <- 0
+cubist_validation_RMSE <- 0
+cubist_holdout_RMSE <- 0
+cubist_test_predict_value <- 0
+
+# Create the function:
+
+cubist_1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+#Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Fit the model on the training data, make predictions on the holdout data
+cubist_train_fit <- Cubist::cubist(x = train[, 1:ncol(train) - 1], y = train$y)
+cubist_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = cubist_train_fit, newdata = train))
+cubist_train_RMSE_mean <- mean(cubist_train_RMSE)
+cubist_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = cubist_train_fit, newdata = test))
+cubist_test_RMSE_mean <- mean(cubist_test_RMSE)
+
+} # closing braces for numresamples
+  return(cubist_test_RMSE_mean)
+  
+} # closing braces for the function
+
+cubist_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual cubist function
+```
+
+### 7. Elastic
+
+```{r Individual elastic model for numerical data}
+
+library(glmnet) # So we can run the elastic model
+library(tidyverse)
+
+# Set initial values to 0
+
+elastic_train_RMSE <- 0
+elastic_test_RMSE <- 0
+elastic_validation_RMSE <- 0
+elastic_holdout_RMSE <- 0
+elastic_test_predict_value <- 0
+elastic_validation_predict_value <- 0
+elastic_test_RMSE <- 0
+elastic_test_RMSE_df <- data.frame(elastic_test_RMSE)
+elastic_validation_RMSE <- 0
+elastic_validation_RMSE_df <- data.frame(elastic_validation_RMSE)
+elastic_holdout_RMSE <- 0
+elastic_holdout_RMSE_df <- data.frame(elastic_holdout_RMSE)
+
+# Create the function:
+elastic_1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train, test and validation sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+# Set up the elastic model
+
+y <- train$y
+x <- data.matrix(train %>% dplyr::select(-y))
+elastic_model <- glmnet::glmnet(x, y, alpha = 0.5)
+elastic_cv <- cv.glmnet(x, y, alpha = 0.5)
+best_elastic_lambda <- elastic_cv$lambda.min
+best_elastic_model <- glmnet::glmnet(x, y, alpha = 0, lambda = best_elastic_lambda)
+elastic_test_pred <- predict(best_elastic_model, s = best_elastic_lambda, newx = data.matrix(test %>% dplyr::select(-y)))
+
+elastic_test_RMSE <- Metrics::rmse(actual = test$y, predicted = elastic_test_pred)
+elastic_test_RMSE_df <- rbind(elastic_test_RMSE_df, elastic_test_RMSE)
+elastic_test_RMSE_mean <- mean(elastic_test_RMSE_df$elastic_test_RMSE[2:nrow(elastic_test_RMSE_df)])
+
+elastic_holdout_RMSE <- mean(elastic_test_RMSE_mean)
+elastic_holdout_RMSE_df <- rbind(elastic_holdout_RMSE_df, elastic_holdout_RMSE)
+elastic_holdout_RMSE_mean <- mean(elastic_holdout_RMSE_df$elastic_holdout_RMSE[2:nrow(elastic_holdout_RMSE_df)])
+
+} # closing brace for numresample
+  return(elastic_holdout_RMSE_mean)
+  
+} # closing brace for the elastic function
+
+elastic_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual elastic function
+```
+
+### 8. Generalized Additive Models with smoothing splines
+
+```{r Individual model of generalized additive models with smoothng splines}
+library(gam) # for fitting generalized additive models
+
+# Set initial values to 0
+
+gam_train_RMSE <- 0
+gam_test_RMSE <- 0
+gam_holdout_RMSE <- 0
+gam_test_predict_value <- 0
+
+# Create the function:
+gam1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+# Set up random resampling
+
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+# Set up to fit the model on the training data
+
+n_unique_vals <- purrr::map_dbl(df, dplyr::n_distinct)
+
+# Names of columns with >= 4 unique vals
+keep <- names(n_unique_vals)[n_unique_vals >= 4]
+
+gam_data <- df %>% dplyr::select(dplyr::all_of(keep))
+
+# Model data
+
+train1 <- train %>% dplyr::select(dplyr::all_of(keep))
+
+test1 <- test %>% dplyr::select(dplyr::all_of(keep))
+
+names_df <- names(gam_data[, 1:ncol(gam_data) - 1])
+f2 <- stats::as.formula(paste0("y ~", paste0("gam::s(", names_df, ")", collapse = "+")))
+
+gam_train_fit <- gam::gam(f2, data = train1)
+gam_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = gam_train_fit, newdata = train))
+gam_train_RMSE_mean <- mean(gam_train_RMSE)
+gam_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = gam_train_fit, newdata = test))
+gam_test_RMSE_mean <- mean(gam_test_RMSE)
+gam_holdout_RMSE[i] <- mean(gam_test_RMSE_mean)
+gam_holdout_RMSE_mean <- mean(gam_holdout_RMSE)
+
+} # closing braces for numresamples
+  return(gam_holdout_RMSE_mean)
+  
+} # closing braces for gam function
+
+gam1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual gam function
+```
+
+### 9. Gradient Boosted
+
+```{r Individual gradient boosted model for numerical data}
+library(gbm) # to allow use of gradient boosted models
+
+# Set initial values to 0
+gb_train_RMSE <- 0
+gb_test_RMSE <- 0
+gb_validation_RMSE <- 0
+gb_holdout_RMSE <- 0
+gb_test_predict_value <- 0
+gb_validation_predict_value <- 0
+
+gb1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+gb_train_fit <- gbm::gbm(train$y ~ ., data = train, distribution = "gaussian", n.trees = 100, shrinkage = 0.1, interaction.depth = 10)
+gb_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = gb_train_fit, newdata = train))
+gb_train_RMSE_mean <- mean(gb_train_RMSE)
+gb_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = gb_train_fit, newdata = test))
+gb_test_RMSE_mean <- mean(gb_test_RMSE)
+
+} # closing brace for numresamples
+  return(gb_test_RMSE_mean)
+  
+} # closing brace for gb1 function
+
+gb1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual gradient boosted function
+```
+
+### 10. K-Nearest Neighbors (tuned)
+
+```{r Individual tuned KNN model for numerical data}
+
+library(e1071)
+
+# Set initial values to 0
+knn_train_RMSE <- 0
+knn_test_RMSE <- 0
+knn_validation_RMSE <- 0
+knn_holdout_RMSE <- 0
+knn_test_predict_value <- 0
+knn_validation_predict_value <- 0
+
+knn1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+knn_train_fit <- e1071::tune.gknn(x = train[, 1:ncol(train) - 1], y = train$y, scale = TRUE, k = c(1:25))
+knn_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict( object = knn_train_fit$best.model,
+    newdata = train[, 1:ncol(train) - 1], k = knn_train_fit$best_model$k))
+knn_train_RMSE_mean <- mean(knn_train_RMSE)
+knn_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict( object = knn_train_fit$best.model,
+    k = knn_train_fit$best_model$k, newdata = test[, 1:ncol(test) - 1]))
+knn_test_RMSE_mean <- mean(knn_test_RMSE)
+knn_holdout_RMSE[i] <- mean(c(knn_test_RMSE_mean))
+knn_holdout_RMSE_mean <- mean(knn_holdout_RMSE)
+
+} # closing brace for numresamples
+  return(knn_holdout_RMSE_mean)
+  
+} # closing brace for knn1 function
+
+knn1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual knn function
+```
+
+### 11. Lasso
+
+```{r Individual lasso model for numerical data}
+library(glmnet) # So we can run the lasso model
+
+# Set initial values to 0
+
+lasso_train_RMSE <- 0
+lasso_test_RMSE <- 0
+lasso_validation_RMSE <- 0
+lasso_holdout_RMSE <- 0
+lasso_test_predict_value <- 0
+lasso_validation_predict_value <- 0
+lasso_test_RMSE <- 0
+lasso_test_RMSE_df <- data.frame(lasso_test_RMSE)
+lasso_validation_RMSE <- 0
+lasso_validation_RMSE_df <- data.frame(lasso_validation_RMSE)
+lasso_holdout_RMSE <- 0
+lasso_holdout_RMSE_df <- data.frame(lasso_holdout_RMSE)
+
+# Create the function:
+lasso_1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Set up the lasso model
+y <- train$y
+x <- data.matrix(train %>% dplyr::select(-y))
+lasso_model <- glmnet::glmnet(x, y, alpha = 1.0)
+lasso_cv <- cv.glmnet(x, y, alpha = 1.0)
+best_lasso_lambda <- lasso_cv$lambda.min
+best_lasso_model <- glmnet::glmnet(x, y, alpha = 0, lambda = best_lasso_lambda)
+lasso_test_pred <- predict(best_lasso_model, s = best_lasso_lambda, newx = data.matrix(test %>% dplyr::select(-y)))
+
+lasso_test_RMSE <- Metrics::rmse(actual = test$y, predicted = lasso_test_pred)
+lasso_test_RMSE_df <- rbind(lasso_test_RMSE_df, lasso_test_RMSE)
+lasso_test_RMSE_mean <- mean(lasso_test_RMSE_df$lasso_test_RMSE[2:nrow(lasso_test_RMSE_df)])
+
+lasso_holdout_RMSE <- mean(lasso_test_RMSE_mean)
+lasso_holdout_RMSE_df <- rbind(lasso_holdout_RMSE_df, lasso_holdout_RMSE)
+lasso_holdout_RMSE_mean <- mean(lasso_holdout_RMSE_df$lasso_holdout_RMSE[2:nrow(lasso_holdout_RMSE_df)])
+
+} # closing brace for numresample
+  return(lasso_holdout_RMSE_mean)
+  
+} # closing brace for the lasso_1 function
+
+lasso_1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual lasso function
+```
+
+### 12. Linear (tuned)
+
+```{r Individual tuned linear model for numeric data}
+
+library(e1071) # for tuned linear models
+
+# Set initial values to 0
+linear_train_RMSE <- 0
+linear_test_RMSE <- 0
+linear_holdout_RMSE <- 0
+
+# Set up the function
+linear1 <- function(data, colnum, train_amount, test_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+#Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+linear_train_fit <- e1071::tune.rpart(formula = y ~ ., data = train)
+linear_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = linear_train_fit$best.model, newdata = train))
+linear_train_RMSE_mean <- mean(linear_train_RMSE)
+linear_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = linear_train_fit$best.model, newdata = test))
+linear_holdout_RMSE_mean <- mean(linear_test_RMSE)
+
+} # closing brace for numresamples
+  return(linear_holdout_RMSE_mean)
+  
+} # closing brace for linear1 function
+
+linear1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual lasso function
+```
+
+### 13. LQS
+
+```{r LQS models for numerical data}
+
+library(MASS) # to allow us to run LQS models
+
+# Set initial values to 0
+
+lqs_train_RMSE <- 0
+lqs_test_RMSE <- 0
+lqs_validation_RMSE <- 0
+lqs_holdout_RMSE <- 0
+lqs_test_predict_value <- 0
+lqs_validation_predict_value <- 0
+
+lqs1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+lqs_train_fit <- MASS::lqs(train$y ~ ., data = train)
+lqs_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = lqs_train_fit, newdata = train))
+lqs_train_RMSE_mean <- mean(lqs_train_RMSE)
+lqs_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = lqs_train_fit, newdata = test))
+lqs_test_RMSE_mean <- mean(lqs_test_RMSE)
+
+y_hat_lqs <- c(lqs_test_predict_value, lqs_validation_predict_value)
+
+} # Closing brace for numresamples
+    return(lqs_test_RMSE_mean)
+
+} # Closing brace for lqs1 function
+
+lqs1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual lqs function
+```
+
+### 14. Neuralnet
+
+```{r Neuralnet individual model for numerical data}
+library(neuralnet)
+
+#Set initial values to 0
+
+neuralnet_train_RMSE <- 0
+neuralnet_test_RMSE <- 0
+neuralnet_validation_RMSE <- 0
+neuralnet_holdout_RMSE <- 0
+neuralnet_test_predict_value <- 0
+neuralnet_validation_predict_value <- 0
+
+# Fit the model to the training data
+neuralnet1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test data sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+maxs <- apply(df, 2, max)
+mins <- apply(df, 2, min)
+scaled <- as.data.frame(scale(df, center = mins, scale = maxs - mins))
+train_ <- scaled[idx == 1, ]
+test_ <- scaled[idx == 2, ]
+n <- names(train_)
+f <- as.formula(paste("y ~", paste(n[!n %in% "y"], collapse = " + ")))
+nn <- neuralnet(f, data = train_, hidden = c(5, 3), linear.output = TRUE)
+predict_test_nn <- neuralnet::compute(nn, test_[, 1:ncol(df) - 1])
+predict_test_nn_ <- predict_test_nn$net.result * (max(df$y) - min(df$y)) + min(df$y)
+predict_train_nn <- neuralnet::compute(nn, train_[, 1:ncol(df) - 1])
+predict_train_nn_ <- predict_train_nn$net.result * (max(df$y) - min(df$y)) + min(df$y)
+neuralnet_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict_train_nn_)
+neuralnet_train_RMSE_mean <- mean(neuralnet_train_RMSE)
+neuralnet_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict_test_nn_)
+neuralnet_test_RMSE_mean <- mean(neuralnet_test_RMSE)
+
+neuralnet_holdout_RMSE[i] <- mean(c(neuralnet_test_RMSE))
+neuralnet_holdout_RMSE_mean <- mean(neuralnet_holdout_RMSE)
+
+} # Closing brace for numresamples
+  return(neuralnet_holdout_RMSE_mean)
+  
+} # closing brace for neuralnet1 function
+
+neuralnet1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual neuralnet function
+```
+
+### 15. Partial Least Squares
+
+```{r Partial least squares models for numerical data}
+
+library(pls)
+
+# Set initial values to 0
+pls_train_RMSE <- 0
+pls_test_RMSE <- 0
+pls_validation_RMSE <- 0
+pls_holdout_RMSE <- 0
+pls_test_predict_value <- 0
+pls_validation_predict_value <- 0
+
+pls1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+pls_train_fit <- pls::plsr(train$y ~ ., data = train)
+pls_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = pls_train_fit, newdata = train))
+pls_train_RMSE_mean <- mean(pls_train_RMSE)
+pls_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = pls_train_fit, newdata = test))
+pls_test_RMSE_mean <- mean(pls_test_RMSE)
+
+} # Closing brace for numresamples loop
+  return( pls_test_RMSE_mean)
+  
+} # Closing brace for pls1 function
+
+pls1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual pls function
+```
+
+### 16. Principal Components Regression
+
+```{r Principal Components Regression models for numerical data}
+
+library(pls) # To run pcr models
+
+#Set initial values to 0
+pcr_train_RMSE <- 0
+pcr_test_RMSE <- 0
+pcr_validation_RMSE <- 0
+pcr_holdout_RMSE <- 0
+pcr_test_predict_value <- 0
+pcr_validation_predict_value <- 0
+
+pcr1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+pcr_train_fit <- pls::pcr(train$y ~ ., data = train)
+pcr_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = pcr_train_fit, newdata = train))
+pcr_train_RMSE_mean <- mean(pcr_train_RMSE)
+pcr_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = pcr_train_fit, newdata = test))
+pcr_test_RMSE_mean <- mean(pcr_test_RMSE)
+
+} # Closing brace for numresamples loop
+  return(pcr_test_RMSE_mean)
+  
+} # Closing brace for PCR function
+
+pcr1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual pls function
+```
+
+### 17. Random Forest
+
+```{r Random forest, individual model for numerical data}
+library(randomForest)
+
+# Set initial values to 0
+rf_train_RMSE <- 0
+rf_test_RMSE <- 0
+rf_validation_RMSE <- 0
+rf_holdout_RMSE <- 0
+rf_test_predict_value <- 0
+rf_validation_predict_value <- 0
+
+# Set up the function
+rf1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+#Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train, test and validation sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+rf_train_fit <- tune.randomForest(x = train, y = train$y, data = train)
+rf_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = rf_train_fit$best.model, newdata = train))
+rf_train_RMSE_mean <- mean(rf_train_RMSE)
+rf_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = rf_train_fit$best.model, newdata = test))
+rf_test_RMSE_mean <- mean(rf_test_RMSE)
+
+} # Closing brace for numresamples loop
+return(rf_test_RMSE_mean)
+  
+} # Closing brace for rf1 function
+
+rf1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual random forest function
+```
+
+### 18. Ridge Regression
+
+```{r Individual ridge model for numerical data}
+
+library(glmnet) # So we can run the ridge model
+
+# Set initial values to 0
+ridge_train_RMSE <- 0
+ridge_test_RMSE <- 0
+ridge_validation_RMSE <- 0
+ridge_holdout_RMSE <- 0
+ridge_test_predict_value <- 0
+ridge_validation_predict_value <- 0
+ridge_test_RMSE <- 0
+ridge_test_RMSE_df <- data.frame(ridge_test_RMSE)
+ridge_validation_RMSE <- 0
+ridge_validation_RMSE_df <- data.frame(ridge_validation_RMSE)
+ridge_holdout_RMSE <- 0
+ridge_holdout_RMSE_df <- data.frame(ridge_holdout_RMSE)
+
+# Create the function:
+ridge1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train, test and validation sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1, ]
+test <- df[idx == 2, ]
+
+# Set up the ridge model
+y <- train$y
+x <- data.matrix(train %>% dplyr::select(-y))
+ridge_model <- glmnet::glmnet(x, y, alpha = 0)
+ridge_cv <- cv.glmnet(x, y, alpha = 0)
+best_ridge_lambda <- ridge_cv$lambda.min
+best_ridge_model <- glmnet::glmnet(x, y, alpha = 0, lambda = best_ridge_lambda)
+ridge_test_pred <- predict(best_ridge_model, s = best_ridge_lambda, newx = data.matrix(test %>% dplyr::select(-y)))
+
+ridge_test_RMSE <- Metrics::rmse(actual = test$y, predicted = ridge_test_pred)
+ridge_test_RMSE_df <- rbind(ridge_test_RMSE_df, ridge_test_RMSE)
+ridge_test_RMSE_mean <- mean(ridge_test_RMSE_df$ridge_test_RMSE[2:nrow(ridge_test_RMSE_df)])
+
+ridge_holdout_RMSE <- mean(ridge_test_RMSE_mean)
+ridge_holdout_RMSE_df <- rbind(ridge_holdout_RMSE_df, ridge_holdout_RMSE)
+ridge_holdout_RMSE_mean <- mean(ridge_holdout_RMSE_df$ridge_holdout_RMSE[2:nrow(ridge_holdout_RMSE_df)])
+
+} # closing brace for numresample
+  return(ridge_holdout_RMSE_mean)
+  
+} # closing brace for the ridge function
+
+ridge1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual ridge function
+```
+
+### 19. Robust Regression
+
+```{r Robust Regression for numerical data}
+
+library(MASS) # To run rlm function for robust regression
+
+# Set initial values to 0
+robust_train_RMSE <- 0
+robust_test_RMSE <- 0
+robust_validation_RMSE <- 0
+robust_holdout_RMSE <- 0
+robust_test_predict_value <- 0
+robust_validation_predict_value <- 0
+
+# Make the function
+robust1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+robust_train_fit <- MASS::rlm(x = train[, 1:ncol(df) - 1], y = train$y)
+robust_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = robust_train_fit$fitted.values)
+robust_train_RMSE_mean <- mean(robust_train_RMSE)
+robust_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = MASS::rlm(y ~ ., data = train), newdata = test))
+robust_test_RMSE_mean <- mean(robust_test_RMSE) 
+
+} # Closing brace for numresamples loop
+return(robust_test_RMSE_mean)
+  
+} # Closing brace for robust1 function
+
+robust1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual robust function
+```
+
+### 20. Rpart
+
+```{r Individual model using Rpart}
+
+library(rpart)
+
+# Set initial values to 0
+rpart_train_RMSE <- 0
+rpart_test_RMSE <- 0
+rpart_validation_RMSE <- 0
+rpart_holdout_RMSE <- 0
+rpart_test_predict_value <- 0
+rpart_validation_predict_value <- 0
+
+# Make the function
+rpart1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+rpart_train_fit <- rpart::rpart(train$y ~ ., data = train)
+rpart_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = rpart_train_fit, newdata = train))
+rpart_train_RMSE_mean <- mean(rpart_train_RMSE)
+rpart_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = rpart_train_fit, newdata = test))
+rpart_test_RMSE_mean <- mean(rpart_test_RMSE)
+
+} # Closing loop for numresamples
+return(rpart_test_RMSE_mean)
+  
+} # Closing brace for rpart1 function
+
+rpart1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual rpart function
+```
+
+### 21. Support Vector Machines
+
+```{r Individual models using Support Vector Machines}
+
+library(e1071)
+
+# Set initial values to 0
+svm_train_RMSE <- 0
+svm_test_RMSE <- 0
+svm_validation_RMSE <- 0
+svm_holdout_RMSE <- 0
+svm_test_predict_value <- 0
+svm_validation_predict_value <- 0
+
+# Make the function
+svm1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+svm_train_fit <- e1071::tune.svm(x = train, y = train$y, data = train)
+svm_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = svm_train_fit$best.model, newdata = train))
+svm_train_RMSE_mean <- mean(svm_train_RMSE)
+svm_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = svm_train_fit$best.model, newdata = test))
+svm_test_RMSE_mean <- mean(svm_test_RMSE)
+
+} # Closing brace for numresamples loop
+  return(svm_test_RMSE_mean)
+
+} # Closing brace for svm1 function
+
+svm1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual Support Vector Machines function
+```
+
+### 22. Trees
+
+```{r Individual models using trees}
+
+library(tree)
+
+# Set initial values to 0
+
+tree_train_RMSE <- 0
+tree_test_RMSE <- 0
+tree_validation_RMSE <- 0
+tree_holdout_RMSE <- 0
+tree_test_predict_value <- 0
+tree_validation_predict_value <- 0
+
+# Make the function
+tree1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+tree_train_fit <- tree::tree(train$y ~ ., data = train)
+tree_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = tree_train_fit, newdata = train))
+tree_train_RMSE_mean <- mean(tree_train_RMSE)
+tree_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = tree_train_fit, newdata = test))
+tree_test_RMSE_mean <- mean(tree_test_RMSE)
+
+} # Closing brace for numresamples loop
+  return(tree_test_RMSE_mean)
+  
+} # Closing brace for tree1 function
+
+tree1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual tree function
+```
+
+### 23. XGBoost
+
+```{r Individual XGBoost model}
+library(xgboost)
+
+# Set initial values to 0
+xgb_train_RMSE <- 0
+xgb_test_RMSE <- 0
+xgb_validation_RMSE <- 0
+xgb_holdout_RMSE <- 0
+xgb_test_predict_value <- 0
+xgb_validation_predict_value <- 0
+
+# Create the function
+xgb1 <- function(data, colnum, train_amount, test_amount, validation_amount, numresamples){
+
+# Set up random resampling
+for (i in 1:numresamples) {
+
+# Changes the name of the target column to y
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Moves the target column to the last column on the right
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right df <- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train and test sets
+idx <- sample(seq(1, 2), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+train <- df[idx == 1,]
+test <- df[idx == 2, ]
+
+train_x <- data.matrix(train[, -ncol(train)])
+train_y <- train[, ncol(train)]
+
+# define predictor and response variables in test set
+test_x <- data.matrix(test[, -ncol(test)])
+test_y <- test[, ncol(test)]
+
+# define final train, test and validation sets
+
+xgb_train <- xgboost::xgb.DMatrix(data = train_x, label = train_y)
+xgb_test <- xgboost::xgb.DMatrix(data = test_x, label = test_y)
+
+# define watchlist
+watchlist <- list(train = xgb_train)
+watchlist_test <- list(train = xgb_train, test = xgb_test)
+
+# fit XGBoost model and display training and validation data at each round
+xgb_model <- xgboost::xgb.train(data = xgb_train, max.depth = 3, watchlist = watchlist_test, nrounds = 70)
+
+xgboost_min <- which.min(xgb_model$evaluation_log$validation_rmse)
+
+xgb_train_RMSE[i] <- Metrics::rmse(actual = train$y, predicted = predict(object = xgb_model, newdata = train_x))
+xgb_train_RMSE_mean <- mean(xgb_train_RMSE)
+xgb_test_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = predict(object = xgb_model, newdata = test_x))
+xgb_test_RMSE_mean <- mean(xgb_test_RMSE)
+
+xgb_holdout_RMSE[i] <- mean(xgb_test_RMSE_mean)
+xgb_holdout_RMSE_mean <- mean(xgb_holdout_RMSE)
+
+} # Closing brace for numresamples loop
+  return(xgb_holdout_RMSE_mean)
+  
+} # Closing brace for xgb1 function
+
+xgb1(data = MASS::Boston, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25)
+warnings() # no warnings for individual XGBoost function
+```

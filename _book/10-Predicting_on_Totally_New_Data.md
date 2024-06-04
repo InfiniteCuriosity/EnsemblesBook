@@ -1,0 +1,170 @@
+# Predicting on totally new data with individual models and ensembles
+
+Let's start with a simple ensemble of cubist, gam and linear models:
+
+
+``` r
+library(tree) # Allows us to use tree models
+library(MASS) # For the Boston Housing data set library(Metrics)
+library(reactable) # For the final report - looks amazing!
+library(tidyverse)
+#> ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──
+#> ✔ dplyr     1.1.4     ✔ readr     2.1.5
+#> ✔ forcats   1.0.0     ✔ stringr   1.5.1
+#> ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+#> ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+#> ✔ purrr     1.0.2     
+#> ── Conflicts ────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::filter() masks stats::filter()
+#> ✖ dplyr::lag()    masks stats::lag()
+#> ✖ dplyr::select() masks MASS::select()
+#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+```
+
+``` r
+
+# Set initial values to 0
+linear_train_RMSE <- 0
+linear_test_RMSE <- 0
+linear_RMSE <- 0
+linear_test_predict_value <- 0
+
+tree_train_RMSE <- 0
+tree_test_RMSE <- 0
+tree_RMSE <- 0
+tree_holdout_RMSE <- 0
+tree_test_predict_value <- 0
+
+ensemble_linear_RMSE <- 0
+ensemble_linear_RMSE_mean <- 0
+ensemble_tree_RMSE <- 0
+ensemble_tree_RMSE_mean <- 0
+
+numerical_1 <- function(data, colnum, train_amount, test_amount, numresamples, do_you_have_new_data = c("Y", "N")){
+
+# Move target column to far right
+y <- 0
+colnames(data)[colnum] <- "y"
+
+# Set up resampling
+for (i in 1:numresamples) {
+  idx <- sample(seq(1, 2), size = nrow(data), replace = TRUE, prob = c(train_amount, test_amount))
+  train <- data[idx == 1, ]
+  test <- data[idx == 2, ]
+
+# Fit linear model on the training data, make predictions on the test data
+linear_train_fit <- lm(y ~ ., data = train)
+linear_predictions <- predict(object = linear_train_fit, newdata = test)
+linear_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = linear_predictions)
+linear_RMSE_mean <- mean(linear_RMSE)
+
+# Fit tree model on the training data, make predictions on the test data
+tree_train_fit <- tree(y ~ ., data = train)
+tree_predictions <- predict(object = tree_train_fit, newdata = test)
+tree_RMSE[i] <- Metrics::rmse(actual = test$y, predicted = tree_predictions)
+tree_RMSE_mean <- mean(tree_RMSE)
+
+# Make the weighted ensemble
+ensemble <- data.frame(
+  'linear' = linear_predictions / linear_RMSE_mean,
+  'tree' = tree_predictions / tree_RMSE_mean,
+  'y_ensemble' = test$y)
+
+# Split ensemble between train and test
+ensemble_idx <- sample(seq(1, 2), size = nrow(ensemble), replace = TRUE, prob = c(train_amount, test_amount))
+ensemble_train <- ensemble[ensemble_idx == 1, ]
+ensemble_test <- ensemble[ensemble_idx == 2, ]
+
+# Fit the ensemble data on the ensemble training data, predict on ensemble test data
+ensemble_linear_train_fit <- lm(y_ensemble ~ ., data = ensemble_train)
+
+ensemble_linear_predictions <- predict(object = ensemble_linear_train_fit, newdata = ensemble_test)
+
+ensemble_linear_RMSE[i] <- Metrics::rmse(actual = ensemble_test$y, predicted = ensemble_linear_predictions)
+
+ensemble_linear_RMSE_mean <- mean(ensemble_linear_RMSE)
+
+# Fit the tree model on the ensemble training data, predict on ensemble test data
+ensemble_tree_train_fit <- tree(y_ensemble ~ ., data = ensemble_train)
+
+ensemble_tree_predictions <- predict(object = ensemble_tree_train_fit, newdata = ensemble_test) 
+
+ensemble_tree_RMSE[i] <- Metrics::rmse(actual = ensemble_test$y, predicted = ensemble_tree_predictions)
+
+ensemble_tree_RMSE_mean <- mean(ensemble_tree_RMSE)
+
+results <- data.frame(
+  'Model' = c('Linear', 'Tree', 'Ensemble_Linear', 'Ensemble_tree'),
+  'Error_Rate' = c(linear_RMSE_mean, tree_RMSE_mean, ensemble_linear_RMSE_mean, ensemble_tree_RMSE_mean)
+)
+
+results <- results %>% arrange(Error_Rate)
+
+} # Closing brace for numresamples
+
+if (do_you_have_new_data == "Y") {
+  new_data <- read.csv('/Users/russellconte/NewBoston.csv', header = TRUE, sep = ',')
+
+  y <- 0
+  colnames(new_data)[colnum] <- "y"
+
+  new_data <- new_data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+}
+  
+  new_linear <- predict(object = linear_train_fit, newdata = new_data)
+  new_tree <- predict(object = tree_train_fit, newdata = new_data)
+
+  new_ensemble <- data.frame(
+    "linear" = new_linear / linear_RMSE_mean,
+    "tree" = new_tree / tree_RMSE_mean
+    )
+
+  new_ensemble$Row_mean <- rowMeans(new_ensemble)
+  new_ensemble$y_ensemble <- new_data$y
+
+  new_ensemble_linear <- predict(object = ensemble_linear_train_fit, newdata = new_ensemble)
+  new_ensemble_tree <- predict(object = ensemble_tree_train_fit, newdata = new_ensemble)
+
+  new_data_results <-
+    data.frame(
+      "True_Value" = new_ensemble$y_ensemble,
+      "Linear" = round(new_linear, 4),
+      "Tree" = round(new_tree, 4),
+      "Ensemble_Linear" = round(new_ensemble_linear, 4),
+      "Ensemble_Tree" = round(new_ensemble_tree, 4)
+    )
+
+  df1 <- t(new_data_results)
+
+  predictions_of_new_data <- reactable::reactable(
+    data = df1, searchable = TRUE, pagination = FALSE, wrap = TRUE, rownames = TRUE, fullWidth = TRUE, filterable = TRUE, bordered = TRUE,
+    striped = TRUE, highlight = TRUE, resizable = TRUE
+  ) %>%
+    
+    reactablefmtr::add_title("Predictions of new data")
+  
+  results <- reactable::reactable(
+    data = results, searchable = TRUE, pagination = FALSE, wrap = TRUE, rownames = TRUE, fullWidth = TRUE, filterable = TRUE, bordered = TRUE, striped = TRUE, highlight = TRUE, resizable = TRUE
+  ) %>% 
+    reactablefmtr::add_title("Model and error rates")
+
+return(list(results, predictions_of_new_data))
+
+} # Closing brace for the function
+
+numerical_1(data = Ensembles::Boston_Housing, colnum = 14, train_amount = 0.60, test_amount = 0.40, numresamples = 25, do_you_have_new_data = "Y")
+#> Registered S3 method overwritten by 'tsibble':
+#>   method          from
+#>   format.interval inum
+#> Registered S3 method overwritten by 'GGally':
+#>   method from   
+#>   +.gg   ggplot2
+#> [[1]]
+#> 
+#> [[2]]
+```
+
+``` r
+
+# Note these results show up in the Viewer.
+```
