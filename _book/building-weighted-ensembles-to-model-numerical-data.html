@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 4 Building weighted ensembles to model numerical data | Ensembles: From Beginner to Expert</title>
+<meta name="author" content="Russ Conte">
+<meta name="description" content="In the last chapter we learned how to make 23 individual models, including calculating the error rate (as root mean squared error), and predictions from the holdout data (test and validation)....">
+<meta name="generator" content="bookdown 0.39 with bs4_book()">
+<meta property="og:title" content="Chapter 4 Building weighted ensembles to model numerical data | Ensembles: From Beginner to Expert">
+<meta property="og:type" content="book">
+<meta property="og:description" content="In the last chapter we learned how to make 23 individual models, including calculating the error rate (as root mean squared error), and predictions from the holdout data (test and validation)....">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 4 Building weighted ensembles to model numerical data | Ensembles: From Beginner to Expert">
+<meta name="twitter:description" content="In the last chapter we learned how to make 23 individual models, including calculating the error rate (as root mean squared error), and predictions from the holdout data (test and validation)....">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.7.0/transition.js"></script><script src="libs/bs3compat-0.7.0/tabs.js"></script><script src="libs/bs3compat-0.7.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Ensembles: From Beginner to Expert</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html"><span class="header-section-number">1</span> Welcome!</a></li>
+<li><a class="" href="introduction-and-your-first-ensembles.html"><span class="header-section-number">2</span> Introduction and your first ensembles</a></li>
+<li><a class="" href="numerical-data-how-to-make-23-individual-models-and-basic-skills-with-functions.html"><span class="header-section-number">3</span> Numerical data: How to make 23 individual models, and basic skills with functions</a></li>
+<li><a class="active" href="building-weighted-ensembles-to-model-numerical-data.html"><span class="header-section-number">4</span> Building weighted ensembles to model numerical data</a></li>
+<li><a class="" href="classification-data-how-to-make-14-individual-classification-models.html"><span class="header-section-number">5</span> Classification data: How to make 14 individual classification models</a></li>
+<li><a class="" href="building-ensembles-of-classification-models.html"><span class="header-section-number">6</span> Building ensembles of classification models</a></li>
+<li><a class="" href="individual-logistic-models.html"><span class="header-section-number">7</span> Individual logistic models</a></li>
+<li><a class="" href="advice-to-lebron-james-and-everyone-who-does-talent-analytics-logistic-ensembles.html"><span class="header-section-number">8</span> Advice to Lebron James (and everyone who does talent analytics): Logistic ensembles</a></li>
+<li><a class="" href="how-to-make-27-individual-forecasting-models.html"><span class="header-section-number">9</span> How to Make 27 Individual Forecasting Models</a></li>
+<li><a class="" href="ensembles-of-26-forecasting-models.html"><span class="header-section-number">10</span> Ensembles of 26 Forecasting Models</a></li>
+<li><a class="" href="predicting-on-totally-new-data-with-individual-models-and-ensembles.html"><span class="header-section-number">11</span> Predicting on totally new data with individual models and ensembles</a></li>
+<li><a class="" href="how-to-communicate-your-results.html"><span class="header-section-number">12</span> How to communicate your results</a></li>
+<li><a class="" href="final-comprhensive-project.html"><span class="header-section-number">13</span> Final Comprhensive Project</a></li>
+<li><a class="" href="building-your-own-no-code-solutions.html"><span class="header-section-number">14</span> Building your own no-code solutions</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/InfiniteCuriosity/EnsemblesBook">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="building-weighted-ensembles-to-model-numerical-data" class="section level1" number="4">
+<h1>
+<span class="header-section-number">4</span> Building weighted ensembles to model numerical data<a class="anchor" aria-label="anchor" href="#building-weighted-ensembles-to-model-numerical-data"><i class="fas fa-link"></i></a>
+</h1>
+<p>In the last chapter we learned how to make 23 individual models,
+including calculating the error rate (as root mean squared error), and
+predictions from the holdout data (test and validation).</p>
+<p>This chapter will show how to use those results to make weighted
+ensembles that can be used to model numerical data.</p>
+<p>Let’s start at the end. Let’s imagine the finished product. A list of
+ensembles and individual models, with error rates sorted in decreasing
+order (best result on the top of the list)</p>
+<p>Therefore we’re going to need a weighted ensemble. But what weight to
+use?</p>
+<p>It turns out there is an excellent answer available for virtually no
+work on our part (which is great!). Each model has a mean error score.
+The weight we will use will be the reciprocal of the error.</p>
+<p>Let’s say we have two models. One has an error rate of 5.0 and the other
+has an error rate of 2.0. Clearly the model with the error rate of 2.0
+is superior to the model with the error rate of 5.0.</p>
+<p>What we will do in building our ensemble is multiply the values in the
+ensemble by 1/(error rate). This will give higher weights to models with
+higher accuracy.</p>
+<p>Let’s see how this works with an extremely simple ensemble.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span> <span class="co"># Allows us to use tree models</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span> <span class="co"># For the Boston Housing data set library(Metrics)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──</span></span>
+<span><span class="co">#&gt; ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
+<span><span class="co">#&gt; ✔ forcats   1.0.0     ✔ stringr   1.5.1</span></span>
+<span><span class="co">#&gt; ✔ ggplot2   3.5.1     ✔ tibble    3.2.1</span></span>
+<span><span class="co">#&gt; ✔ lubridate 1.9.3     ✔ tidyr     1.3.1</span></span>
+<span><span class="co">#&gt; ✔ purrr     1.0.2     </span></span>
+<span><span class="co">#&gt; ── Conflicts ────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
+<span><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
+<span><span class="co">#&gt; ✖ dplyr::select() masks MASS::select()</span></span>
+<span><span class="co">#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Set initial values to 0</span></span>
+<span><span class="va">linear_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_test_predict_value</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">tree_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_test_predict_value</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_linear_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">numerical_1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">colnum</span>, <span class="va">train_amount</span>, <span class="va">test_amount</span>, <span class="va">numresamples</span><span class="op">)</span><span class="op">{</span></span>
+<span></span>
+<span><span class="co"># Move target column to far right</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">colnum</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"y"</span></span>
+<span></span>
+<span><span class="co"># Set up resampling</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">numresamples</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_amount</span>, <span class="va">test_amount</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">train</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">idx</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span>  <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">idx</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Fit linear model on the training data, make predictions on the test data</span></span>
+<span><span class="va">linear_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">linear_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">linear_model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span></span>
+<span><span class="va">linear_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="va">linear_predictions</span><span class="op">)</span></span>
+<span><span class="va">linear_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">linear_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fit tree model on the training data, make predictions on the test data</span></span>
+<span><span class="va">tree_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">tree_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">tree_model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span></span>
+<span><span class="va">tree_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="va">tree_predictions</span><span class="op">)</span></span>
+<span><span class="va">tree_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">tree_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Make the weighted ensemble</span></span>
+<span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">'linear'</span> <span class="op">=</span> <span class="va">linear_predictions</span> <span class="op">/</span> <span class="va">linear_RMSE_mean</span>,</span>
+<span>  <span class="st">'tree'</span> <span class="op">=</span> <span class="va">tree_predictions</span> <span class="op">/</span> <span class="va">tree_RMSE_mean</span>,</span>
+<span>  <span class="st">'y_ensemble'</span> <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Split ensemble between train and test</span></span>
+<span><span class="va">ensemble_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_amount</span>, <span class="va">test_amount</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_train</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="va">ensemble_idx</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span><span class="va">ensemble_test</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="va">ensemble_idx</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Fit the ensemble data on the ensemble training data, predict on ensemble test data</span></span>
+<span><span class="va">ensemble_linear_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble_linear_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_linear_model</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble_linear_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="va">ensemble_linear_predictions</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble_linear_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_linear_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fit the tree model on the ensemble training data, predict on ensemble test data</span></span>
+<span><span class="va">ensemble_tree_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble_tree_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_tree_model</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">ensemble_tree_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="va">ensemble_tree_predictions</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble_tree_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_tree_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">'Model'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Linear'</span>, <span class="st">'Tree'</span>, <span class="st">'Ensemble_Linear'</span>, <span class="st">'Ensemble_tree'</span><span class="op">)</span>,</span>
+<span>  <span class="st">'Error_Rate'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">linear_RMSE_mean</span>, <span class="va">tree_RMSE_mean</span>, <span class="va">ensemble_linear_RMSE_mean</span>, <span class="va">ensemble_tree_RMSE_mean</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Error_Rate</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span> <span class="co"># Closing brace for numresamples</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span> <span class="co"># Closing brace for the function</span></span>
+<span></span>
+<span><span class="fu">numerical_1</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">MASS</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MASS/man/Boston.html">Boston</a></span>, colnum <span class="op">=</span> <span class="fl">14</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span>, numresamples <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;             Model Error_Rate</span></span>
+<span><span class="co">#&gt; 1 Ensemble_Linear   4.142535</span></span>
+<span><span class="co">#&gt; 2   Ensemble_tree   4.728397</span></span>
+<span><span class="co">#&gt; 3          Linear   4.829952</span></span>
+<span><span class="co">#&gt; 4            Tree   4.940936</span></span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>What we will be doing in this section is making a weighted ensemble
+using 17 models of numerical data, then using that ensemble to measure
+the accuracy of the models on the holdout (test) data.</p>
+<div id="think-before-you-do-something.-this-will-help-when-we-start-at-the-end-and-work-backwards-toward-the-beginning." class="section level2" number="4.1">
+<h2>
+<span class="header-section-number">4.1</span> Think before you do something. This will help when we start at the end and work backwards toward the beginning.<a class="anchor" aria-label="anchor" href="#think-before-you-do-something.-this-will-help-when-we-start-at-the-end-and-work-backwards-toward-the-beginning."><i class="fas fa-link"></i></a>
+</h2>
+<p>We are going to make an ensemble. The ensemble is going to a made of
+predictions from numerical models. You’ve already seen a couple of
+ensembles. This one will be extremely similar, but will involve more
+models.</p>
+<p>Starting at the end, we want the error rate (root mean squared error)
+for the ensemble and prediction models.</p>
+<p>That means we’ll need to make an ensemble. That means we’ll need
+individual model predictions, because that’s how an ensemble is made. If
+an ensemble is made of individual model predictions, that means we’ll
+need individual models. We already know how to do that, because we did
+it in the last chapter.</p>
+<p>We’re going to build a simple ensemble with seven models, and then use
+that ensemble with four very different methods. The Ensembles package
+actually works with a total of 40 different models. The process is
+exactly the same, whether we are working with seven individual models or
+23 individual models, five ensemble models or 17 ensemble models. The
+structre and methods are the same.</p>
+<p>So let’s get started!</p>
+<p>The seven individual models we will be building are:</p>
+<ul>
+<li><p>Linear (tuned)</p></li>
+<li><p>Bayesglm</p></li>
+<li><p>Bayesrnn</p></li>
+<li><p>Gradient Boosted</p></li>
+<li><p>RandomForest</p></li>
+<li><p>Trees</p></li>
+</ul>
+<p>It’s important to understand that many other options are possible. Your
+are encouraged to add at least one more modeling method to the ensemble,
+and see how it impacts the results.</p>
+</div>
+<div id="one-of-your-own-add-one-model-to-the-list-of-seven-individual-models-see-how-it-impacts-results." class="section level2" number="4.2">
+<h2>
+<span class="header-section-number">4.2</span> One of your own: Add one model to the list of seven individual models, see how it impacts results.<a class="anchor" aria-label="anchor" href="#one-of-your-own-add-one-model-to-the-list-of-seven-individual-models-see-how-it-impacts-results."><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="plan-ahead-as-much-as-you-can-that-makes-the-entire-model-building-process-much-easier." class="section level2" number="4.3">
+<h2>
+<span class="header-section-number">4.3</span> Plan ahead as much as you can, that makes the entire model building process much easier.<a class="anchor" aria-label="anchor" href="#plan-ahead-as-much-as-you-can-that-makes-the-entire-model-building-process-much-easier."><i class="fas fa-link"></i></a>
+</h2>
+<p>Here is the code to build ensembles. I very strongly recommend doing
+this yourself, and checking every 5-10 lines to make sure there are no
+errors.</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co">#Load packages we will need</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span> <span class="co"># Allows us to run bayesglm</span></span>
+<span><span class="co">#&gt; Loading required package: Matrix</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'Matrix'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:tidyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     expand, pack, unpack</span></span>
+<span><span class="co">#&gt; Loading required package: lme4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; arm (Version 1.14-4, built: 2024-4-1)</span></span>
+<span><span class="co">#&gt; Working directory is /Users/russellconte/Library/Mobile Documents/com~apple~CloudDocs/Documents/Machine Learning templates in R/EnsemblesBook</span></span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">brnn</span><span class="op">)</span> <span class="co"># Allows us to run brnn</span></span>
+<span><span class="co">#&gt; Loading required package: Formula</span></span>
+<span><span class="co">#&gt; Loading required package: truncnorm</span></span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span> <span class="co"># Allows us to run several tuned model, such as linear and KNN</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span> <span class="co"># Allows us to run random forest models</span></span>
+<span><span class="co">#&gt; randomForest 4.7-1.1</span></span>
+<span><span class="co">#&gt; Type rfNews() to see new features/changes/bug fixes.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'randomForest'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     combine</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     margin</span></span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tree</span><span class="op">)</span> <span class="co"># Allows us to run tree models</span></span></code></pre></div>
+<div id="a-few-other-packages-we-will-need-to-keep-everything-running-smoothly" class="section level3" number="4.3.1">
+<h3>
+<span class="header-section-number">4.3.1</span> A few other packages we will need to keep everything running smoothly<a class="anchor" aria-label="anchor" href="#a-few-other-packages-we-will-need-to-keep-everything-running-smoothly"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> <span class="co"># Amazing set of tools for data science</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span> <span class="co"># Gives us the Boston Housing data set</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mfrasco/Metrics">Metrics</a></span><span class="op">)</span> <span class="co"># Allows us to calculate accuracy or error rates</span></span></code></pre></div>
+</div>
+<div id="build-the-function-that-will-build-the-individual-and-ensemble-models" class="section level3" number="4.3.2">
+<h3>
+<span class="header-section-number">4.3.2</span> Build the function that will build the individual and ensemble models<a class="anchor" aria-label="anchor" href="#build-the-function-that-will-build-the-individual-and-ensemble-models"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">numerical</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">colnum</span>, <span class="va">numresamples</span>, <span class="va">train_amount</span>, <span class="va">test_amount</span><span class="op">)</span><span class="op">{</span></span>
+<span></span>
+<span><span class="co"># Make the target column the right most column, change the column name to y:</span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">colnum</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"y"</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">y</span>, .after <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">last_col</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Moves the target column to the last column on the right df &lt;- df[sample(nrow(df)), ]</span></span>
+<span></span>
+<span><span class="co"># Set initial values to 0 for both individual and ensemble methods:</span></span>
+<span></span>
+<span><span class="va">bayesglm_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_duration_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_holdout_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesglm_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">bayesrnn_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_duration_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_holdout_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">bayesrnn_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">gb_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_duration_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_holdout_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">gb_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">linear_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">linear_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">rf_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_duration_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_holdout_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">rf_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">tree_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_duration_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_holdout_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">tree_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_bayesglm_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesglm_predict_value_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_bayesrnn_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_bayesrnn_predict_value_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_gb_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_gb_predict_value_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_linear_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_linear_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_rf_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_rf_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="va">ensemble_tree_train_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_test_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_validation_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_sd</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_overfitting</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_duration</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_holdout_RMSE</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="va">ensemble_tree_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span></span>
+<span><span class="co">#Let's build the function that does all the resampling and puts everything together:</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">numresamples</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span><span class="co"># Randomly split the data between train and test</span></span>
+<span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_amount</span>, <span class="va">test_amount</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">idx</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">idx</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Bayesglm</span></span>
+<span></span>
+<span><span class="va">bayesglm_train_fit</span> <span class="op">&lt;-</span> <span class="fu">arm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/arm/man/bayesglm.html">bayesglm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesglm_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesglm_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesglm_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesglm_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesglm_test_RMSE_mean</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesglm_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesglm_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesglm_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y_hat_bayesglm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bayesglm_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Bayesrnn</span></span>
+<span></span>
+<span><span class="va">bayesrnn_train_fit</span> <span class="op">&lt;-</span> <span class="fu">brnn</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brnn/man/brnn.html">brnn</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesrnn_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesrnn_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bayesrnn_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bayesrnn_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_train_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bayesrnn_predict_value_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bayesrnn_test_predict_value</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y_hat_bayesrnn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bayesrnn_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Gradient boosted</span></span>
+<span></span>
+<span><span class="va">gb_train_fit</span> <span class="op">&lt;-</span> <span class="fu">gbm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gbm/man/gbm.html">gbm</a></span><span class="op">(</span><span class="va">train</span><span class="op">$</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>, distribution <span class="op">=</span> <span class="st">"gaussian"</span>, n.trees <span class="op">=</span> <span class="fl">100</span>, shrinkage <span class="op">=</span> <span class="fl">0.1</span>, interaction.depth <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">gb_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">gb_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">gb_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">gb_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">gb_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">gb_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">gb_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">gb_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">gb_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">gb_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">gb_train_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">gb_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">gb_predict_value_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">gb_test_predict_value</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y_hat_gb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">gb_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Tuned linear models</span></span>
+<span></span>
+<span><span class="va">linear_train_fit</span> <span class="op">&lt;-</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/tune.wrapper.html">tune.rpart</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">linear_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">linear_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">linear_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">linear_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">linear_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">linear_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">linear_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">linear_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">linear_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">linear_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">linear_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">linear_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">linear_train_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">linear_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">linear_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">linear_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y_hat_linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">linear_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># RandomForest</span></span>
+<span></span>
+<span><span class="va">rf_train_fit</span> <span class="op">&lt;-</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/tune.wrapper.html">tune.randomForest</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">train</span>, y <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">rf_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">rf_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">rf_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">rf_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">rf_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">rf_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">rf_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">rf_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">rf_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">rf_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">rf_train_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">rf_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span></span>
+<span><span class="va">y_hat_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">rf_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Trees</span></span>
+<span></span>
+<span><span class="va">tree_train_fit</span> <span class="op">&lt;-</span> <span class="fu">tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">train</span><span class="op">$</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span><span class="va">tree_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">train</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">tree_train_fit</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tree_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">tree_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">tree_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">test</span><span class="op">$</span><span class="va">y</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">tree_train_fit</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tree_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">tree_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">tree_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">tree_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tree_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">tree_holdout_RMSE</span><span class="op">)</span></span>
+<span><span class="va">tree_train_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="fu">tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span>, newdata <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tree_test_predict_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="fu">tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span>, newdata <span class="op">=</span> <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y_hat_tree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">tree_test_predict_value</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Make the weighted ensemble:</span></span>
+<span></span>
+<span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">"BayesGLM"</span> <span class="op">=</span> <span class="va">y_hat_bayesglm</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">bayesglm_holdout_RMSE_mean</span>,</span>
+<span>  <span class="st">"BayesRNN"</span> <span class="op">=</span> <span class="va">y_hat_bayesrnn</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">bayesrnn_holdout_RMSE_mean</span>,</span>
+<span>  <span class="st">"GBM"</span> <span class="op">=</span> <span class="va">y_hat_gb</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">gb_holdout_RMSE_mean</span>,</span>
+<span>  <span class="st">"Linear"</span> <span class="op">=</span> <span class="va">y_hat_linear</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">linear_holdout_RMSE_mean</span>,</span>
+<span>  <span class="st">"RandomForest"</span> <span class="op">=</span> <span class="va">y_hat_rf</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">rf_holdout_RMSE_mean</span>,</span>
+<span>  <span class="st">"Tree"</span> <span class="op">=</span> <span class="va">y_hat_tree</span> <span class="op">*</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">tree_holdout_RMSE_mean</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">ensemble</span><span class="op">$</span><span class="va">Row_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums-methods.html">rowMeans</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span></span>
+<span>  <span class="va">ensemble</span><span class="op">$</span><span class="va">y_ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
+<span>  <span class="va">y_ensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">test</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Split the ensemble into train and test, according to user choices:</span></span>
+<span></span>
+<span><span class="va">ensemble_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">ensemble</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">train_amount</span>, <span class="va">test_amount</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_train</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="va">ensemble_idx</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
+<span><span class="va">ensemble_test</span> <span class="op">&lt;-</span> <span class="va">ensemble</span><span class="op">[</span><span class="va">ensemble_idx</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Ensemble BayesGLM</span></span>
+<span></span>
+<span><span class="va">ensemble_bayesglm_train_fit</span> <span class="op">&lt;-</span> <span class="fu">arm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/arm/man/bayesglm.html">bayesglm</a></span><span class="op">(</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_bayesglm_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesglm_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_bayesglm_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesglm_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ensemble_bayesglm_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesglm_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesglm_holdout_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ensemble BayesRNN</span></span>
+<span></span>
+<span><span class="va">ensemble_bayesrnn_train_fit</span> <span class="op">&lt;-</span> <span class="fu">brnn</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brnn/man/brnn.html">brnn</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">ensemble_train</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesrnn_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_bayesrnn_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesrnn_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ensemble_bayesrnn_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_bayesrnn_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_bayesrnn_holdout_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ensemble Graident Boosted</span></span>
+<span></span>
+<span><span class="va">ensemble_gb_train_fit</span> <span class="op">&lt;-</span> <span class="fu">gbm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gbm/man/gbm.html">gbm</a></span><span class="op">(</span><span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span>, distribution <span class="op">=</span> <span class="st">"gaussian"</span>, n.trees <span class="op">=</span> <span class="fl">100</span>, shrinkage <span class="op">=</span> <span class="fl">0.1</span>, interaction.depth <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_gb_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_gb_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_gb_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ensemble_gb_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_gb_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_gb_holdout_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ensemble using Tuned Random Forest</span></span>
+<span></span>
+<span><span class="va">ensemble_rf_train_fit</span> <span class="op">&lt;-</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/tune.wrapper.html">tune.randomForest</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ensemble_train</span>, y <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_rf_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_rf_train_fit</span><span class="op">$</span><span class="va">best.model</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_rf_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ensemble_rf_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_rf_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_rf_holdout_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Trees</span></span>
+<span></span>
+<span><span class="va">ensemble_tree_train_fit</span> <span class="op">&lt;-</span> <span class="fu">tree</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tree/man/tree.html">tree</a></span><span class="op">(</span><span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_train_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_tree_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_train</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_train_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_tree_train_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_test_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">Metrics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Metrics/man/rmse.html">rmse</a></span><span class="op">(</span>actual <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">$</span><span class="va">y_ensemble</span>, predicted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">ensemble_tree_train_fit</span>, newdata <span class="op">=</span> <span class="va">ensemble_test</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_test_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_tree_test_RMSE</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_holdout_RMSE</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ensemble_tree_test_RMSE_mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ensemble_tree_holdout_RMSE_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ensemble_tree_holdout_RMSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">summary_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">'Model'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'BayesGLM'</span>, <span class="st">'BayesRNN'</span>, <span class="st">'Gradient_Boosted'</span>, <span class="st">'Linear'</span>, <span class="st">'Random_Forest'</span>, <span class="st">'Trees'</span>, <span class="st">'Ensemble_BayesGLM'</span>, <span class="st">'Ensemble_BayesRNN'</span>, <span class="st">'Ensemble_Gradient_Boosted'</span>, <span class="st">'Ensemble_Random_Forest'</span>, <span class="st">'Ensemble_Trees'</span><span class="op">)</span>, </span>
+<span>  <span class="st">'Error'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bayesglm_holdout_RMSE_mean</span>, <span class="va">bayesrnn_holdout_RMSE_mean</span>, <span class="va">gb_holdout_RMSE_mean</span>, <span class="va">linear_holdout_RMSE_mean</span>, <span class="va">rf_holdout_RMSE_mean</span>, <span class="va">tree_holdout_RMSE_mean</span>, <span class="va">ensemble_bayesglm_holdout_RMSE_mean</span>, <span class="va">ensemble_bayesrnn_holdout_RMSE_mean</span>, <span class="va">ensemble_gb_holdout_RMSE_mean</span>, <span class="va">ensemble_rf_holdout_RMSE_mean</span>, <span class="va">ensemble_tree_holdout_RMSE_mean</span><span class="op">)</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">summary_results</span> <span class="op">&lt;-</span> <span class="va">summary_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">Error</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span> <span class="co"># closing brace for numresamples</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">summary_results</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span> <span class="co"># closing brace for numerical function</span></span>
+<span></span>
+<span><span class="fu">numerical</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">MASS</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MASS/man/Boston.html">Boston</a></span>, colnum <span class="op">=</span> <span class="fl">14</span>, numresamples <span class="op">=</span> <span class="fl">5</span>, train_amount <span class="op">=</span> <span class="fl">0.60</span>, test_amount <span class="op">=</span> <span class="fl">0.40</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 32 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7015979 </span></span>
+<span><span class="co">#&gt; gamma= 31.0592    alpha= 5.2255   beta= 16345.73</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7043456 </span></span>
+<span><span class="co">#&gt; gamma= 13.0833    alpha= 2.0427   beta= 5622.241</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 32 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7015132 </span></span>
+<span><span class="co">#&gt; gamma= 30.7103    alpha= 4.8028   beta= 21458.26</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7046363 </span></span>
+<span><span class="co">#&gt; gamma= 14.3717    alpha= 2.2275   beta= 7483.324</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 32 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7015926 </span></span>
+<span><span class="co">#&gt; gamma= 31.3551    alpha= 5.3838   beta= 14651.49</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.704124 </span></span>
+<span><span class="co">#&gt; gamma= 12.9512    alpha= 1.9297   beta= 8531.317</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 32 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7015669 </span></span>
+<span><span class="co">#&gt; gamma= 28.7269    alpha= 4.3173   beta= 14167.72</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7038309 </span></span>
+<span><span class="co">#&gt; gamma= 14.1897    alpha= 2.1638   beta= 11022.44</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 32 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7016085 </span></span>
+<span><span class="co">#&gt; gamma= 30.9911    alpha= 4.6469   beta= 13982.35</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7041953 </span></span>
+<span><span class="co">#&gt; gamma= 13.1431    alpha= 1.9324   beta= 5765.634</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt;                        Model     Error</span></span>
+<span><span class="co">#&gt; 1          Ensemble_BayesGLM 0.1321454</span></span>
+<span><span class="co">#&gt; 2                   BayesRNN 0.1408040</span></span>
+<span><span class="co">#&gt; 3          Ensemble_BayesRNN 0.2389492</span></span>
+<span><span class="co">#&gt; 4     Ensemble_Random_Forest 0.9385837</span></span>
+<span><span class="co">#&gt; 5              Random_Forest 1.6994395</span></span>
+<span><span class="co">#&gt; 6             Ensemble_Trees 1.8551031</span></span>
+<span><span class="co">#&gt; 7  Ensemble_Gradient_Boosted 2.8566052</span></span>
+<span><span class="co">#&gt; 8           Gradient_Boosted 3.1890256</span></span>
+<span><span class="co">#&gt; 9                     Linear 4.7726583</span></span>
+<span><span class="co">#&gt; 10                     Trees 4.8282863</span></span>
+<span><span class="co">#&gt; 11                  BayesGLM 4.8738526</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/warnings.html">warnings</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Here’s the very cool part of setting it up this way. If you have a
+totally different data set, all you need to do is put the information
+into the function, and everything runs. Check this out:</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">numerical</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Auto.html">Auto</a></span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="fu">ISLR</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/ISLR/man/Auto.html">Auto</a></span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, colnum <span class="op">=</span> <span class="fl">1</span>, numresamples <span class="op">=</span> <span class="fl">25</span>, train_amount <span class="op">=</span> <span class="fl">0.50</span>, test_amount <span class="op">=</span> <span class="fl">0.50</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024926 </span></span>
+<span><span class="co">#&gt; gamma= 18.4162    alpha= 2.7514   beta= 13109.59</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.70502 </span></span>
+<span><span class="co">#&gt; gamma= 13.9302    alpha= 2.5764   beta= 4233.778</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024799 </span></span>
+<span><span class="co">#&gt; gamma= 18.7396    alpha= 2.5691   beta= 11432.25</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7049182 </span></span>
+<span><span class="co">#&gt; gamma= 13.1686    alpha= 2.4255   beta= 4584.367</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7026276 </span></span>
+<span><span class="co">#&gt; gamma= 17.5839    alpha= 3.1297   beta= 14069.74</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7043456 </span></span>
+<span><span class="co">#&gt; gamma= 12.4475    alpha= 2.4651   beta= 5270.222</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025856 </span></span>
+<span><span class="co">#&gt; gamma= 18.8981    alpha= 3.1775   beta= 9580.519</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7044656 </span></span>
+<span><span class="co">#&gt; gamma= 12.8729    alpha= 2.072    beta= 11330.64</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7021313 </span></span>
+<span><span class="co">#&gt; gamma= 18.7676    alpha= 3.5901   beta= 12531.76</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7061688 </span></span>
+<span><span class="co">#&gt; gamma= 11.3326    alpha= 2.4941   beta= 3858.152</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024673 </span></span>
+<span><span class="co">#&gt; gamma= 18.274     alpha= 1.9759   beta= 17960.72</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.70502 </span></span>
+<span><span class="co">#&gt; gamma= 12.6674    alpha= 2.0891   beta= 6155.332</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024302 </span></span>
+<span><span class="co">#&gt; gamma= 18.5515    alpha= 3.4186   beta= 14243.8</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7055354 </span></span>
+<span><span class="co">#&gt; gamma= 13.8508    alpha= 2.5064   beta= 4256.149</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7026858 </span></span>
+<span><span class="co">#&gt; gamma= 19.3318    alpha= 3.6784   beta= 8425.08</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.704124 </span></span>
+<span><span class="co">#&gt; gamma= 13.3745    alpha= 2.593    beta= 5848.52</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024548 </span></span>
+<span><span class="co">#&gt; gamma= 19.4772    alpha= 3.7208   beta= 9429.915</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7045924 </span></span>
+<span><span class="co">#&gt; gamma= 13.0337    alpha= 2.5198   beta= 4784.62</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025719 </span></span>
+<span><span class="co">#&gt; gamma= 19.0825    alpha= 3.3722   beta= 9364.237</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7044656 </span></span>
+<span><span class="co">#&gt; gamma= 14.1169    alpha= 2.3046   beta= 5773.569</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025856 </span></span>
+<span><span class="co">#&gt; gamma= 19.3196    alpha= 3.4654   beta= 9802.053</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.704681 </span></span>
+<span><span class="co">#&gt; gamma= 13.2377    alpha= 2.2026   beta= 5345.472</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025185 </span></span>
+<span><span class="co">#&gt; gamma= 18.6502    alpha= 3.5727   beta= 10209.71</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7049686 </span></span>
+<span><span class="co">#&gt; gamma= 12.381     alpha= 2.1155   beta= 5665.373</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025449 </span></span>
+<span><span class="co">#&gt; gamma= 18.6783    alpha= 2.9818   beta= 12973.07</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7044656 </span></span>
+<span><span class="co">#&gt; gamma= 13.8315    alpha= 2.0513   beta= 7035.462</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025584 </span></span>
+<span><span class="co">#&gt; gamma= 18.9933    alpha= 3.2416   beta= 9231.745</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7047266 </span></span>
+<span><span class="co">#&gt; gamma= 11.8112    alpha= 1.9485   beta= 6097.915</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024548 </span></span>
+<span><span class="co">#&gt; gamma= 19.1122    alpha= 3.1686   beta= 9241.642</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7048205 </span></span>
+<span><span class="co">#&gt; gamma= 12.8979    alpha= 2.1488   beta= 6987.878</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024673 </span></span>
+<span><span class="co">#&gt; gamma= 19.4256    alpha= 3.698    beta= 9353.561</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7055354 </span></span>
+<span><span class="co">#&gt; gamma= 10.7933    alpha= 1.7317   beta= 5212.225</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024799 </span></span>
+<span><span class="co">#&gt; gamma= 17.015     alpha= 2.9886   beta= 10479.61</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7053523 </span></span>
+<span><span class="co">#&gt; gamma= 13.0587    alpha= 2.2748   beta= 5016.278</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024673 </span></span>
+<span><span class="co">#&gt; gamma= 18.9127    alpha= 2.9877   beta= 16940.02</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7049182 </span></span>
+<span><span class="co">#&gt; gamma= 13.3138    alpha= 2.7722   beta= 5059.017</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024926 </span></span>
+<span><span class="co">#&gt; gamma= 19.3027    alpha= 2.8318   beta= 9719.859</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7057316 </span></span>
+<span><span class="co">#&gt; gamma= 11.9986    alpha= 2.0843   beta= 3711.19</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7026419 </span></span>
+<span><span class="co">#&gt; gamma= 18.7109    alpha= 3.1853   beta= 9516.249</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7052367 </span></span>
+<span><span class="co">#&gt; gamma= 13.4531    alpha= 2.4635   beta= 5533.873</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025317 </span></span>
+<span><span class="co">#&gt; gamma= 18.9174    alpha= 3.0516   beta= 9411.772</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7049182 </span></span>
+<span><span class="co">#&gt; gamma= 13.1981    alpha= 2.1471   beta= 7517.678</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025856 </span></span>
+<span><span class="co">#&gt; gamma= 18.6904    alpha= 2.8206   beta= 13973.04</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7043456 </span></span>
+<span><span class="co">#&gt; gamma= 12.1392    alpha= 2.1957   beta= 8680.461</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7025995 </span></span>
+<span><span class="co">#&gt; gamma= 19.0408    alpha= 3.3839   beta= 11170.28</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7049686 </span></span>
+<span><span class="co">#&gt; gamma= 13.169     alpha= 2.0876   beta= 7091.306</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7024673 </span></span>
+<span><span class="co">#&gt; gamma= 18.9979    alpha= 2.8482   beta= 10179.61</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7045071 </span></span>
+<span><span class="co">#&gt; gamma= 12.4243    alpha= 2.6426   beta= 4855.048</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7023942 </span></span>
+<span><span class="co">#&gt; gamma= 19.4829    alpha= 3.7004   beta= 9447.426</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; Number of parameters (weights and biases) to estimate: 20 </span></span>
+<span><span class="co">#&gt; Nguyen-Widrow method</span></span>
+<span><span class="co">#&gt; Scaling factor= 0.7052367 </span></span>
+<span><span class="co">#&gt; gamma= 12.5163    alpha= 2.1979   beta= 4306.634</span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Using 100 trees...</span></span>
+<span><span class="co">#&gt;                        Model     Error</span></span>
+<span><span class="co">#&gt; 1          Ensemble_BayesGLM 0.1293269</span></span>
+<span><span class="co">#&gt; 2                   BayesRNN 0.1310772</span></span>
+<span><span class="co">#&gt; 3          Ensemble_BayesRNN 0.2064510</span></span>
+<span><span class="co">#&gt; 4     Ensemble_Random_Forest 0.8823964</span></span>
+<span><span class="co">#&gt; 5  Ensemble_Gradient_Boosted 1.4839729</span></span>
+<span><span class="co">#&gt; 6             Ensemble_Trees 1.6717371</span></span>
+<span><span class="co">#&gt; 7              Random_Forest 1.6945471</span></span>
+<span><span class="co">#&gt; 8           Gradient_Boosted 2.9664228</span></span>
+<span><span class="co">#&gt; 9                   BayesGLM 3.4312923</span></span>
+<span><span class="co">#&gt; 10                     Trees 3.7725029</span></span>
+<span><span class="co">#&gt; 11                    Linear 3.7907192</span></span></code></pre></div>
+</div>
+</div>
+<div id="one-of-your-own-add-a-model-to-the-individual-models-and-a-model-to-the-ensemble-of-models" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> One of your own: Add a model to the individual models, and a model to the ensemble of models<a class="anchor" aria-label="anchor" href="#one-of-your-own-add-a-model-to-the-individual-models-and-a-model-to-the-ensemble-of-models"><i class="fas fa-link"></i></a>
+</h2>
+<p>One of your own: Change the data, run it again, comment on the results</p>
+</div>
+<div id="post-your-results-on-social-media-in-a-way-that-a-non-technical-person-can-understand-them.-for-example" class="section level2" number="4.5">
+<h2>
+<span class="header-section-number">4.5</span> Post your results on social media in a way that a non-technical person can understand them. For example:<a class="anchor" aria-label="anchor" href="#post-your-results-on-social-media-in-a-way-that-a-non-technical-person-can-understand-them.-for-example"><i class="fas fa-link"></i></a>
+</h2>
+<p>“Just ran six individual and six ensemble models, very easy to do, no
+errors or warnings. I plan to do ensembles with other data sets soon.
+#AIEnsembles</p>
+</div>
+<div id="exercises-to-help-you-improve-your-skills" class="section level2" number="4.6">
+<h2>
+<span class="header-section-number">4.6</span> Exercises to help you improve your skills:<a class="anchor" aria-label="anchor" href="#exercises-to-help-you-improve-your-skills"><i class="fas fa-link"></i></a>
+</h2>
+<p>Build an individual numerical model using each of the following model
+methods (it’s perfectly OK to check prior sections of the book, this is
+an example of delayed repetition):</p>
+<p>Gradient Boosted (from the gmb library)</p>
+<p>Rpart (from the rpart library)</p>
+<p>Support Vector Machines (tuned from the e1071 library)</p>
+<p>One model method of your own choosing</p>
+<p>Build an ensemble using those four methods, test it using the Boston
+Housing data set. Compare the results of this ensemble to the one made
+in the text of this chapter.</p>
+<p>Apply the function you made to a different numerical data set. This can
+be done in one line of code, once the ensemble is set up.</p>
+</div>
+<div id="post-the-results-of-your-new-ensemble-on-social-media-in-a-way-that-helps-others-understand-the-results-or-methods." class="section level2" number="4.7">
+<h2>
+<span class="header-section-number">4.7</span> Post the results of your new ensemble on social media in a way that helps others understand the results or methods.<a class="anchor" aria-label="anchor" href="#post-the-results-of-your-new-ensemble-on-social-media-in-a-way-that-helps-others-understand-the-results-or-methods."><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="helping-leaders-make-the-best-possible-decisions-what-are-the-options-benefits-and-costs-how-strong-are-the-resultsrecommendations" class="section level2" number="4.8">
+<h2>
+<span class="header-section-number">4.8</span> Helping leaders make the best possible decisions: What are the options, benefits and costs? How strong are the results/recommendations?<a class="anchor" aria-label="anchor" href="#helping-leaders-make-the-best-possible-decisions-what-are-the-options-benefits-and-costs-how-strong-are-the-resultsrecommendations"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="helping-leaders-make-the-best-possible-decisions-margins-of-errorreasons-for-error" class="section level2" number="4.9">
+<h2>
+<span class="header-section-number">4.9</span> Helping leaders make the best possible decisions: Margins of error/reasons for error<a class="anchor" aria-label="anchor" href="#helping-leaders-make-the-best-possible-decisions-margins-of-errorreasons-for-error"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="helping-leaders-make-the-best-possible-decisions-highest-accuracy-strongest-predictors" class="section level2" number="4.10">
+<h2>
+<span class="header-section-number">4.10</span> Helping leaders make the best possible decisions: Highest accuracy, strongest predictor(s)<a class="anchor" aria-label="anchor" href="#helping-leaders-make-the-best-possible-decisions-highest-accuracy-strongest-predictors"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="helping-your-customermanagerboard-to-start-thinking-analytically" class="section level2" number="4.11">
+<h2>
+<span class="header-section-number">4.11</span> Helping your customer/manager/board to start thinking analytically<a class="anchor" aria-label="anchor" href="#helping-your-customermanagerboard-to-start-thinking-analytically"><i class="fas fa-link"></i></a>
+</h2>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="numerical-data-how-to-make-23-individual-models-and-basic-skills-with-functions.html"><span class="header-section-number">3</span> Numerical data: How to make 23 individual models, and basic skills with functions</a></div>
+<div class="next"><a href="classification-data-how-to-make-14-individual-classification-models.html"><span class="header-section-number">5</span> Classification data: How to make 14 individual classification models</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#building-weighted-ensembles-to-model-numerical-data"><span class="header-section-number">4</span> Building weighted ensembles to model numerical data</a></li>
+<li><a class="nav-link" href="#think-before-you-do-something.-this-will-help-when-we-start-at-the-end-and-work-backwards-toward-the-beginning."><span class="header-section-number">4.1</span> Think before you do something. This will help when we start at the end and work backwards toward the beginning.</a></li>
+<li><a class="nav-link" href="#one-of-your-own-add-one-model-to-the-list-of-seven-individual-models-see-how-it-impacts-results."><span class="header-section-number">4.2</span> One of your own: Add one model to the list of seven individual models, see how it impacts results.</a></li>
+<li>
+<a class="nav-link" href="#plan-ahead-as-much-as-you-can-that-makes-the-entire-model-building-process-much-easier."><span class="header-section-number">4.3</span> Plan ahead as much as you can, that makes the entire model building process much easier.</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#a-few-other-packages-we-will-need-to-keep-everything-running-smoothly"><span class="header-section-number">4.3.1</span> A few other packages we will need to keep everything running smoothly</a></li>
+<li><a class="nav-link" href="#build-the-function-that-will-build-the-individual-and-ensemble-models"><span class="header-section-number">4.3.2</span> Build the function that will build the individual and ensemble models</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#one-of-your-own-add-a-model-to-the-individual-models-and-a-model-to-the-ensemble-of-models"><span class="header-section-number">4.4</span> One of your own: Add a model to the individual models, and a model to the ensemble of models</a></li>
+<li><a class="nav-link" href="#post-your-results-on-social-media-in-a-way-that-a-non-technical-person-can-understand-them.-for-example"><span class="header-section-number">4.5</span> Post your results on social media in a way that a non-technical person can understand them. For example:</a></li>
+<li><a class="nav-link" href="#exercises-to-help-you-improve-your-skills"><span class="header-section-number">4.6</span> Exercises to help you improve your skills:</a></li>
+<li><a class="nav-link" href="#post-the-results-of-your-new-ensemble-on-social-media-in-a-way-that-helps-others-understand-the-results-or-methods."><span class="header-section-number">4.7</span> Post the results of your new ensemble on social media in a way that helps others understand the results or methods.</a></li>
+<li><a class="nav-link" href="#helping-leaders-make-the-best-possible-decisions-what-are-the-options-benefits-and-costs-how-strong-are-the-resultsrecommendations"><span class="header-section-number">4.8</span> Helping leaders make the best possible decisions: What are the options, benefits and costs? How strong are the results/recommendations?</a></li>
+<li><a class="nav-link" href="#helping-leaders-make-the-best-possible-decisions-margins-of-errorreasons-for-error"><span class="header-section-number">4.9</span> Helping leaders make the best possible decisions: Margins of error/reasons for error</a></li>
+<li><a class="nav-link" href="#helping-leaders-make-the-best-possible-decisions-highest-accuracy-strongest-predictors"><span class="header-section-number">4.10</span> Helping leaders make the best possible decisions: Highest accuracy, strongest predictor(s)</a></li>
+<li><a class="nav-link" href="#helping-your-customermanagerboard-to-start-thinking-analytically"><span class="header-section-number">4.11</span> Helping your customer/manager/board to start thinking analytically</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/InfiniteCuriosity/EnsemblesBook/blob/master/03-Ensembles_of_Numerical_Models.rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/InfiniteCuriosity/EnsemblesBook/edit/master/03-Ensembles_of_Numerical_Models.rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-06-15.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Chapter 96 Create the function: | Ensembles: From Beginner to Expert</title>
+
+    <meta name="author" content="Russ Conte" />
+  
+   <meta name="description" content="<p>Ensembles are the most accurate way to model and make predictions from nature
+This book guides the user through the entire process of making ensembles,
+from beginner to expert.</p>" />
+   <meta name="generator" content="placeholder" />
+  <meta property="og:title" content="Chapter 96 Create the function: | Ensembles: From Beginner to Expert" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Ensembles are the most accurate way to model and make predictions from nature
+This book guides the user through the entire process of making ensembles,
+from beginner to expert.</p>" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 96 Create the function: | Ensembles: From Beginner to Expert" />
+  
+  <meta name="twitter:description" content="<p>Ensembles are the most accurate way to model and make predictions from nature
+This book guides the user through the entire process of making ensembles,
+from beginner to expert.</p>" />
+  
+  <!-- JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script>
+    <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
+    <script src="libs/bs3compat-0.7.0/transition.js"></script>
+    <script src="libs/bs3compat-0.7.0/tabs.js"></script>
+    <script src="libs/bs3compat-0.7.0/bs3compat.js"></script>
+    <link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet" />
+    <script src="libs/bs4_book-1.0.0/bs4_book.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script>
+
+  <!-- CSS -->
+  <style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+      <link rel="stylesheet" href="style.css" />
+  
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book">
+    <a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Ensembles: From Beginner to Expert</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+      </form>
+
+      <nav aria-label="Table of contents">
+        <h2>Table of contents</h2>
+        <div id="book-toc"></div>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="#">View book source <i class="fab fa-github"></i></a></li></p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="col-sm-12 col-md-9 col-lg-7" id="content">
+<div id="create-the-function-8" class="section level1" number="96">
+<h1><span class="header-section-number">Chapter 96</span> Create the function:</h1>
+<p>ridge1 &lt;- function(data, colnum, train_amount, test_amount,
+validation_amount, numresamples){</p>
+<p># Set up random resampling for (i in 1:numresamples) {</p>
+<pre><code># Changes the name of the target column to y
+y &lt;- 0
+colnames(data)[colnum] &lt;- &quot;y&quot;
+
+# Moves the target column to the last column on the right
+df &lt;- data %&gt;% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+df &lt;- df[sample(nrow(df)), ] # randomizes the rows
+
+# Breaks the data into train, test and validation sets
+idx &lt;- sample(seq(1, 3), size = nrow(df), replace = TRUE, prob = c(train_amount, test_amount, validation_amount))
+train &lt;- df[idx == 1, ]
+test &lt;- df[idx == 2, ]
+validation &lt;- df[idx == 3, ]
+
+# Set up the ridge model
+
+y &lt;- train$y
+x &lt;- data.matrix(train %&gt;% dplyr::select(-y))
+ridge_model &lt;- glmnet::glmnet(x, y, alpha = 0)
+ridge_cv &lt;- cv.glmnet(x, y, alpha = 0)
+best_ridge_lambda &lt;- ridge_cv$lambda.min
+best_ridge_model &lt;- glmnet::glmnet(x, y, alpha = 0, lambda = best_ridge_lambda)
+ridge_test_pred &lt;- predict(best_ridge_model, s = best_ridge_lambda, newx = data.matrix(test %&gt;% dplyr::select(-y)))
+
+ridge_test_RMSE &lt;- Metrics::rmse(actual = test$y, predicted = ridge_test_pred)
+ridge_test_RMSE_df &lt;- rbind(ridge_test_RMSE_df, ridge_test_RMSE)
+ridge_test_RMSE_mean &lt;- mean(ridge_test_RMSE_df$ridge_test_RMSE[2:nrow(ridge_test_RMSE_df)])
+
+## ridge using the validation data set
+y &lt;- train$y
+x &lt;- data.matrix(train %&gt;% dplyr::select(-y))
+ridge_model &lt;- glmnet::glmnet(x, y, alpha = 0)
+ridge_cv &lt;- cv.glmnet(x, y, alpha = 0)
+best_ridge_lambda &lt;- ridge_cv$lambda.min
+best_ridge_model &lt;- glmnet::glmnet(x, y, alpha = 0, lambda = best_ridge_lambda)
+ridge_validation_pred &lt;- predict(best_ridge_model, s = best_ridge_lambda, newx = data.matrix(validation %&gt;% dplyr::select(-y)))
+ridge_validation_RMSE &lt;- Metrics::rmse(actual = validation$y, predicted = ridge_validation_pred)
+ridge_validation_RMSE_df &lt;- rbind(ridge_validation_RMSE_df, ridge_validation_RMSE)
+ridge_validation_RMSE_mean &lt;- mean(ridge_validation_RMSE_df$ridge_validation_RMSE[2:nrow(ridge_validation_RMSE_df)])
+
+ridge_holdout_RMSE &lt;- mean(ridge_test_RMSE_mean, ridge_validation_RMSE_mean)
+ridge_holdout_RMSE_df &lt;- rbind(ridge_holdout_RMSE_df, ridge_holdout_RMSE)
+ridge_holdout_RMSE_mean &lt;- mean(ridge_holdout_RMSE_df$ridge_holdout_RMSE[2:nrow(ridge_holdout_RMSE_df)])
+
+ridge_test_predict_value[i] &lt;- round(mean(ridge_test_pred), 4)
+ridge_test_predict_value_mean &lt;- mean(ridge_test_predict_value)
+
+ridge_validation_predict_value[i] &lt;- round(mean(ridge_validation_pred), 4)
+ridge_validation_predict_value_mean &lt;- mean(ridge_validation_predict_value)
+
+ridge_test_predict_value_mean &lt;- mean(c(ridge_test_predict_value_mean, ridge_validation_predict_value_mean))
+
+return(ridge_holdout_RMSE_mean)</code></pre>
+<p>} # closing brace for numresample } # closing brace for the ridge
+function</p>
+<p>ridge1(data = MASS::Boston, colnum = 14, train_amount = 0.60,
+test_amount = 0.20, validation_amount = 0.20, numresamples = 25)
+warnings() # no warnings for individual ridge function</p>
+<p>Robust Regression</p>
+<p>{r}</p>
+<p>library(MASS) # To run rlm function for robust regression</p>
+</div>
+  </main>
+
+  <div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <div id="book-on-this-page"></div>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          <li><a id="book-source" href="#">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="#">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5">
+  <div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Ensembles: From Beginner to Expert</strong>" was written by Russ Conte. It was last built on 2024-05-23.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+<script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+
+</html>

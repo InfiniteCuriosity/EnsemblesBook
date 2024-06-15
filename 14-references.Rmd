@@ -1,0 +1,5 @@
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+\ Introduction
+Photo of City of Chicago snow plow stuck in snow: By <a href="https://en.wikipedia.org/wiki/User:Victorgrigas" class="extiw" title="wikipedia:User:Victorgrigas">Victorgrigas</a> at <a href="https://en.wikipedia.org/wiki/" class="extiw" title="wikipedia:">English Wikipedia</a> - I (<a href="https://en.wikipedia.org/wiki/User:Victorgrigas" class="extiw" title="en:User:Victorgrigas">t3xt</a> (<a href="https://en.wikipedia.org/wiki/User_talk:Victorgrigas" class="extiw" title="en:User talk:Victorgrigas">talk</a>)) created this work entirely by myself., <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication">CC0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=15731365">Link</a>

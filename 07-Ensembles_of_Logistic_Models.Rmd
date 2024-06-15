@@ -1,0 +1,494 @@
+# Advice to Lebron James (and everyone who does talent analytics): Logistic ensembles
+
+In this section we're going to take the lessons of the previous chapter and move them into making ensembles of models. The process is extremely similar, and follows these steps:
+
+> Load the library
+>
+> Set initial values to 0
+>
+> Create the function
+>
+> Set up random resampling
+>
+> Break the data into train and test
+>
+> Fit the model on the training data, make predictions and measure error on the test data
+>
+> Return the results
+>
+> Check for errors or warnings
+>
+> Test on a different data set
+
+Logistic ensembles can be used in an extremely wide range of fields. Previously we modeled diabetes in Pima Indian women. This chapter's example will be the performance on the court of Lebron James.
+
+Here's an image of Lebron in play.
+
+![Lebron James](_book/images/LeBron_James_small.jpg)
+
+There is a LOT of data in sports and HR analytics (which are extremely similar in some ways). A lot of the data is set up as logistic data. For example, here is a data set of the performance of Lebron James. The main column of interest is "result", which is either 1 or 0. Thus it perfectly fits our requirements for logistic analysis.
+
+```{r Head of the data about Lebron James performance on the court}
+
+library(Ensembles)
+head(lebron, n = 20)
+```
+
+Let's look at the structure of the data:
+
+```{r Look at the structure of the data about Lebron}
+lebron <- Ensembles::lebron
+str(Ensembles::lebron)
+```
+
+We see that all of these are numbers. It might be easier if "qtr" and "opponent" were changed to factors, so we'll do that first.
+
+```{r Change two columns to factors}
+
+lebron$qtr <- as.factor(lebron$qtr)
+lebron$opponent <- as.factor(lebron$opponent)
+```
+
+Now we're ready to create an ensemble of models to make predictions about Lebron's future performance. The new skill in this chapter will be saving all trained models to the Environment. This will allow us to look at the trained models, and use them to make the strongest evidence based recommendations.
+
+We will use the following individual models and ensemble of models:
+
+Individual models:
+
+AdaBoost
+
+BayesGLM
+
+C50
+
+Cubist
+
+Generalized Linear Models (GLM)
+
+Random Forest
+
+XGBoost
+
+We will make an ensemble of the predictions from those five models, and then use that ensemble to model predictions for Lebron's performance.
+
+We will also show the ROC curves for each of the results, and save all the trained models at the end.
+
+```{r Logistic ensemble}
+
+# Load libraries - note these will work with individual and ensemble models
+library(arm) # to use with BayesGLM
+library(C50) # To use with C50
+library(Cubist) # To use with Cubist modeling
+library(MachineShop)# To use with ADABoost
+library(randomForest) # Random Forest models
+library(tidyverse) # My favorite tool for data science!
+library(pROC) # To print ROC curves
+
+# Set initial values to 0
+adaboost_train_accuracy <- 0
+adaboost_test_accuracy <- 0
+adaboost_holdout_accuracy <- 0
+adaboost_duration <- 0
+adaboost_table_total <- 0
+
+bayesglm_train_accuracy <- 0
+bayesglm_test_accuracy <- 0
+bayesglm_holdout_accuracy <- 0
+bayesglm_duration <- 0
+bayesglm_table_total <- 0
+
+C50_train_accuracy <- 0
+C50_test_accuracy <- 0
+C50_holdout_accuracy <- 0
+C50_duration <- 0
+C50_table_total <- 0
+
+cubist_train_accuracy <- 0
+cubist_test_accuracy <- 0
+cubist_holdout_accuracy <- 0
+cubist_duration <- 0
+cubist_table_total <- 0
+
+rf_train_accuracy <- 0
+rf_test_accuracy <- 0
+rf_holdout_accuracy <- 0
+rf_duration <- 0
+rf_table_total <- 0
+
+xgb_train_accuracy <- 0
+xgb_test_accuracy <- 0
+xgb_holdout_accuracy <- 0
+xgb_duration <- 0
+xgb_table_total <- 0
+
+
+ensemble_adaboost_train_accuracy <- 0
+ensemble_adaboost_test_accuracy <- 0
+ensemble_adaboost_holdout_accuracy <- 0
+ensemble_adaboost_duration <- 0
+ensemble_adaboost_table_total <- 0
+ensemble_adaboost_train_pred <- 0
+
+ensemble_bayesglm_train_accuracy <- 0
+ensemble_bayesglm_test_accuracy <- 0
+ensemble_bayesglm_holdout_accuracy <- 0
+ensemble_bayesglm_duration <- 0
+ensemble_bayesglm_table_total <- 0
+
+ensemble_C50_train_accuracy <- 0
+ensemble_C50_test_accuracy <- 0
+ensemble_C50_holdout_accuracy <- 0
+ensemble_C50_duration <- 0
+ensemble_C50_table_total <- 0
+
+ensemble_rf_train_accuracy <- 0
+ensemble_rf_test_accuracy <- 0
+ensemble_rf_holdout_accuracy <- 0
+ensemble_rf_duration <- 0
+ensemble_rf_table_total <- 0
+
+ensemble_xgb_train_accuracy <- 0
+ensemble_xgb_test_accuracy <- 0
+ensemble_xgb_holdout_accuracy <- 0
+ensemble_xgb_duration <- 0
+ensemble_xgb_table_total <- 0
+
+# Create the function
+
+logistic_1 <- function(data, colnum, numresamples, train_amount, test_amount){
+colnames(data)[colnum] <- "y"
+  
+df <- data %>% dplyr::relocate(y, .after = last_col()) # Moves the target column to the last column on the right
+  
+df <- df[sample(1:nrow(df)), ] # randomizes the rows
+  
+# Set up random resampling
+  
+for (i in 1:numresamples) {
+    
+index <- sample(c(1:2), nrow(df), replace = TRUE, prob = c(train_amount, test_amount))
+    
+train <- df[index == 1, ]
+test <- df[index == 2, ]
+    
+y_train <- train$y
+y_test <- test$y
+  
+  
+# ADABoost model
+adaboost_train_fit <- MachineShop::fit(formula = as.factor(y) ~ ., data = train, model = "AdaBoostModel")
+
+adaboost_train_pred <- stats::predict(adaboost_train_fit, train, type = "prob")
+adaboost_train_predictions <- ifelse(adaboost_train_pred > 0.5, 1, 0)
+adaboost_train_table <- table(adaboost_train_predictions, y_train)
+adaboost_train_accuracy[i] <- (adaboost_train_table[1, 1] + adaboost_train_table[2, 2]) / sum(adaboost_train_table)
+adaboost_train_accuracy_mean <- mean(adaboost_train_accuracy)
+
+adaboost_test_pred <- stats::predict(adaboost_train_fit, test, type = "prob")
+adaboost_test_predictions <- ifelse(adaboost_test_pred > 0.5, 1, 0)
+adaboost_test_table <- table(adaboost_test_predictions, y_test)
+adaboost_test_accuracy[i] <- (adaboost_test_table[1, 1] + adaboost_test_table[2, 2]) / sum(adaboost_test_table)
+adaboost_test_accuracy_mean <- mean(adaboost_test_accuracy)
+
+adaboost_roc_obj <- pROC::roc(as.numeric(c(test$y)), c(adaboost_test_pred))
+adaboost_auc <- round((pROC::auc(c(test$y), as.numeric(c(adaboost_test_pred)) - 1)), 4)
+print(pROC::ggroc(adaboost_roc_obj, color = "steelblue", size = 2) +
+            ggplot2::ggtitle(paste0("ADAboost Models ", "(AUC = ", adaboost_auc, ")")) +
+            ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+            ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+
+# BayesGLM
+bayesglm_train_fit <- arm::bayesglm(y ~ ., data = train, family = binomial)
+    
+bayesglm_train_pred <- stats::predict(bayesglm_train_fit, train, type = "response")
+bayesglm_train_predictions <- ifelse(bayesglm_train_pred > 0.5, 1, 0)
+bayesglm_train_table <- table(bayesglm_train_predictions, y_train)
+bayesglm_train_accuracy[i] <- (bayesglm_train_table[1, 1] + bayesglm_train_table[2, 2]) / sum(bayesglm_train_table)
+bayesglm_train_accuracy_mean <- mean(bayesglm_train_accuracy)
+
+bayesglm_test_pred <- stats::predict(bayesglm_train_fit, test, type = "response")
+bayesglm_test_predictions <- ifelse(bayesglm_test_pred > 0.5, 1, 0)
+bayesglm_test_table <- table(bayesglm_test_predictions, y_test)
+
+bayesglm_test_accuracy[i] <- (bayesglm_test_table[1, 1] + bayesglm_test_table[2, 2]) / sum(bayesglm_test_table)
+bayesglm_test_accuracy_mean <- mean(bayesglm_test_accuracy)
+
+bayesglm_roc_obj <- pROC::roc(as.numeric(c(test$y)), c(bayesglm_test_pred))
+bayesglm_auc <- round((pROC::auc(c(test$y), as.numeric(c(bayesglm_test_pred)) - 1)), 4)
+print(pROC::ggroc(bayesglm_roc_obj, color = "steelblue", size = 2) +
+            ggplot2::ggtitle(paste0("Bayesglm Models ", "(AUC = ", bayesglm_auc, ")")) +
+            ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+            ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+# C50 model
+
+C50_train_fit <- C50::C5.0(as.factor(y_train) ~ ., data = train)
+
+C50_train_pred <- stats::predict(C50_train_fit, train, type = "prob")
+C50_train_predictions <- ifelse(C50_train_pred[, 2] > 0.5, 1, 0)
+C50_train_table <- table(C50_train_predictions, y_train)
+C50_train_accuracy[i] <- (C50_train_table[1, 1] + C50_train_table[2, 2]) / sum(C50_train_table)
+C50_train_accuracy_mean <- mean(C50_train_accuracy)
+
+C50_test_pred <- stats::predict(C50_train_fit, test, type = "prob")
+C50_test_predictions <- ifelse(C50_test_pred[, 2] > 0.5, 1, 0)
+C50_test_table <- table(C50_test_predictions, y_test)
+C50_test_accuracy[i] <- (C50_test_table[1, 1] + C50_test_table[2, 2]) / sum(C50_test_table)
+C50_test_accuracy_mean <- mean(C50_test_accuracy)
+
+C50_roc_obj <- pROC::roc(as.numeric(c(test$y)), as.numeric(c(C50_test_predictions)))
+C50_auc <- round((pROC::auc(c(test$y), as.numeric(c(C50_test_predictions)) - 1)), 4)
+print(pROC::ggroc(C50_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("C50 ROC curve ", "(AUC = ", C50_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+# Cubist
+cubist_train_fit <- Cubist::cubist(x = as.data.frame(train), y = train$y)
+    
+cubist_train_pred <- stats::predict(cubist_train_fit, train, type = "prob")
+cubist_train_table <- table(cubist_train_pred, y_train)
+cubist_train_accuracy[i] <- (cubist_train_table[1, 1] + cubist_train_table[2, 2]) / sum(cubist_train_table)
+cubist_train_accuracy_mean <- mean(cubist_train_accuracy)
+
+cubist_test_pred <- stats::predict(cubist_train_fit, test, type = "prob")
+cubist_test_table <- table(cubist_test_pred, y_test)
+cubist_test_accuracy[i] <- (cubist_test_table[1, 1] + cubist_test_table[2, 2]) / sum(cubist_test_table)
+cubist_test_accuracy_mean <- mean(cubist_test_accuracy)
+
+
+cubist_roc_obj <- pROC::roc(as.numeric(c(test$y)), as.numeric(c(cubist_test_pred)))
+cubist_auc <- round((pROC::auc(c(test$y), as.numeric(c(cubist_test_pred)) - 1)), 4)
+print(pROC::ggroc(cubist_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("Cubist ROC curve ", "(AUC = ", cubist_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+# Random Forest
+rf_train_fit <- randomForest(x = train, y = as.factor(y_train), data = df)
+    
+rf_train_pred <- stats::predict(rf_train_fit, train, type = "prob")
+rf_train_probabilities <- ifelse(rf_train_pred > 0.50, 1, 0)[, 2]
+rf_train_table <- table(rf_train_probabilities, y_train)
+rf_train_accuracy[i] <- (rf_train_table[1, 1] + rf_train_table[2, 2]) / sum(rf_train_table)
+rf_train_accuracy_mean <- mean(rf_train_accuracy)
+
+rf_test_pred <- stats::predict(rf_train_fit, test, type = "prob")
+rf_test_probabilities <- ifelse(rf_test_pred > 0.50, 1, 0)[, 2]
+rf_test_table <- table(rf_test_probabilities, y_test)
+rf_test_accuracy[i] <- (rf_test_table[1, 1] + rf_test_table[2, 2]) / sum(rf_test_table)
+rf_test_accuracy_mean <- mean(rf_test_accuracy)
+
+rf_roc_obj <- pROC::roc(as.numeric(c(test$y)), as.numeric(c(rf_test_probabilities)))
+rf_auc <- round((pROC::auc(c(test$y), as.numeric(c(rf_test_probabilities)) - 1)), 4)
+print(pROC::ggroc(rf_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("Random Forest ", "(AUC = ", rf_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+# XGBoost
+train_x <- data.matrix(train[, -ncol(train)])
+train_y <- train[, ncol(train)]
+    
+# define predictor and response variables in test set
+test_x <- data.matrix(test[, -ncol(test)])
+test_y <- test[, ncol(test)]
+    
+# define final train and test sets
+xgb_train <- xgboost::xgb.DMatrix(data = train_x, label = train_y)
+xgb_test <- xgboost::xgb.DMatrix(data = test_x, label = test_y)
+
+# define watchlist
+watchlist <- list(train = xgb_train)
+watchlist_test <- list(train = xgb_train, test = xgb_test)
+
+xgb_model <- xgboost::xgb.train(data = xgb_train, max.depth = 3, watchlist = watchlist_test, nrounds = 70)
+    
+xgb_min <- which.min(xgb_model$evaluation_log$validation_rmse)
+    
+xgb_train_pred <- stats::predict(object = xgb_model, newdata = train_x, type = "prob")
+xgb_train_predictions <- ifelse(xgb_train_pred > 0.5, 1, 0)
+xgb_train_table <- table(xgb_train_predictions, y_train)
+xgb_train_accuracy[i] <- (xgb_train_table[1, 1] + xgb_train_table[2, 2]) / sum(xgb_train_table)
+xgb_train_accuracy_mean <- mean(xgb_train_accuracy)
+
+xgb_test_pred <- stats::predict(object = xgb_model, newdata = test_x, type = "prob")
+xgb_test_predictions <- ifelse(xgb_test_pred > 0.5, 1, 0)
+xgb_test_table <- table(xgb_test_predictions, y_test)
+xgb_test_accuracy[i] <- (xgb_test_table[1, 1] + xgb_test_table[2, 2]) / sum(xgb_test_table)
+xgb_test_accuracy_mean <- mean(xgb_test_accuracy)
+
+xgb_roc_obj <- pROC::roc(as.numeric(c(test$y)), as.numeric(c(xgb_test_pred)))
+xgb_auc <- round((pROC::auc(c(test$y), as.numeric(c(xgb_test_pred)) - 1)), 4)
+print(pROC::ggroc(xgb_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("XGBoost ", "(AUC = ", xgb_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+# Ensemble
+
+ensemble1 <- data.frame(
+  'ADABoost' = adaboost_test_predictions,
+  'BayesGLM'= bayesglm_test_predictions,
+  'C50' = C50_test_predictions,
+  'Cubist' = cubist_test_pred,
+  'Random_Forest' = rf_test_pred,
+  'XGBoost' = xgb_test_predictions,
+  'y' = test$y
+)
+
+ensemble_index <- sample(c(1:2), nrow(ensemble1), replace = TRUE, prob = c(train_amount, test_amount))
+ensemble_train <- ensemble1[ensemble_index == 1, ]
+ensemble_test <- ensemble1[ensemble_index == 2, ]
+ensemble_y_train <- ensemble_train$y
+ensemble_y_test <- ensemble_test$y
+
+# Ensemble ADABoost
+ensemble_adaboost_train_fit <- MachineShop::fit(as.factor(y) ~ ., data = ensemble_train, model = "AdaBoostModel")
+    
+ensemble_adaboost_train_pred <- stats::predict(ensemble_adaboost_train_fit, ensemble_train, type = "prob")
+ensemble_adaboost_train_probabilities <- ifelse(ensemble_adaboost_train_pred > 0.5, 1, 0)
+ensemble_adaboost_train_table <- table(ensemble_adaboost_train_probabilities, ensemble_y_train)
+ensemble_adaboost_train_accuracy[i] <- (ensemble_adaboost_train_table[1, 1] + ensemble_adaboost_train_table[2, 2]) / sum(ensemble_adaboost_train_table)
+ensemble_adaboost_train_accuracy_mean <- mean(ensemble_adaboost_train_accuracy)
+    
+ensemble_adaboost_test_pred <- stats::predict(ensemble_adaboost_train_fit, ensemble_test, type = "prob")
+ensemble_adaboost_test_probabilities <- ifelse(ensemble_adaboost_test_pred > 0.5, 1, 0)
+ensemble_adaboost_test_table <- table(ensemble_adaboost_test_probabilities, ensemble_y_test)
+ensemble_adaboost_test_accuracy[i] <- (ensemble_adaboost_test_table[1, 1] + ensemble_adaboost_test_table[2, 2]) / sum(ensemble_adaboost_test_table)
+ensemble_adaboost_test_accuracy_mean <- mean(ensemble_adaboost_test_accuracy)
+    
+ensemble_adaboost_holdout_accuracy_mean <- mean(ensemble_adaboost_test_accuracy)
+    
+ensemble_adaboost_roc_obj <- pROC::roc(as.numeric(c(ensemble_test$y)), as.numeric(c(ensemble_adaboost_test_pred)))
+ensemble_adaboost_auc <- round((pROC::auc(c(ensemble_test$y), as.numeric(c(ensemble_adaboost_test_pred)) - 1)), 4)
+print(pROC::ggroc(ensemble_adaboost_roc_obj, color = "steelblue", size = 2) +
+            ggplot2::ggtitle(paste0("Ensemble Adaboostoost ", "(AUC = ", ensemble_adaboost_auc, ")")) +
+            ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+            ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+    )
+
+
+# Ensembles using C50
+ensemble_C50_train_fit <- C50::C5.0(as.factor(ensemble_y_train) ~ ., data = ensemble_train)
+
+ensemble_C50_train_pred <- stats::predict(ensemble_C50_train_fit, ensemble_train, type = "prob")
+ensemble_C50_train_probabilities <- ifelse(ensemble_C50_train_pred[, 2] > 0.5, 1, 0)
+ensemble_C50_train_table <- table(ensemble_C50_train_probabilities, ensemble_y_train)
+ensemble_C50_train_accuracy[i] <- (ensemble_C50_train_table[1, 1] + ensemble_C50_train_table[2, 2]) / sum(ensemble_C50_train_table)
+ensemble_C50_train_accuracy_mean <- mean(ensemble_C50_train_accuracy)
+
+ensemble_C50_test_pred <- stats::predict(ensemble_C50_train_fit, ensemble_test, type = "prob")
+ensemble_C50_test_probabilities <- ifelse(ensemble_C50_test_pred[, 2] > 0.5, 1, 0)
+ensemble_C50_test_table <- table(ensemble_C50_test_probabilities, ensemble_y_test)
+ensemble_C50_test_accuracy[i] <- (ensemble_C50_test_table[1, 1] + ensemble_C50_test_table[2, 2]) / sum(ensemble_C50_test_table)
+ensemble_C50_test_accuracy_mean <- mean(ensemble_C50_test_accuracy)
+
+ensemble_C50_roc_obj <- pROC::roc(as.numeric(c(ensemble_test$y)), as.numeric(c(ensemble_C50_test_pred[, 2])))
+ensemble_C50_auc <- round((pROC::auc(c(ensemble_test$y), as.numeric(c(ensemble_C50_test_pred[, 2])) - 1)), 4)
+print(pROC::ggroc(ensemble_C50_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("Ensemble_C50 ", "(AUC = ", ensemble_C50_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+)
+
+# Ensemble Random Forest
+
+ensemble_rf_train_fit <- randomForest(x = ensemble_train, y = as.factor(ensemble_y_train), data = ensemble1)
+
+ensemble_rf_train_pred <- stats::predict(ensemble_rf_train_fit, ensemble_train, type = "prob")
+ensemble_rf_train_predictions <- ifelse(ensemble_rf_train_pred > 0.50, 1, 0)[, 2]
+ensemble_rf_train_table <- table(ensemble_rf_train_predictions, ensemble_y_train)
+ensemble_rf_train_accuracy[i] <- (ensemble_rf_train_table[1, 1] + ensemble_rf_train_table[2, 2]) / sum(ensemble_rf_train_table)
+ensemble_rf_train_accuracy_mean <- mean(ensemble_rf_train_accuracy)
+
+ensemble_rf_test_pred <- stats::predict(ensemble_rf_train_fit, ensemble_test, type = "prob")
+ensemble_rf_test_predictions <- ifelse(ensemble_rf_test_pred > 0.50, 1, 0)[, 2]
+ensemble_rf_test_table <- table(ensemble_rf_test_predictions, ensemble_y_test)
+ensemble_rf_test_accuracy[i] <- (ensemble_rf_test_table[1, 1] + ensemble_rf_test_table[2, 2]) / sum(ensemble_rf_test_table)
+ensemble_rf_test_accuracy_mean <- mean(ensemble_rf_test_accuracy)
+
+ensemble_rf_roc_obj <- pROC::roc(as.numeric(c(ensemble_test$y)), as.numeric(c(ensemble_rf_test_predictions)))
+ensemble_rf_auc <- round((pROC::auc(c(ensemble_test$y), as.numeric(c(ensemble_rf_test_predictions)) - 1)), 4)
+print(pROC::ggroc(ensemble_rf_roc_obj, color = "steelblue", size = 2) +
+        ggplot2::ggtitle(paste0("Ensemble_rf ", "(AUC = ", ensemble_rf_auc, ")")) +
+        ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+        ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+)
+
+# Ensemble XGBoost
+
+ensemble_train_x <- data.matrix(ensemble_train[, -ncol(ensemble_train)])
+ensemble_train_y <- ensemble_train[, ncol(ensemble_train)]
+
+  # define predictor and response variables in test set
+ensemble_test_x <- data.matrix(ensemble_test[, -ncol(ensemble_test)])
+ensemble_test_y <- ensemble_test[, ncol(ensemble_test)]
+
+# define final train and test sets
+ensemble_xgb_train <- xgboost::xgb.DMatrix(data = ensemble_train_x, label = ensemble_train_y)
+ensemble_xgb_test <- xgboost::xgb.DMatrix(data = ensemble_test_x, label = ensemble_test_y)
+
+# define watchlist
+ensemble_watchlist <- list(train = ensemble_xgb_train)
+ensemble_watchlist_test <- list(train = ensemble_xgb_train, test = ensemble_xgb_test)
+
+ensemble_xgb_model <- xgboost::xgb.train(data = ensemble_xgb_train, max.depth = 3, watchlist = ensemble_watchlist_test, nrounds = 70)
+
+ensemble_xgboost_min <- which.min(ensemble_xgb_model$evaluation_log$validation_rmse)
+
+ensemble_xgb_train_pred <- predict(object = ensemble_xgb_model, newdata = ensemble_train_x, type = "response")
+ensemble_xgb_train_probabilities <- ifelse(ensemble_xgb_train_pred > 0.5, 1, 0)
+ensemble_xgb_train_table <- table(ensemble_xgb_train_probabilities, ensemble_y_train)
+ensemble_xgb_train_accuracy[i] <- (ensemble_xgb_train_table[1, 1] + ensemble_xgb_train_table[2, 2]) / sum(ensemble_xgb_train_table)
+ensemble_xgb_train_accuracy_mean <- mean(ensemble_xgb_train_accuracy)
+
+ensemble_xgb_test_pred <- predict(object = ensemble_xgb_model, newdata = ensemble_test_x, type = "response")
+ensemble_xgb_test_probabilities <- ifelse(ensemble_xgb_test_pred > 0.5, 1, 0)
+ensemble_xgb_test_table <- table(ensemble_xgb_test_probabilities, ensemble_y_test)
+ensemble_xgb_test_accuracy[i] <- (ensemble_xgb_test_table[1, 1] + ensemble_xgb_test_table[2, 2]) / sum(ensemble_xgb_test_table)
+ensemble_xgb_test_accuracy_mean <- mean(ensemble_xgb_test_accuracy)
+
+ensemble_xgb_roc_obj <- pROC::roc(as.numeric(c(ensemble_test$y)), as.numeric(c(ensemble_xgb_test_pred)))
+ensemble_xgb_auc <- round((pROC::auc(c(ensemble_test$y), as.numeric(c(ensemble_xgb_test_pred)) - 1)), 4)
+print(pROC::ggroc(ensemble_xgb_roc_obj, color = "steelblue", size = 2) +
+  ggplot2::ggtitle(paste0("Ensemble XGBoost ", "(AUC = ", ensemble_xgb_auc, ")")) +
+  ggplot2::labs(x = "Specificity", y = "Sensitivity") +
+  ggplot2::annotate("segment", x = 1, xend = 0, y = 0, yend = 1, color = "grey")
+)
+  
+  
+# Save all trained models to the Environment
+adaboost_train_fit <<- adaboost_train_fit
+bayesglm_train_fit <<- bayesglm_train_fit
+C50_train_fit<<- C50_train_fit
+cubist_train_fit <<- cubist_train_fit
+rf_train_fit <<- rf_train_fit
+xgb_model <<- xgb_model
+ensemble_adaboost_train_fit <<- ensemble_adaboost_train_fit
+ensemble_C50_train_fit <<- ensemble_C50_train_fit
+ensemble_rf_train_fit <<- ensemble_rf_train_fit
+ensemble_xgb_model <<- ensemble_xgb_model
+
+results <- data.frame(
+  'Model'= c('ADABoost', 'BayesGLM', 'C50', 'Cubist', 'Random_Forest', 'XGBoost', 'Ensemble_ADABoost', 'Ensemble_C50', 'Ensemble_Random_Forest', 'Ensemble_XGBoost'),
+  'Accuracy' = c(adaboost_test_accuracy_mean, bayesglm_test_accuracy_mean, C50_test_accuracy_mean, cubist_test_accuracy_mean, rf_test_accuracy_mean, xgb_test_accuracy_mean, ensemble_adaboost_holdout_accuracy_mean, ensemble_C50_test_accuracy_mean, ensemble_rf_test_accuracy_mean, ensemble_xgb_test_accuracy_mean)
+)
+
+results <- results %>% arrange(desc(Accuracy), Model)
+
+} # Closing loop for numresamples
+return(results)
+
+} # Closing loop for the function
+
+logistic_1(data = lebron, colnum = 6, numresamples = 5, train_amount = 0.60, test_amount = 0.40)
+warnings()
+```
